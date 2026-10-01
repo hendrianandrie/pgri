@@ -35,7 +35,7 @@ class AdminTestimonialController extends Controller
             $file = $request->file('photo_file');
             $filename = 'testi_' . time() . '_' . Str::random(8) . '.' . $file->getClientOriginalExtension();
             $path = $file->storeAs('testimonials', $filename, 'public');
-            $photo = asset('storage/' . $path);
+            $photo = '/storage/' . $path;
         } elseif (!empty($validated['photo_url'])) {
             $photo = $validated['photo_url'];
         }
@@ -80,7 +80,7 @@ class AdminTestimonialController extends Controller
             $file = $request->file('photo_file');
             $filename = 'testi_' . time() . '_' . Str::random(8) . '.' . $file->getClientOriginalExtension();
             $path = $file->storeAs('testimonials', $filename, 'public');
-            $testimonial->photo = asset('storage/' . $path);
+            $testimonial->photo = '/storage/' . $path;
         } elseif (!empty($validated['photo_url'])) {
             $testimonial->photo = $validated['photo_url'];
         }

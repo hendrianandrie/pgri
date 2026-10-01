@@ -51,7 +51,7 @@ class AdminNewsController extends Controller
             $file = $request->file('image_file');
             $filename = 'news_' . time() . '_' . Str::random(8) . '.' . $file->getClientOriginalExtension();
             $path = $file->storeAs('news', $filename, 'public');
-            $image = asset('storage/' . $path);
+            $image = '/storage/' . $path;
         } elseif (!empty($validated['image_url'])) {
             $image = $validated['image_url'];
         }
@@ -110,7 +110,7 @@ class AdminNewsController extends Controller
             $file = $request->file('image_file');
             $filename = 'news_' . time() . '_' . Str::random(8) . '.' . $file->getClientOriginalExtension();
             $path = $file->storeAs('news', $filename, 'public');
-            $news->image = asset('storage/' . $path);
+            $news->image = '/storage/' . $path;
         } elseif (!empty($validated['image_url'])) {
             $news->image = $validated['image_url'];
         }

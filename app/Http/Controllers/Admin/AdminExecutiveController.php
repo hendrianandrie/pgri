@@ -42,7 +42,7 @@ class AdminExecutiveController extends Controller
             $file = $request->file('photo_file');
             $filename = 'executive_' . time() . '_' . Str::random(8) . '.' . $file->getClientOriginalExtension();
             $path = $file->storeAs('executives', $filename, 'public');
-            $validated['photo'] = asset('storage/' . $path);
+            $validated['photo'] = '/storage/' . $path;
         } elseif (empty($validated['photo'])) {
             $validated['photo'] = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=400';
         }
@@ -87,7 +87,7 @@ class AdminExecutiveController extends Controller
             $file = $request->file('photo_file');
             $filename = 'executive_' . time() . '_' . Str::random(8) . '.' . $file->getClientOriginalExtension();
             $path = $file->storeAs('executives', $filename, 'public');
-            $validated['photo'] = asset('storage/' . $path);
+            $validated['photo'] = '/storage/' . $path;
         }
 
         $executive->update($validated);

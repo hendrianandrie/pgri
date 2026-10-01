@@ -63,7 +63,7 @@ class AdminGalleryController extends Controller
             $file = $request->file('cover_file');
             $filename = 'cover_' . time() . '_' . Str::random(8) . '.' . $file->getClientOriginalExtension();
             $path = $file->storeAs('galleries/covers', $filename, 'public');
-            $cover = asset('storage/' . $path);
+            $cover = '/storage/' . $path;
         } elseif (!empty($validated['cover_url'])) {
             $cover = $validated['cover_url'];
         }
@@ -75,7 +75,7 @@ class AdminGalleryController extends Controller
                 if ($file->isValid()) {
                     $filename = 'doc_' . time() . '_' . Str::random(8) . '.' . $file->getClientOriginalExtension();
                     $path = $file->storeAs('galleries/photos', $filename, 'public');
-                    $photos[] = asset('storage/' . $path);
+                    $photos[] = '/storage/' . $path;
                 }
             }
         }
@@ -150,7 +150,7 @@ class AdminGalleryController extends Controller
             $file = $request->file('cover_file');
             $filename = 'cover_' . time() . '_' . Str::random(8) . '.' . $file->getClientOriginalExtension();
             $path = $file->storeAs('galleries/covers', $filename, 'public');
-            $gallery->cover_image = asset('storage/' . $path);
+            $gallery->cover_image = '/storage/' . $path;
             $gallery->image = $gallery->cover_image;
         } elseif (!empty($validated['cover_url'])) {
             $gallery->cover_image = $validated['cover_url'];
@@ -173,7 +173,7 @@ class AdminGalleryController extends Controller
                 if ($file->isValid()) {
                     $filename = 'doc_' . time() . '_' . Str::random(8) . '.' . $file->getClientOriginalExtension();
                     $path = $file->storeAs('galleries/photos', $filename, 'public');
-                    $currentPhotos[] = asset('storage/' . $path);
+                    $currentPhotos[] = '/storage/' . $path;
                 }
             }
         }

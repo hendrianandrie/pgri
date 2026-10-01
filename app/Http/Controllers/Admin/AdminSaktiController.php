@@ -93,7 +93,7 @@ class AdminSaktiController extends Controller
             $file = $request->file('image_file');
             $filename = 'sakti_' . time() . '_' . Str::random(8) . '.' . $file->getClientOriginalExtension();
             $path = $file->storeAs('sakti', $filename, 'public');
-            $validated['image'] = asset('storage/' . $path);
+            $validated['image'] = '/storage/' . $path;
         }
 
         // Author and school origin text
@@ -212,7 +212,7 @@ class AdminSaktiController extends Controller
             $file = $request->file('image_file');
             $filename = 'sakti_' . time() . '_' . Str::random(8) . '.' . $file->getClientOriginalExtension();
             $path = $file->storeAs('sakti', $filename, 'public');
-            $validated['image'] = asset('storage/' . $path);
+            $validated['image'] = '/storage/' . $path;
         }
 
         $authorText = !empty($validated['author']) ? $validated['author'] : ($content->author ?: 'Pengurus PGRI');

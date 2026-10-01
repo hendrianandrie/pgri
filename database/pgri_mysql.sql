@@ -185,9 +185,9 @@ CREATE TABLE IF NOT EXISTS `sakti_contents` (
 
 -- Dumping data for table `sakti_contents`
 INSERT INTO `sakti_contents` (`id`, `category`, `title`, `slug`, `summary`, `content`, `author`, `image`, `file_url`, `badge`, `views`, `is_featured`, `published_at`, `created_at`, `updated_at`, `school_origin`) VALUES
-(14, 'koding_kka', 'Modul Koding AI & Machine Learning SMA/K Terupdate', 'modul-koding-ai-machine-learning-smak-terupdate-953', 'Modul kecerdasan buatan tingkat lanjut khusus jenjang SMP', 'Modul pembelajaran Koding, Computational Thinking (KKA), dan AI untuk jenjang SMP yang disusun oleh ndrie. Silakan akses materi secara langsung melalui tautan modul.', 'Ndrie', 'http://127.0.0.1:8002/storage/sakti/sakti_1790596647_Ym1BVxaV.jpeg', 'https://komputasionalthink.my.canva.site/', 'SMP', 2, 1, '2026-09-28 11:57:27', '2026-09-28 11:57:27', '2026-09-29 01:09:39', 'SMPN 5 Ciamis'),
-(20, 'pembelajaran_mendalam', 'Pembelajaran Mendalam di SD', 'pembelajaran-mendalam-di-sd-625', 'Materi ini adalah tentang pembelajaran mendalam di lingkungan SD', 'Modul materi Pembelajaran Mendalam untuk jenjang SMA/K yang disusun oleh Tes, S.Pd. (SDN 1 LInggasari). Silakan akses materi secara langsung melalui tautan modul.', 'Tes, S.Pd.', 'http://127.0.0.1:8002/storage/sakti/sakti_1790644694_7SHTcu2f.png', 'https://drive.google.com/file/d/1sU20xhBFDqi6t6dRy7LJzd_XFL5a66as/view?usp=sharing', 'SD', 0, 0, '2026-09-29 01:18:14', '2026-09-29 01:18:14', '2026-09-29 06:34:02', 'SDN 1 LInggasari'),
-(21, 'pid', 'Informasiiiiiiii', 'informasiiiiiiii-963', 'Modul Informasiiiiiiii untuk jenjang SMP, disusun oleh Zoyyy (SMPN 1 Ciamis).', 'Modul materi Pusat Informasi & Data untuk jenjang SMP yang disusun oleh Zoyyy (SMPN 1 Ciamis). Silakan akses materi secara langsung melalui tautan modul.', 'Zoyyy', 'http://127.0.0.1:8002/storage/sakti/sakti_1790654049_9PSSJpiL.jpeg', 'https://komputasionalthink.my.canva.site/', 'SMP', 1, 0, '2026-09-29 03:54:09', '2026-09-29 03:54:09', '2026-09-29 03:54:24', 'SMPN 1 Ciamis');
+(14, 'koding_kka', 'Modul Koding AI & Machine Learning SMA/K Terupdate', 'modul-koding-ai-machine-learning-smak-terupdate-953', 'Modul kecerdasan buatan tingkat lanjut khusus jenjang SMP', 'Modul pembelajaran Koding, Computational Thinking (KKA), dan AI untuk jenjang SMP yang disusun oleh ndrie. Silakan akses materi secara langsung melalui tautan modul.', 'Ndrie', '/storage/sakti/sakti_1790596647_Ym1BVxaV.jpeg', 'https://komputasionalthink.my.canva.site/', 'SMP', 2, 1, '2026-09-28 11:57:27', '2026-09-28 11:57:27', '2026-09-29 01:09:39', 'SMPN 5 Ciamis'),
+(20, 'pembelajaran_mendalam', 'Pembelajaran Mendalam di SD', 'pembelajaran-mendalam-di-sd-625', 'Materi ini adalah tentang pembelajaran mendalam di lingkungan SD', 'Modul materi Pembelajaran Mendalam untuk jenjang SMA/K yang disusun oleh Tes, S.Pd. (SDN 1 LInggasari). Silakan akses materi secara langsung melalui tautan modul.', 'Tes, S.Pd.', '/storage/sakti/sakti_1790644694_7SHTcu2f.png', 'https://drive.google.com/file/d/1sU20xhBFDqi6t6dRy7LJzd_XFL5a66as/view?usp=sharing', 'SD', 0, 0, '2026-09-29 01:18:14', '2026-09-29 01:18:14', '2026-09-29 06:34:02', 'SDN 1 LInggasari'),
+(21, 'pid', 'Informasiiiiiiii', 'informasiiiiiiii-963', 'Modul Informasiiiiiiii untuk jenjang SMP, disusun oleh Zoyyy (SMPN 1 Ciamis).', 'Modul materi Pusat Informasi & Data untuk jenjang SMP yang disusun oleh Zoyyy (SMPN 1 Ciamis). Silakan akses materi secara langsung melalui tautan modul.', 'Zoyyy', '/storage/sakti/sakti_1790654049_9PSSJpiL.jpeg', 'https://komputasionalthink.my.canva.site/', 'SMP', 1, 0, '2026-09-29 03:54:09', '2026-09-29 03:54:09', '2026-09-29 03:54:24', 'SMPN 1 Ciamis');
 
 -- ----------------------------
 -- Table structure for `executives`
@@ -209,8 +209,8 @@ CREATE TABLE IF NOT EXISTS `executives` (
 
 -- Dumping data for table `executives`
 INSERT INTO `executives` (`id`, `name`, `position`, `unit`, `photo`, `bio`, `order`, `is_active`, `created_at`, `updated_at`) VALUES
-(7, 'Agus ......', 'Ketua', 'Pengurus Besar', 'http://127.0.0.1:8002/storage/executives/executive_1790653697_jjDegGwG.png', NULL, 1, 1, '2026-09-29 03:48:17', '2026-09-29 03:48:17'),
-(8, 'Zoyya', 'Kabid', 'Pengurus Besar', 'http://127.0.0.1:8002/storage/executives/executive_1790653717_SDJ14eFQ.png', NULL, 2, 1, '2026-09-29 03:48:37', '2026-09-29 03:48:37');
+(7, 'Agus ......', 'Ketua', 'Pengurus Besar', '/storage/executives/executive_1790653697_jjDegGwG.png', NULL, 1, 1, '2026-09-29 03:48:17', '2026-09-29 03:48:17'),
+(8, 'Zoyya', 'Kabid', 'Pengurus Besar', '/storage/executives/executive_1790653717_SDJ14eFQ.png', NULL, 2, 1, '2026-09-29 03:48:37', '2026-09-29 03:48:37');
 
 -- ----------------------------
 -- Table structure for `contact_messages`
@@ -266,7 +266,7 @@ INSERT INTO `settings` (`id`, `key`, `value`, `created_at`, `updated_at`) VALUES
 (16, 'hero_card2_subtitle', 'Berpikir Komputasional Guru', '2026-09-29 04:45:49', '2026-09-29 04:45:49'),
 (17, 'hero_stat_number', '3', '2026-09-29 04:45:49', '2026-09-29 07:43:12'),
 (18, 'hero_stat_label', 'Guru & Tenaga Kependidikan Terhubung', '2026-09-29 04:45:49', '2026-09-29 04:45:49'),
-(19, 'hero_image', 'http://127.0.0.1:8002/storage/hero/hero_1790667887_WBKNbozY.jpeg', '2026-09-29 07:44:47', '2026-09-29 07:44:47');
+(19, 'hero_image', '/storage/hero/hero_1790667887_WBKNbozY.jpeg', '2026-09-29 07:44:47', '2026-09-29 07:44:47');
 
 -- ----------------------------
 -- Table structure for `testimonials`
@@ -288,9 +288,9 @@ CREATE TABLE IF NOT EXISTS `testimonials` (
 
 -- Dumping data for table `testimonials`
 INSERT INTO `testimonials` (`id`, `name`, `role_origin`, `quote`, `rating`, `photo`, `order`, `is_active`, `created_at`, `updated_at`) VALUES
-(2, 'Heuhey, S.Pd.', 'Gusu SMPN ciamis', 'Pendampingan advokasi LKBH PGRI memberikan rasa tenang dan perlindungan nyata bagi kami para guru dalam menjalankan tugas pengabdian di pelosok.', 5, 'http://127.0.0.1:8002/storage/testimonials/testi_1790667689_WVLXJa22.png', 2, 1, '2026-09-29 06:29:11', '2026-09-29 07:41:29'),
-(3, 'Yessss, S.Pd.', 'Guru SMKN,...', 'Rumah Pendidikan SAKTI memudahkan saya menyusun perangkat ajar Deep Learning secara cepat. Repositorinya sangat lengkap dan terus diperbarui.', 5, 'http://127.0.0.1:8002/storage/testimonials/testi_1790667715_vsRh7NYc.png', 3, 1, '2026-09-29 06:29:11', '2026-09-29 07:41:55'),
-(5, 'Tessss, S.Pd', 'Guru PAwindannn', 'Modul Koding & AI dari SAKTI PGRI sangat aplikatif! Saya bisa mengajarkan logika berpikir komputasional kepada siswa SD dengan cara yang sangat seru.', 5, 'http://127.0.0.1:8002/storage/testimonials/testi_1790667665_Imt0r702.png', 1, 1, '2026-09-29 06:32:23', '2026-09-29 07:41:05');
+(2, 'Heuhey, S.Pd.', 'Gusu SMPN ciamis', 'Pendampingan advokasi LKBH PGRI memberikan rasa tenang dan perlindungan nyata bagi kami para guru dalam menjalankan tugas pengabdian di pelosok.', 5, '/storage/testimonials/testi_1790667689_WVLXJa22.png', 2, 1, '2026-09-29 06:29:11', '2026-09-29 07:41:29'),
+(3, 'Yessss, S.Pd.', 'Guru SMKN,...', 'Rumah Pendidikan SAKTI memudahkan saya menyusun perangkat ajar Deep Learning secara cepat. Repositorinya sangat lengkap dan terus diperbarui.', 5, '/storage/testimonials/testi_1790667715_vsRh7NYc.png', 3, 1, '2026-09-29 06:29:11', '2026-09-29 07:41:55'),
+(5, 'Tessss, S.Pd', 'Guru PAwindannn', 'Modul Koding & AI dari SAKTI PGRI sangat aplikatif! Saya bisa mengajarkan logika berpikir komputasional kepada siswa SD dengan cara yang sangat seru.', 5, '/storage/testimonials/testi_1790667665_Imt0r702.png', 1, 1, '2026-09-29 06:32:23', '2026-09-29 07:41:05');
 
 -- ----------------------------
 -- Table structure for `news`
@@ -316,7 +316,7 @@ CREATE TABLE IF NOT EXISTS `news` (
 -- Dumping data for table `news`
 INSERT INTO `news` (`id`, `title`, `slug`, `author`, `published_at`, `image`, `excerpt`, `content`, `views_count`, `is_published`, `created_at`, `updated_at`) VALUES
 (2, 'Pelatihan Koding dan Kecerdasan Buatan (AI) Bagi Guru SD dan SMP se-Kabupaten Ciamis', 'pelatihan-koding-dan-kecerdasan-buatan-ai-bagi-guru-sd-dan-smp-se-kabupaten-ciamis', 'ZOYYYYYY', '2026-09-25', 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=1000&q=80', 'Melalui ekosistem SAKTI PGRI, puluhan guru antusias mengikuti lokakarya intensif berpikir komputasional dan pemanfaatan generative AI untuk media belajar inovatif.', 'CIAMIS — Menjawab tantangan transformasi pendidikan abad ke-21, PGRI Cabang Ciamis melalui sayap program SAKTI menyelenggarakan Pelatihan Koding dan Pemanfaatan AI untuk guru jenjang SD dan SMP.\r\n\r\nPelatihan yang berlangsung secara interaktif ini memandu para peserta membuat algoritma visual (visual block coding) dan mengintegrasikan asisten kecerdasan buatan untuk merancang asesmen diagnostik dan modul ajar yang lebih kontekstual.\r\n\r\n"Kami ingin guru tidak sekadar menjadi konsumen teknologi, melainkan kreator dan pemandu generasi muda dalam menavigasi era digital," ujar fasilitator kegiatan. Seluruh peserta mendapatkan akses langsung ke repositori materi SAKTI Koding & AI untuk diterapkan di sekolah masing-masing.', 103, 1, '2026-09-30 01:28:59', '2026-09-30 06:21:16'),
-(5, 'Tes Website', 'tes-website', 'Hendriana', '2026-09-30 00:00:00', 'http://127.0.0.1:8002/storage/news/news_1790749333_OVN317Ki.jpeg', 'woowwwwwww', 'hahahahahah', 1, 1, '2026-09-30 06:22:13', '2026-09-30 06:22:17');
+(5, 'Tes Website', 'tes-website', 'Hendriana', '2026-09-30 00:00:00', '/storage/news/news_1790749333_OVN317Ki.jpeg', 'woowwwwwww', 'hahahahahah', 1, 1, '2026-09-30 06:22:13', '2026-09-30 06:22:17');
 
 -- ----------------------------
 -- Table structure for `galleries`
@@ -339,6 +339,6 @@ CREATE TABLE IF NOT EXISTS `galleries` (
 
 -- Dumping data for table `galleries`
 INSERT INTO `galleries` (`id`, `title`, `category`, `event_date`, `location`, `image`, `description`, `created_at`, `updated_at`, `cover_image`, `photos`) VALUES
-(7, 'tesss', 'Kegiatan PGRI', '2026-10-01 00:00:00', 'caimiss', 'http://127.0.0.1:8002/storage/galleries/covers/cover_1790830566_iV59rMlJ.jpeg', 'hahay', '2026-10-01 04:56:06', '2026-10-01 04:56:06', 'http://127.0.0.1:8002/storage/galleries/covers/cover_1790830566_iV59rMlJ.jpeg', '["http:\\/\\/127.0.0.1:8002\\/storage\\/galleries\\/photos\\/doc_1790830566_s7sSlT8S.jpeg","http:\\/\\/127.0.0.1:8002\\/storage\\/galleries\\/photos\\/doc_1790830566_ZnGWBGVg.jpeg","http:\\/\\/127.0.0.1:8002\\/storage\\/galleries\\/photos\\/doc_1790830566_XLx0cr3s.jpeg","http:\\/\\/127.0.0.1:8002\\/storage\\/galleries\\/photos\\/doc_1790830566_MQANguRy.jpeg","http:\\/\\/127.0.0.1:8002\\/storage\\/galleries\\/photos\\/doc_1790830566_lELdCZno.jpeg"]');
+(7, 'tesss', 'Kegiatan PGRI', '2026-10-01 00:00:00', 'caimiss', '/storage/galleries/covers/cover_1790830566_iV59rMlJ.jpeg', 'hahay', '2026-10-01 04:56:06', '2026-10-01 04:56:06', '/storage/galleries/covers/cover_1790830566_iV59rMlJ.jpeg',/storage\/storage\\/galleries\\/photos\\/doc_1790830566_s7sSlT8S.jpeg","\\/storage\\/galleries\\/photos\\/doc_1790830566_ZnGWBGVg.jpeg","\\/storage\\/galleries\\/photos\\/doc_1790830566_XLx0cr3s.jpeg","\\/storage\\/galleries\\/photos\\/doc_1790830566_MQANguRy.jpeg","\\/storage\\/galleries\\/photos\\/doc_1790830566_lELdCZno.jpeg"]');
 
 SET FOREIGN_KEY_CHECKS=1;

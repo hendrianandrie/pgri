@@ -69,7 +69,7 @@ class AdminSettingController extends Controller
             $file = $request->file('image_file');
             $filename = 'hero_' . time() . '_' . Str::random(8) . '.' . $file->getClientOriginalExtension();
             $path = $file->storeAs('hero', $filename, 'public');
-            Setting::set('hero_image', asset('storage/' . $path));
+            Setting::set('hero_image', '/storage/' . $path);
         } elseif (!empty($validated['image_url'])) {
             Setting::set('hero_image', $validated['image_url']);
         }
