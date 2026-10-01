@@ -1,0 +1,13 @@
+# Nixpacks configuration for Laravel
+[variables]
+NIXPACKS_PHP_ROOT_DIR = "/app/public"
+NIXPACKS_PHP_VERSION = "8.3"
+
+[phases.setup]
+nixPkgs = ["php83", "php83Packages.composer"]
+
+[phases.install]
+cmds = ["composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev"]
+
+[phases.build]
+cmds = ["php artisan config:clear"]
