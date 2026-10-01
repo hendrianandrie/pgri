@@ -1,0 +1,11 @@
+<IfModule mod_rewrite.c>
+    Options -Indexes
+    RewriteEngine On
+
+    # Protect private files, logs, and framework cache
+    RewriteRule ^(app/private|framework|logs) - [F,L,NC]
+
+    # Map requests in /storage/ directly to storage/app/public/
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^(.*)$ app/public/$1 [L]
+</IfModule>
