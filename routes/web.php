@@ -121,3 +121,12 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::delete('/users/{id}', [AdminUserController::class, 'destroy'])->name('users.destroy');
     Route::post('/users/{id}/toggle-status', [AdminUserController::class, 'toggleStatus'])->name('users.toggleStatus');
 });
+
+// Direct Storage File Fallback for Hosting (serves images if storage symlink is missing)
+Route::get('/storage/{path}', function (/Users/ndrie/.gemini/antigravity-ide/bin /Users/ndrie/.antigravity-ide/antigravity-ide/bin /Users/ndrie/.composer/vendor/bin /usr/local/bin /System/Cryptexes/App/usr/bin /usr/bin /bin /usr/sbin /sbin /var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin /var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin /var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin /pkg/env/global/bin /opt/homebrew/bin) {
+     = storage_path('app/public/' . /Users/ndrie/.gemini/antigravity-ide/bin /Users/ndrie/.antigravity-ide/antigravity-ide/bin /Users/ndrie/.composer/vendor/bin /usr/local/bin /System/Cryptexes/App/usr/bin /usr/bin /bin /usr/sbin /sbin /var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin /var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin /var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin /pkg/env/global/bin /opt/homebrew/bin);
+    if (!file_exists()) {
+        abort(404, 'File not found');
+    }
+    return response()->file();
+})->where('path', '.*');
