@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Ladder Quest - Ular Tangga Kecerdasan Artifisial Kelas 9</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                    },
+                    colors: {
+                        cyber: {
+                            dark: '#0b0f19',
+                            card: '#111827',
+                            border: '#1f2937',
+                            neon: '#06b6d4',
+                            glow: '#3b82f6',
+                            accent: '#f43f5e',
+                            gold: '#fbbf24',
+                            emerald: '#10b981',
+                        }
+                    },
+                    animation: {
+                        'roll-dice': 'roll 0.6s cubic-bezier(0.25, 1, 0.5, 1)',
+                        'pulse-slow': 'pulse 2.5s infinite',
+                        'bounce-sm': 'bounce 0.6s infinite',
+                    },
+                    keyframes: {
+                        roll: {
+                            '0%': { transform: 'rotate(0deg) scale(0.8)' },
+                            '50%': { transform: 'rotate(180deg) scale(1.15)' },
+                            '100%': { transform: 'rotate(360deg) scale(1)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0b0f19;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(6, 182, 212, 0.1) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(245, 158, 11, 0.08) 0px, transparent 50%),
+                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 35px 35px, 35px 35px;
+        }
+
+        .board-tile {
+            position: relative;
+            transition: all 0.25s ease;
+            user-select: none;
+        }
+
+        .board-tile:hover {
+            transform: scale(1.03);
+            z-index: 10;
+        }
+
+        /* 3D Dice Styling */
+        .dice-box {
+            width: 72px;
+            height: 72px;
+            background: linear-gradient(145deg, #1e293b, #0f172a);
+            border: 2px solid #38bdf8;
+            border-radius: 18px;
+            box-shadow: 0 10px 25px -5px rgba(6, 182, 212, 0.4), inset 0 2px 4px rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+            color: #38bdf8;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .dice-box:hover:not(:disabled) {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 15px 30px -5px rgba(6, 182, 212, 0.6);
+            border-color: #7dd3fc;
+        }
+
+        .dice-box:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Player Pawn */
+        .player-pawn {
+            position: absolute;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f59e0b, #dc2626);
+            border: 2px solid #ffffff;
+            box-shadow: 0 0 15px #f59e0b, 0 4px 6px rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 13px;
+            font-weight: 900;
+            z-index: 25;
+            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+            pointer-events: none;
+        }
+
+        @media print {
+            body { background: white !important; color: black !important; }
+            .no-print { display: none !important; }
+            .print-card { border: 2px solid #000 !important; background: white !important; color: black !important; box-shadow: none !important; }
+            .print-text-dark { color: #111 !important; }
+        }
+    </style>
+</head>
+<body class="text-slate-100 min-h-screen flex flex-col justify-between selection:bg-cyan-500 selection:text-black font-sans">
+
+    <!-- Top Navigation Header -->
+    <header class="border-b border-slate-800 bg-slate-950/80 backdrop-blur sticky top-0 z-40 py-2.5 px-4 sm:px-8">
+        <div class="max-w-6xl mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 via-red-600 to-indigo-600 flex items-center justify-center font-black text-white shadow-lg shadow-amber-500/20 text-lg">
+                    <i class="fa-solid fa-dice-d20"></i>
+                </div>
+                <div>
+                    <h1 class="font-extrabold text-sm sm:text-base tracking-tight text-white flex items-center gap-2">
+                        AI Ladder Quest <span class="text-xs px-2 py-0.5 rounded-full bg-amber-950 text-amber-400 border border-amber-800 font-mono">Informatika Kelas 9</span>
+                    </h1>
+                    <p class="text-[11px] text-slate-400">Game Ular Tangga Evaluasi Istilah Kecerdasan Artifisial (AI)</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <button onclick="SoundManager.toggleMute()" id="muteBtn" class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 hover:text-white transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-volume-high" id="muteIcon"></i>
+                    <span class="hidden sm:inline" id="muteText">Audio On</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN GAME AREA -->
+    <main class="flex-1 max-w-6xl w-full mx-auto p-3 sm:p-6 my-auto flex flex-col items-center justify-center">
+
+        <!-- SCREEN 1: REGISTRATION / START SCREEN -->
+        <section id="screen-start" class="w-full max-w-lg mx-auto">
+            <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl relative overflow-hidden backdrop-blur">
+                <div class="text-center mb-6">
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-cyan-500 to-blue-600 mx-auto flex items-center justify-center text-3xl text-white shadow-lg shadow-cyan-500/30 mb-3">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Ular Tangga AI Quest</h2>
+                    <p class="text-xs text-slate-300 mt-1">Uji pemahaman istilah Kecerdasan Artifisial (AI) kelas 9 sambil menjelajah papan permainan!</p>
+                </div>
+
+                <form onsubmit="Game.start(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold font-mono text-slate-300 mb-1">Nama Siswa</label>
+                        <input type="text" id="player-name" required placeholder="Contoh: Budi Pratama" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 transition">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-semibold font-mono text-slate-300 mb-1">Kelas</label>
+                            <select id="player-class" required class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-500 transition">
+                                <option value="9A">Kelas 9A</option>
+                                <option value="9B">Kelas 9B</option>
+                                <option value="9C">Kelas 9C</option>
+                                <option value="9D">Kelas 9D</option>
+                                <option value="9E">Kelas 9E</option>
+                                <option value="9F">Kelas 9F</option>
+                                <option value="9G">Kelas 9G</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold font-mono text-slate-300 mb-1">No. Absen</label>
+                            <input type="number" id="player-no" required min="1" max="50" placeholder="1-40" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 transition">
+                        </div>
+                    </div>
+
+                    <!-- Rules Box -->
+                    <div class="p-3.5 bg-slate-950/70 rounded-xl border border-slate-800 text-xs text-slate-400 space-y-1">
+                        <div class="font-bold text-slate-200"><i class="fa-solid fa-gamepad text-amber-400 me-1"></i> Aturan Main:</div>
+                        <p>1. Lempar dadu untuk melangkah di papan (Petak 1 ke Petak 30).</p>
+                        <p>2. Setiap mendarat, jawab kuis istilah AI untuk mendapatkan poin.</p>
+                        <p>3. Tangga roket 🚀 menaikkan langkah, ular/glitch 🐍 menurunkan langkah.</p>
+                        <p>4. Raih nilai setinggi mungkin untuk mencapai KKTP (75)!</p>
+                    </div>
+
+                    <button type="submit" class="w-full bg-gradient-to-r from-amber-500 via-orange-600 to-red-600 hover:from-amber-400 hover:to-orange-500 text-white font-extrabold py-3.5 px-6 rounded-xl shadow-lg shadow-amber-500/25 transition duration-200 flex items-center justify-center gap-2 text-sm uppercase tracking-wider">
+                        <i class="fa-solid fa-play"></i> Mulai Petualangan AI
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- SCREEN 2: GAMEPLAY (BOARD & DICE CONTROLLER) -->
+        <section id="screen-game" class="hidden w-full">
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-4 items-start">
+                
+                <!-- LEFT/MAIN: THE 30-TILES GAME BOARD -->
+                <div class="lg:col-span-3 bg-slate-900/90 border border-slate-800 rounded-3xl p-4 sm:p-5 shadow-2xl relative">
+                    
+                    <!-- Player Pawn Overlay (Dynamic Floating Element) -->
+                    <div id="player-pawn" class="player-pawn" style="display: none;">
+                        <i class="fa-solid fa-user-astronaut"></i>
+                    </div>
+
+                    <!-- 30-Grid Board: 5 Rows x 6 Columns (Boustrophedon / Snake layout: 30 at top left, 1 at bottom left) -->
+                    <div class="grid grid-cols-6 gap-2 sm:gap-2.5" id="board-container">
+                        <!-- Populated by JavaScript -->
+                    </div>
+
+                    <!-- Legend Indicator -->
+                    <div class="mt-4 pt-3 border-t border-slate-800/80 flex flex-wrap items-center justify-between text-[11px] text-slate-400 gap-2">
+                        <div class="flex items-center gap-3">
+                            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span> Tangga AI (Naik)</span>
+                            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span> Ular/Glitch (Turun)</span>
+                            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-cyan-400"></span> Petak Kuis AI</span>
+                        </div>
+                        <div class="font-mono text-slate-400">
+                            Pion: <span id="current-pos-text" class="text-amber-400 font-bold">Kotak 1</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RIGHT: DICE, STATS, & ACTION PANEL -->
+                <div class="lg:col-span-1 space-y-4">
+                    
+                    <!-- Student Info Card -->
+                    <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 shadow-lg">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-600 to-blue-600 flex items-center justify-center font-bold text-white text-base">
+                                <i class="fa-solid fa-graduation-cap"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xs font-bold text-white" id="hud-name">Nama Siswa</h3>
+                                <div class="text-[11px] text-cyan-400 font-mono" id="hud-class">9A | Absen 1</div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-3 pt-3 border-t border-slate-800 grid grid-cols-2 gap-2 text-center font-mono">
+                            <div class="bg-slate-950 p-2 rounded-xl border border-slate-800/80">
+                                <span class="text-[10px] text-slate-500 block uppercase">Skor AI</span>
+                                <span class="text-lg font-black text-amber-400" id="hud-score">0</span>
+                            </div>
+                            <div class="bg-slate-950 p-2 rounded-xl border border-slate-800/80">
+                                <span class="text-[10px] text-slate-500 block uppercase">Giliran</span>
+                                <span class="text-lg font-black text-cyan-400" id="hud-turns">0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dice Roller Card -->
+                    <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-lg text-center flex flex-col items-center justify-center">
+                        <span class="text-xs font-mono uppercase font-bold text-slate-400 mb-2">Kocok Dadu</span>
+                        
+                        <!-- 3D Dice Display Button -->
+                        <button id="dice-btn" onclick="Game.rollDice()" class="dice-box my-2">
+                            <i id="dice-icon" class="fa-solid fa-dice-one"></i>
+                        </button>
+                        
+                        <div class="text-xs font-bold text-cyan-300 mt-2 font-mono" id="dice-status">
+                            Klik dadu untuk melangkah!
+                        </div>
+
+                        <button id="roll-action-btn" onclick="Game.rollDice()" class="mt-3 w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-black text-xs uppercase tracking-wider transition shadow-md shadow-cyan-500/20 flex items-center justify-center gap-1.5">
+                            <i class="fa-solid fa-dice"></i> Lempar Dadu
+                        </button>
+                    </div>
+
+                    <!-- Event Log Feed -->
+                    <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-3.5 shadow-lg text-xs">
+                        <span class="font-mono text-[11px] text-slate-400 font-bold uppercase block mb-1.5">
+                            <i class="fa-solid fa-clock-rotate-left me-1"></i> Catatan Perjalanan
+                        </span>
+                        <div id="log-feed" class="space-y-1.5 max-h-36 overflow-y-auto text-[11px] text-slate-400 leading-snug font-mono pr-1">
+                            <div class="text-emerald-400">• Game dimulai pada petak 1.</div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SCREEN 3: RESULT REPORT CARD / RAPOR NILAI (Print Ready) -->
+        <section id="screen-result" class="hidden w-full max-w-2xl mx-auto">
+            <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-10 shadow-2xl print-card relative">
+                
+                <div class="text-center mb-6">
+                    <div id="result-icon-box" class="w-16 h-16 rounded-2xl mx-auto flex items-center justify-center text-3xl mb-3 shadow-lg bg-emerald-500/20 text-emerald-400 border border-emerald-500/40">
+                        <i class="fa-solid fa-flag-checkered"></i>
+                    </div>
+                    <h2 class="text-2xl sm:text-3xl font-black text-white print-text-dark" id="res-headline">PETUALANGAN SELESAI!</h2>
+                    <p class="text-xs text-slate-400 print-text-dark mt-1">Laporan Hasil Asesmen Ular Tangga AI Kelas 9</p>
+                </div>
+
+                <!-- Identity Grid -->
+                <div class="p-4 rounded-2xl bg-slate-950 border border-slate-800 mb-6 grid grid-cols-2 sm:grid-cols-4 gap-3 text-center print-card">
+                    <div>
+                        <span class="text-[10px] text-slate-500 font-mono block">NAMA SISWA</span>
+                        <span class="text-xs font-bold text-white print-text-dark" id="res-name">-</span>
+                    </div>
+                    <div>
+                        <span class="text-[10px] text-slate-500 font-mono block">KELAS & ABSEN</span>
+                        <span class="text-xs font-bold text-white print-text-dark" id="res-class">-</span>
+                    </div>
+                    <div>
+                        <span class="text-[10px] text-slate-500 font-mono block">NILAI AKHIR (0-100)</span>
+                        <span class="text-base font-black text-amber-400 print-text-dark font-mono" id="res-score">0</span>
+                    </div>
+                    <div>
+                        <span class="text-[10px] text-slate-500 font-mono block">STATUS KKTP (75)</span>
+                        <span class="text-[11px] font-extrabold px-2 py-0.5 rounded inline-block mt-0.5" id="res-status">-</span>
+                    </div>
+                </div>
+
+                <!-- Detail Perjalanan & Istilah AI -->
+                <div class="mb-6">
+                    <h4 class="text-xs font-mono font-bold uppercase text-slate-400 mb-2.5 print-text-dark">
+                        <i class="fa-solid fa-list-check text-cyan-400 me-1"></i> Rincian Kuis Istilah AI yang Dihadapi:
+                    </h4>
+                    <div class="space-y-2 text-xs" id="res-quiz-log">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="no-print pt-4 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3">
+                    <button onclick="window.print()" class="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs transition flex items-center justify-center gap-2 border border-slate-700">
+                        <i class="fa-solid fa-print"></i> Cetak / Simpan PDF Rapor
+                    </button>
+                    <button onclick="Game.restart()" class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-black text-xs uppercase tracking-wider transition shadow-lg shadow-amber-500/20">
+                        <i class="fa-solid fa-rotate-right me-1"></i> Main Lagi
+                    </button>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- QUESTION MODAL (POPS UP WHEN LANDING ON TILE) -->
+    <div id="quiz-modal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-700 rounded-3xl p-6 sm:p-7 max-w-lg w-full shadow-2xl relative animate-in fade-in zoom-in duration-200">
+            
+            <!-- Header Tag -->
+            <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-800">
+                <div class="flex items-center gap-2">
+                    <span class="w-7 h-7 rounded-lg bg-cyan-950 text-cyan-400 border border-cyan-800 flex items-center justify-center text-xs font-mono font-bold" id="modal-tile-no">
+                        12
+                    </span>
+                    <span class="text-xs font-mono font-bold text-cyan-400 uppercase tracking-wider" id="modal-term-category">
+                        Istilah Kecerdasan Artifisial (AI)
+                    </span>
+                </div>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-amber-950 text-amber-300 border border-amber-800 font-bold">
+                    +15 Poin
+                </span>
+            </div>
+
+            <!-- Question Statement -->
+            <h3 class="text-sm sm:text-base font-bold text-white mb-4 leading-relaxed" id="modal-question-text">
+                Pertanyaan tentang istilah AI...
+            </h3>
+
+            <!-- Choices Options -->
+            <div class="space-y-2.5 mb-4" id="modal-choices">
+                <!-- Buttons populated by JS -->
+            </div>
+
+            <!-- Feedback / Explanation Area (Revealed after click) -->
+            <div id="modal-feedback" class="hidden p-3.5 rounded-xl border text-xs leading-relaxed transition mb-3">
+                <div class="font-bold mb-0.5 flex items-center gap-1.5" id="modal-feedback-title"></div>
+                <p id="modal-feedback-desc" class="text-slate-300"></p>
+            </div>
+
+            <!-- Confirm / Continue Button -->
+            <button id="modal-continue-btn" onclick="Game.closeModal()" class="hidden w-full py-2.5 px-4 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black text-xs uppercase tracking-wider transition font-mono">
+                Lanjut Permainan <i class="fa-solid fa-arrow-right ms-1"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="no-print py-3 text-center text-slate-600 text-xs border-t border-slate-900 bg-slate-950/60 font-mono">
+        Game Ular Tangga AI Informatika Kelas 9 &copy; 2026 MGMP Informatika Indonesia
+    </footer>
+
+    <!-- GAME ENGINE CODE -->
+    <script>
+        // Web Audio Synthesizer (Zero external file dependencies)
+        const SoundManager = {
+            ctx: null,
+            isMuted: false,
+
+            init() {
+                if (!this.ctx) {
+                    const AudioContext = window.AudioContext || window.webkitAudioContext;
+                    if (AudioContext) this.ctx = new AudioContext();
+                }
+            },
+
+            toggleMute() {
+                this.isMuted = !this.isMuted;
+                const icon = document.getElementById('muteIcon');
+                const text = document.getElementById('muteText');
+                if (this.isMuted) {
+                    icon.className = 'fa-solid fa-volume-xmark text-rose-400';
+                    text.innerText = 'Audio Muted';
+                } else {
+                    icon.className = 'fa-solid fa-volume-high text-cyan-400';
+                    text.innerText = 'Audio On';
+                    this.playBeep(600, 0.05);
+                }
+            },
+
+            playBeep(freq = 440, duration = 0.08, type = 'sine') {
+                if (this.isMuted) return;
+                try {
+                    this.init();
+                    if (!this.ctx) return;
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = type;
+                    osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+                    gain.gain.setValueAtTime(0.08, this.ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + duration);
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start();
+                    osc.stop(this.ctx.currentTime + duration);
+                } catch(e) {}
+            },
+
+            playStep() {
+                this.playBeep(320, 0.04, 'triangle');
+            },
+
+            playDice() {
+                this.playBeep(450, 0.06, 'sawtooth');
+                setTimeout(() => this.playBeep(550, 0.06, 'sawtooth'), 80);
+                setTimeout(() => this.playBeep(650, 0.08, 'sawtooth'), 160);
+            },
+
+            playLadder() {
+                [400, 500, 600, 750, 900].forEach((f, i) => {
+                    setTimeout(() => this.playBeep(f, 0.1, 'triangle'), i * 70);
+                });
+            },
+
+            playSnake() {
+                [700, 550, 420, 300, 200].forEach((f, i) => {
+                    setTimeout(() => this.playBeep(f, 0.1, 'sawtooth'), i * 70);
+                });
+            },
+
+            playCorrect() {
+                this.playBeep(523.25, 0.08, 'triangle');
+                setTimeout(() => this.playBeep(659.25, 0.12, 'triangle'), 90);
+                setTimeout(() => this.playBeep(783.99, 0.2, 'sine'), 200);
+            },
+
+            playWrong() {
+                this.playBeep(250, 0.15, 'sawtooth');
+                setTimeout(() => this.playBeep(180, 0.25, 'sawtooth'), 120);
+            },
+
+            playVictory() {
+                [523, 659, 784, 1046].forEach((f, i) => {
+                    setTimeout(() => this.playBeep(f, 0.2, 'triangle'), i * 130);
+                });
+            }
+        };
+
+        // DEFINISI TANGGA (LADDERS) DAN ULAR (SNAKES/GLITCH) PADA PAPAN 30 KOTAK
+        const LADDERS = {
+            3: 11,   // Dari petak 3 melesat naik ke 11 (Roket Algoritma)
+            7: 17,   // Dari petak 7 naik ke 17 (Akselerator AI)
+            15: 23,  // Dari petak 15 naik ke 23 (Deep Learning Boost)
+            19: 27   // Dari petak 19 naik ke 27 (Generative AI Power)
+        };
+
+        const SNAKES = {
+            13: 5,   // Petak 13 kena Glitch turun ke 5
+            21: 9,   // Petak 21 kena Malware turun ke 9
+            26: 14,  // Petak 26 kena Bug Trap turun ke 14
+            29: 18   // Petak 29 (dekat finish) kena Halusinasi AI turun ke 18
+        };
+
+        // BANK SOAL ISTILAH KECERDASAN ARTIFISIAL (AI) KELAS 9 SMP
+        const AI_QUESTIONS = [
+            {
+                term: "Machine Learning (ML)",
+                question: "Cabang dari Kecerdasan Buatan (AI) yang memungkinkan sistem komputer untuk 'belajar' dari data dan mengenali pola secara mandiri tanpa harus diprogram secara eksplisit disebut...",
+                choices: [
+                    { text: "Machine Learning (Pembelajaran Mesin)", correct: true },
+                    { text: "Cloud Computing (Komputasi Awan)", correct: false },
+                    { text: "Internet of Things (IoT)", correct: false },
+                    { text: "Database Management (Basis Data)", correct: false }
+                ],
+                explanation: "Machine Learning adalah kemampuan mesin untuk belajar dan memperbaiki kinerjanya dari data masa lalu tanpa instruksi pemrograman manual berulang."
+            },
+            {
+                term: "Generative AI (Gen-AI)",
+                question: "Kecerdasan artifisial yang mampu menghasilkan konten baru yang orisinal, seperti teks artikel, puisi, gambar, audio, atau kode program (contoh: ChatGPT, Midjourney) dinamakan...",
+                choices: [
+                    { text: "Generative AI (AI Generatif)", correct: true },
+                    { text: "Operating System (Sistem Operasi)", correct: false },
+                    { text: "Computer Vision", correct: false },
+                    { text: "Antivirus Scanner", correct: false }
+                ],
+                explanation: "Generative AI adalah jenis model AI yang dilatih dengan data masif untuk 'menciptakan' (generate) konten baru yang mirip buatan manusia."
+            },
+            {
+                term: "Prompt Engineering",
+                question: "Dalam penggunaan AI generatif (seperti ChatGPT), keterampilan menyusun teks instruksi, pertanyaan, atau perintah yang spesifik dan jelas agar AI memberikan jawaban yang tepat disebut...",
+                choices: [
+                    { text: "Prompt Engineering", correct: true },
+                    { text: "Hardware Soldering", correct: false },
+                    { text: "Network Routing", correct: false },
+                    { text: "Software Cracking", correct: false }
+                ],
+                explanation: "Prompt Engineering adalah seni merancang 'prompt' (instruksi teks) yang terstruktur dan rinci agar model AI menghasilkan output yang paling akurat."
+            },
+            {
+                term: "Computer Vision",
+                question: "Fitur pada smartphone yang dapat mengenali wajah pemiliknya (Face Unlock) atau kamera yang mendeteksi pelat nomor kendaraan memanfaatkan teknologi AI cabang...",
+                choices: [
+                    { text: "Computer Vision (Penglihatan Komputer)", correct: true },
+                    { text: "Speech Synthesis", correct: false },
+                    { text: "File Compression", correct: false },
+                    { text: "Spreadsheet Analytics", correct: false }
+                ],
+                explanation: "Computer Vision melatih komputer untuk memahami, menginterpretasikan, dan mengenali informasi visual dari foto atau rekaman video."
+            },
+            {
+                term: "Natural Language Processing (NLP)",
+                question: "Asisten suara seperti Google Assistant atau fitur Google Translate yang dapat memahami dan memproses percakapan bahasa manusia menggunakan teknologi AI...",
+                choices: [
+                    { text: "Natural Language Processing (NLP)", correct: true },
+                    { text: "Cryptocurrency Mining", correct: false },
+                    { text: "Domain Name System (DNS)", correct: false },
+                    { text: "Video Editing Codec", correct: false }
+                ],
+                explanation: "NLP (Pemrosesan Bahasa Alami) adalah bidang AI yang fokus membuat komputer mampu membaca, mendengar, dan merespons bahasa manusia secara wajar."
+            },
+            {
+                term: "Dataset / Training Data",
+                question: "Kumpulan data (teks, gambar, atau angka) dalam jumlah besar yang digunakan untuk melatih model AI agar cerdas dan mengenali pola disebut...",
+                choices: [
+                    { text: "Dataset (Data Latih / Training Data)", correct: true },
+                    { text: "RAM (Random Access Memory)", correct: false },
+                    { text: "Cache Memory", correct: false },
+                    { text: "Motherboard", correct: false }
+                ],
+                explanation: "Dataset adalah bahan baku utama AI; semakin berkualitas dan beragam dataset yang diberikan saat pelatihan, semakin cerdas sistem AI tersebut."
+            },
+            {
+                term: "AI Bias (Bias Kecerdasan Buatan)",
+                question: "Jika sebuah sistem AI penyaring lamaran kerja selalu mengabaikan pelamar wanita karena data latih di masa lalu mayoritas pria, peristiwa ini dalam etika AI dinamakan...",
+                choices: [
+                    { text: "Bias AI (Kecenderungan Tidak Netral)", correct: true },
+                    { text: "Overheating Hardware", correct: false },
+                    { text: "Bandwidth Throttling", correct: false },
+                    { text: "Screen Glitch", correct: false }
+                ],
+                explanation: "Bias AI terjadi ketika model AI menghasilkan keputusan yang tidak adil atau diskriminatif karena dataset yang digunakan melatihnya mengandung prasangka manusia."
+            },
+            {
+                term: "Halusinasi AI (AI Hallucination)",
+                question: "Fenomena ketika sebuah chatbot AI memberikan jawaban yang terdengar sangat meyakinkan tetapi faktanya ternyata salah atau mengada-ada disebut...",
+                choices: [
+                    { text: "Halusinasi AI (AI Hallucination)", correct: true },
+                    { text: "System Crash", correct: false },
+                    { text: "Blue Screen of Death (BSOD)", correct: false },
+                    { text: "Buffer Overflow", correct: false }
+                ],
+                explanation: "Halusinasi AI terjadi ketika model memprediksi kata-kata yang gramatikalnya rapi namun faktanya fiktif karena AI hanya menghitung probabilitas kata, bukan memahami kebenaran mutlak."
+            },
+            {
+                term: "Deepfake",
+                question: "Teknologi berbasis AI yang dapat memanipulasi atau meniru wajah serta suara tokoh terkenal dalam video sehingga tampak seperti mengucapkan hal yang tidak pernah ia katakan disebut...",
+                choices: [
+                    { text: "Deepfake", correct: true },
+                    { text: "Phishing", correct: false },
+                    { text: "Spyware", correct: false },
+                    { text: "Adware", correct: false }
+                ],
+                explanation: "Deepfake memanfaatkan jaringan saraf tiruan (Deep Learning) untuk menukar wajah atau kloning suara, yang berisiko disalahgunakan untuk penyebaran hoaks."
+            },
+            {
+                term: "Chatbot & Asisten Virtual",
+                question: "Aplikasi program komputer yang dirancang untuk mensimulasikan percakapan interaktif dengan pengguna manusia melalui pesan teks atau suara secara otomatis adalah...",
+                choices: [
+                    { text: "Chatbot", correct: true },
+                    { text: "Web Server", correct: false },
+                    { text: "Hard Drive", correct: false },
+                    { text: "Graphic Card (GPU)", correct: false }
+                ],
+                explanation: "Chatbot (seperti pada layanan pelanggan online atau asisten virtual) bekerja otomatis melayani pertanyaan pengguna selama 24 jam."
+            },
+            {
+                term: "Deep Learning (Jaringan Syaraf Tiruan)",
+                question: "Metode pembelajaran mesin yang terinspirasi dari struktur sel saraf (neuron) otak manusia dengan banyak lapisan (multi-layer) untuk tugas kompleks dinamakan...",
+                choices: [
+                    { text: "Deep Learning (Jaringan Saraf Tiruan)", correct: true },
+                    { text: "Relational Database", correct: false },
+                    { text: "Disk Defragmenter", correct: false },
+                    { text: "Barcode Scanner", correct: false }
+                ],
+                explanation: "Deep Learning menggunakan Artificial Neural Networks (ANN) berlapis-lapis untuk menganalisis data rumit seperti pengenalan suara dan citra medis."
+            },
+            {
+                term: "Etika Penggunaan AI",
+                question: "Sikap yang paling bijak dan beretika bagi siswa kelas 9 saat menggunakan bantuan AI dalam menyelesaikan tugas sekolah adalah...",
+                choices: [
+                    { text: "Menggunakan AI sebagai mitra diskusi untuk mencari ide/pemahaman, lalu menuliskan hasil dengan kata-kata sendiri", correct: true },
+                    { text: "Menyalin (copy-paste) seluruh jawaban AI mentah-mentah tanpa dibaca", correct: false },
+                    { text: "Mengaku bahwa karya yang 100% dibuat AI adalah hasil pemikiran pribadi", correct: false },
+                    { text: "Menyuruh AI mengerjakan seluruh ujian daring tanpa belajar", correct: false }
+                ],
+                explanation: "AI harus digunakan sebagai alat bantu belajar dan brainstorming, bukan untuk plagiasi atau menggantikan proses berpikir kritis siswa."
+            }
+        ];
+
+        // GAME CONTROLLER
+        const Game = {
+            player: { name: '', class: '', no: '' },
+            position: 1, // Start on tile 1
+            score: 0,
+            turns: 0,
+            isRolling: false,
+            quizHistory: [],
+            totalTiles: 30,
+            diceIcons: [
+                'fa-dice-one', 'fa-dice-two', 'fa-dice-three', 
+                'fa-dice-four', 'fa-dice-five', 'fa-dice-six'
+            ],
+            pendingLadderOrSnake: null,
+
+            start(e) {
+                e.preventDefault();
+                SoundManager.init();
+
+                this.player.name = document.getElementById('player-name').value.trim();
+                this.player.class = document.getElementById('player-class').value;
+                this.player.no = document.getElementById('player-no').value;
+
+                if (!this.player.name) return;
+
+                this.position = 1;
+                this.score = 0;
+                this.turns = 0;
+                this.quizHistory = [];
+                this.isRolling = false;
+                this.pendingLadderOrSnake = null;
+
+                document.getElementById('screen-start').classList.add('hidden');
+                document.getElementById('screen-game').classList.remove('hidden');
+                document.getElementById('screen-result').classList.add('hidden');
+
+                document.getElementById('hud-name').innerText = this.player.name;
+                document.getElementById('hud-class').innerText = `${this.player.class} | Absen ${this.player.no}`;
+                document.getElementById('hud-score').innerText = '0';
+                document.getElementById('hud-turns').innerText = '0';
+
+                this.renderBoard();
+                this.updatePawnPosition(1, false);
+
+                this.log(`Game dimulai. Agen ${this.player.name} berada di Petak 1.`);
+                SoundManager.playBeep(440, 0.1);
+            },
+
+            // Render 30 tiles layout (5 rows x 6 cols, boustrophedon zigzag snake)
+            renderBoard() {
+                const container = document.getElementById('board-container');
+                container.innerHTML = '';
+
+                // 5 rows: row 4 (top, tiles 30 down to 25), row 3 (tiles 19 to 24), row 2 (18 down to 13), row 1 (7 to 12), row 0 (bottom, 1 to 6)
+                // Row mapping:
+                // Row 4 (top): 30, 29, 28, 27, 26, 25
+                // Row 3: 19, 20, 21, 22, 23, 24
+                // Row 2: 18, 17, 16, 15, 14, 13
+                // Row 1: 7, 8, 9, 10, 11, 12
+                // Row 0 (bottom): 6, 5, 4, 3, 2, 1 (or 1 to 6)
+                
+                const rowsPattern = [
+                    [30, 29, 28, 27, 26, 25],
+                    [19, 20, 21, 22, 23, 24],
+                    [18, 17, 16, 15, 14, 13],
+                    [7, 8, 9, 10, 11, 12],
+                    [6, 5, 4, 3, 2, 1].reverse() // 1, 2, 3, 4, 5, 6
+                ];
+
+                rowsPattern.forEach(row => {
+                    row.forEach(tileNum => {
+                        const tileEl = document.createElement('div');
+                        tileEl.id = `tile-${tileNum}`;
+                        tileEl.className = 'board-tile rounded-2xl p-2 sm:p-2.5 flex flex-col justify-between border min-h-[64px] sm:min-h-[78px] ';
+
+                        // Tile styling based on special features
+                        if (tileNum === 1) {
+                            tileEl.className += 'bg-slate-900 border-cyan-500/80 shadow-md shadow-cyan-950';
+                            tileEl.innerHTML = `
+                                <div class="flex items-center justify-between text-[11px] font-mono font-bold text-cyan-400">
+                                    <span>#${tileNum}</span>
+                                    <span class="text-[9px] bg-cyan-950 px-1.5 py-0.5 rounded uppercase border border-cyan-800">START</span>
+                                </div>
+                                <div class="text-center text-cyan-400 text-sm sm:text-base font-black"><i class="fa-solid fa-flag"></i></div>
+                                <div class="text-[9px] text-slate-400 text-center font-mono">Mulai</div>
+                            `;
+                        } else if (tileNum === 30) {
+                            tileEl.className += 'bg-gradient-to-tr from-amber-950 via-slate-900 to-amber-900 border-amber-400 shadow-lg shadow-amber-500/30';
+                            tileEl.innerHTML = `
+                                <div class="flex items-center justify-between text-[11px] font-mono font-bold text-amber-400">
+                                    <span>#${tileNum}</span>
+                                    <span class="text-[9px] bg-amber-500 text-black font-extrabold px-1.5 py-0.5 rounded uppercase">FINISH</span>
+                                </div>
+                                <div class="text-center text-amber-400 text-base sm:text-lg animate-bounce-sm"><i class="fa-solid fa-trophy"></i></div>
+                                <div class="text-[9px] text-amber-300 text-center font-bold font-mono">Juara AI</div>
+                            `;
+                        } else if (LADDERS[tileNum]) {
+                            // Ladder start
+                            tileEl.className += 'bg-emerald-950/70 border-emerald-500/70 hover:border-emerald-400';
+                            tileEl.innerHTML = `
+                                <div class="flex items-center justify-between text-[11px] font-mono font-bold text-emerald-400">
+                                    <span>#${tileNum}</span>
+                                    <span class="text-[9px] bg-emerald-900 text-emerald-200 px-1.5 py-0.5 rounded">🚀 +${LADDERS[tileNum] - tileNum}</span>
+                                </div>
+                                <div class="text-center text-emerald-400 text-sm sm:text-base"><i class="fa-solid fa-rocket animate-pulse-slow"></i></div>
+                                <div class="text-[9px] text-emerald-300 font-bold text-center font-mono">Naik ke ${LADDERS[tileNum]}</div>
+                            `;
+                        } else if (SNAKES[tileNum]) {
+                            // Snake start
+                            tileEl.className += 'bg-rose-950/70 border-rose-500/70 hover:border-rose-400';
+                            tileEl.innerHTML = `
+                                <div class="flex items-center justify-between text-[11px] font-mono font-bold text-rose-400">
+                                    <span>#${tileNum}</span>
+                                    <span class="text-[9px] bg-rose-900 text-rose-200 px-1.5 py-0.5 rounded">🐍 -${tileNum - SNAKES[tileNum]}</span>
+                                </div>
+                                <div class="text-center text-rose-400 text-sm sm:text-base"><i class="fa-solid fa-bug animate-pulse-slow"></i></div>
+                                <div class="text-[9px] text-rose-300 font-bold text-center font-mono">Turun ke ${SNAKES[tileNum]}</div>
+                            `;
+                        } else {
+                            // Standard AI Question Tile
+                            tileEl.className += 'bg-slate-900/80 border-slate-800 hover:border-cyan-500/50';
+                            tileEl.innerHTML = `
+                                <div class="flex items-center justify-between text-[11px] font-mono font-bold text-slate-400">
+                                    <span>#${tileNum}</span>
+                                    <span class="text-[9px] text-cyan-400"><i class="fa-solid fa-brain"></i></span>
+                                </div>
+                                <div class="text-center text-cyan-400/80 text-xs sm:text-sm"><i class="fa-solid fa-microchip"></i></div>
+                                <div class="text-[9px] text-slate-400 text-center font-mono">Tanya AI</div>
+                            `;
+                        }
+
+                        container.appendChild(tileEl);
+                    });
+                });
+            },
+
+            // Position calculation for player pawn
+            updatePawnPosition(tileNum, animate = true) {
+                const targetTile = document.getElementById(`tile-${tileNum}`);
+                const pawn = document.getElementById('player-pawn');
+
+                if (!targetTile || !pawn) return;
+
+                pawn.style.display = 'flex';
+
+                const rect = targetTile.getBoundingClientRect();
+                const parentRect = targetTile.parentElement.getBoundingClientRect();
+
+                // Position relative to board container
+                const x = (rect.left - parentRect.left) + (rect.width / 2) - 16;
+                const y = (rect.top - parentRect.top) + (rect.height / 2) - 16;
+
+                pawn.style.left = `${x}px`;
+                pawn.style.top = `${y}px`;
+
+                document.getElementById('current-pos-text').innerText = `Kotak ${tileNum}`;
+                if (animate) SoundManager.playStep();
+            },
+
+            // Roll Dice Action
+            rollDice() {
+                if (this.isRolling) return;
+
+                this.isRolling = true;
+                SoundManager.playDice();
+
+                const diceBtn = document.getElementById('dice-btn');
+                const rollActionBtn = document.getElementById('roll-action-btn');
+                const diceIcon = document.getElementById('dice-icon');
+                const diceStatus = document.getElementById('dice-status');
+
+                diceBtn.disabled = true;
+                rollActionBtn.disabled = true;
+                diceBtn.classList.add('animate-roll-dice');
+                diceStatus.innerText = 'Dadu sedang berputar...';
+
+                // Random animation steps
+                let rollsCount = 0;
+                const interval = setInterval(() => {
+                    const temp = Math.floor(Math.random() * 6);
+                    diceIcon.className = `fa-solid ${this.diceIcons[temp]}`;
+                    rollsCount++;
+                    if (rollsCount > 6) clearInterval(interval);
+                }, 75);
+
+                setTimeout(() => {
+                    diceBtn.classList.remove('animate-roll-dice');
+                    
+                    // Final dice number 1 to 6
+                    const rolledNumber = Math.floor(Math.random() * 6) + 1;
+                    diceIcon.className = `fa-solid ${this.diceIcons[rolledNumber - 1]}`;
+                    diceStatus.innerText = `Dadu: Angka ${rolledNumber}!`;
+
+                    this.turns++;
+                    document.getElementById('hud-turns').innerText = this.turns;
+
+                    this.log(`🎲 Giliran #${this.turns}: Melempar dadu dan mendapatkan angka ${rolledNumber}.`);
+
+                    // Step-by-step moving animation
+                    this.movePawnSteps(rolledNumber);
+                }, 600);
+            },
+
+            // Move pawn step by step
+            movePawnSteps(steps) {
+                let stepsRemaining = steps;
+                
+                const moveInterval = setInterval(() => {
+                    if (stepsRemaining > 0 && this.position < this.totalTiles) {
+                        this.position++;
+                        this.updatePawnPosition(this.position, true);
+                        stepsRemaining--;
+                    } else {
+                        clearInterval(moveInterval);
+                        this.handleLanding(this.position);
+                    }
+                }, 220);
+            },
+
+            // Handle landing on tile
+            handleLanding(tileNum) {
+                this.log(`📍 Pion mendarat di Kotak ${tileNum}.`);
+
+                // Check if reach finish
+                if (tileNum >= this.totalTiles) {
+                    this.log(`🏆 Selamat! Pion berhasil mencapai Garis FINISH (Kotak 30)!`);
+                    this.finishGame();
+                    return;
+                }
+
+                // Check ladder or snake
+                if (LADDERS[tileNum]) {
+                    this.pendingLadderOrSnake = { type: 'ladder', to: LADDERS[tileNum] };
+                } else if (SNAKES[tileNum]) {
+                    this.pendingLadderOrSnake = { type: 'snake', to: SNAKES[tileNum] };
+                } else {
+                    this.pendingLadderOrSnake = null;
+                }
+
+                // Pop-up AI Question for this landing!
+                setTimeout(() => {
+                    this.triggerQuizModal(tileNum);
+                }, 300);
+            },
+
+            // Show AI Question Modal
+            triggerQuizModal(tileNum) {
+                // Select a question deterministically or cyclically from bank
+                const qIndex = (tileNum * 3 + this.turns) % AI_QUESTIONS.length;
+                const q = AI_QUESTIONS[qIndex];
+
+                const modal = document.getElementById('quiz-modal');
+                const tileNo = document.getElementById('modal-tile-no');
+                const termCategory = document.getElementById('modal-term-category');
+                const questionText = document.getElementById('modal-question-text');
+                const choicesContainer = document.getElementById('modal-choices');
+                const feedbackBox = document.getElementById('modal-feedback');
+                const continueBtn = document.getElementById('modal-continue-btn');
+
+                tileNo.innerText = tileNum;
+                termCategory.innerText = `Istilah AI: ${q.term}`;
+                questionText.innerText = q.question;
+                feedbackBox.classList.add('hidden');
+                continueBtn.classList.add('hidden');
+                choicesContainer.innerHTML = '';
+
+                q.choices.forEach((choice, idx) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'w-full text-left p-3 rounded-xl bg-slate-950 hover:bg-slate-800 border border-slate-700/80 hover:border-cyan-500 text-slate-200 text-xs sm:text-sm font-medium transition flex items-center justify-between group';
+                    btn.innerHTML = `
+                        <div class="flex items-center gap-2.5">
+                            <span class="w-5 h-5 rounded bg-slate-800 text-cyan-400 font-mono font-bold text-xs flex items-center justify-center border border-slate-700 group-hover:border-cyan-500">
+                                ${String.fromCharCode(65 + idx)}
+                            </span>
+                            <span>${choice.text}</span>
+                        </div>
+                        <i class="fa-solid fa-chevron-right text-slate-600 group-hover:text-cyan-400 text-xs transition"></i>
+                    `;
+                    btn.onclick = () => this.handleModalAnswer(choice, q);
+                    choicesContainer.appendChild(btn);
+                });
+
+                modal.classList.remove('hidden');
+            },
+
+            // Handle choice click
+            handleModalAnswer(choice, q) {
+                const choicesBtns = document.getElementById('modal-choices').getElementsByTagName('button');
+                for (let b of choicesBtns) b.disabled = true;
+
+                const isCorrect = choice.correct;
+                const feedbackBox = document.getElementById('modal-feedback');
+                const feedbackTitle = document.getElementById('modal-feedback-title');
+                const feedbackDesc = document.getElementById('modal-feedback-desc');
+                const continueBtn = document.getElementById('modal-continue-btn');
+
+                this.quizHistory.push({
+                    tile: this.position,
+                    term: q.term,
+                    question: q.question,
+                    isCorrect: isCorrect
+                });
+
+                if (isCorrect) {
+                    SoundManager.playCorrect();
+                    this.score += 15;
+                    document.getElementById('hud-score').innerText = this.score;
+
+                    feedbackBox.className = 'p-3.5 rounded-xl border bg-emerald-950/70 border-emerald-600/80 text-emerald-200 text-xs leading-relaxed mb-3 block';
+                    feedbackTitle.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-400 text-sm"></i> TEPAT SEKALI! (+15 Poin)';
+                    feedbackDesc.innerText = q.explanation;
+                    this.log(`✅ Kuis Kotak ${this.position} Benar (+15 Poin) tentang ${q.term}.`);
+                } else {
+                    SoundManager.playWrong();
+                    feedbackBox.className = 'p-3.5 rounded-xl border bg-rose-950/70 border-rose-600/80 text-rose-200 text-xs leading-relaxed mb-3 block';
+                    feedbackTitle.innerHTML = '<i class="fa-solid fa-triangle-exclamation text-rose-400 text-sm"></i> KURANG TEPAT!';
+                    feedbackDesc.innerText = `Jawaban belum tepat. ${q.explanation}`;
+                    this.log(`❌ Kuis Kotak ${this.position} Salah tentang ${q.term}.`);
+                }
+
+                continueBtn.classList.remove('hidden');
+            },
+
+            // Close modal & apply ladder or snake transition if applicable
+            closeModal() {
+                document.getElementById('quiz-modal').classList.add('hidden');
+
+                if (this.pendingLadderOrSnake) {
+                    const event = this.pendingLadderOrSnake;
+                    this.pendingLadderOrSnake = null;
+
+                    if (event.type === 'ladder') {
+                        setTimeout(() => {
+                            SoundManager.playLadder();
+                            this.log(`🚀 ROKET TANGGA AKTIF! Melesat dari Kotak ${this.position} ke Kotak ${event.to}!`);
+                            this.position = event.to;
+                            this.updatePawnPosition(this.position, true);
+                            this.reEnableDice();
+                        }, 300);
+                        return;
+                    } else if (event.type === 'snake') {
+                        setTimeout(() => {
+                            SoundManager.playSnake();
+                            this.log(`🐍 GLITCH / ULAR! Tergelincir turun dari Kotak ${this.position} ke Kotak ${event.to}!`);
+                            this.position = event.to;
+                            this.updatePawnPosition(this.position, true);
+                            this.reEnableDice();
+                        }, 300);
+                        return;
+                    }
+                }
+
+                this.reEnableDice();
+            },
+
+            // Re-enable dice for next turn
+            reEnableDice() {
+                this.isRolling = false;
+                document.getElementById('dice-btn').disabled = false;
+                document.getElementById('roll-action-btn').disabled = false;
+                document.getElementById('dice-status').innerText = 'Giliran Anda: Lempar dadu lagi!';
+            },
+
+            // Finish Game & Show Rapor Nilai
+            finishGame() {
+                SoundManager.playVictory();
+                confetti({
+                    particleCount: 120,
+                    spread: 80,
+                    origin: { y: 0.6 }
+                });
+
+                document.getElementById('screen-game').classList.add('hidden');
+                document.getElementById('screen-result').classList.remove('hidden');
+
+                // Final Score Calculation (Score + Finish Bonus normalized to 0-100)
+                let finalScore = Math.min(100, Math.round(this.score + 25)); // Finish completion bonus
+                if (finalScore < 0) finalScore = 0;
+
+                const isPass = finalScore >= 75;
+                const statusBadge = document.getElementById('res-status');
+                const headline = document.getElementById('res-headline');
+                const iconBox = document.getElementById('result-icon-box');
+
+                document.getElementById('res-name').innerText = this.player.name;
+                document.getElementById('res-class').innerText = `${this.player.class} / No. ${this.player.no}`;
+                document.getElementById('res-score').innerText = finalScore;
+
+                if (isPass) {
+                    headline.innerText = 'SELAMAT! MISI AI SELESAI!';
+                    iconBox.className = 'w-16 h-16 rounded-2xl mx-auto flex items-center justify-center text-3xl mb-3 shadow-lg bg-emerald-500/20 text-emerald-400 border border-emerald-500/40';
+                    iconBox.innerHTML = '<i class="fa-solid fa-trophy"></i>';
+                    statusBadge.innerText = 'LULUS (MEMENUHI KKTP)';
+                    statusBadge.className = 'text-[11px] font-extrabold px-2.5 py-1 rounded inline-block mt-0.5 bg-emerald-950 text-emerald-400 border border-emerald-800 font-mono';
+                } else {
+                    headline.innerText = 'PERLU PENGAYAAN AI';
+                    iconBox.className = 'w-16 h-16 rounded-2xl mx-auto flex items-center justify-center text-3xl mb-3 shadow-lg bg-amber-500/20 text-amber-400 border border-amber-500/40';
+                    iconBox.innerHTML = '<i class="fa-solid fa-medal"></i>';
+                    statusBadge.innerText = 'REMEDIAL (< 75)';
+                    statusBadge.className = 'text-[11px] font-extrabold px-2.5 py-1 rounded inline-block mt-0.5 bg-rose-950 text-rose-400 border border-rose-800 font-mono';
+                }
+
+                // Render quiz history log
+                const logContainer = document.getElementById('res-quiz-log');
+                logContainer.innerHTML = '';
+
+                if (this.quizHistory.length === 0) {
+                    logContainer.innerHTML = '<div class="text-slate-400">Pion melesat cepat ke finish.</div>';
+                } else {
+                    this.quizHistory.forEach((q, idx) => {
+                        const row = document.createElement('div');
+                        row.className = 'p-3 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-between gap-3';
+                        row.innerHTML = `
+                            <div class="flex items-center gap-2.5">
+                                <span class="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-mono font-bold ${q.isCorrect ? 'bg-emerald-950 text-emerald-400 border border-emerald-700' : 'bg-rose-950 text-rose-400 border border-rose-700'}">
+                                    ${idx + 1}
+                                </span>
+                                <div>
+                                    <div class="font-bold text-white text-xs">${q.term}</div>
+                                    <div class="text-[11px] text-slate-400">Petak ${q.tile}</div>
+                                </div>
+                            </div>
+                            <span class="font-mono text-xs font-bold ${q.isCorrect ? 'text-emerald-400' : 'text-rose-400'}">
+                                ${q.isCorrect ? '+15 Poin' : '0 Poin'}
+                            </span>
+                        `;
+                        logContainer.appendChild(row);
+                    });
+                }
+            },
+
+            restart() {
+                document.getElementById('screen-result').classList.add('hidden');
+                document.getElementById('screen-start').classList.remove('hidden');
+            },
+
+            log(msg) {
+                const feed = document.getElementById('log-feed');
+                const item = document.createElement('div');
+                item.innerText = `• ${msg}`;
+                feed.appendChild(item);
+                feed.scrollTop = feed.scrollHeight;
+            }
+        };
+
+        // Window resize reposition pawn
+        window.addEventListener('resize', () => {
+            if (Game.position) Game.updatePawnPosition(Game.position, false);
+        });
+    </script>
+</body>
+</html>
