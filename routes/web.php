@@ -123,32 +123,15 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
 });
 
 
+
 // Direct Storage File Fallback for Hosting
-Route::get('/storage/{path}', function ($filePath) {
-    $fullPath = storage_path('app/public/' . $filePath);
+$storageHandler = function ($path) {
+    $fullPath = storage_path('app/public/' . $path);
     if (!file_exists($fullPath)) {
-        abort(404);
+        abort(404, 'File not found');
     }
     return response()->file($fullPath);
-})->where('path', '.*');
+};
 
-Route::get('/debug-storage', function () {
-    $storagePublic = storage_path('app/public');
-    $files = [];
-    if (file_exists($storagePublic)) {
-        $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($storagePublic));
-        foreach ($iterator as $f) {
-            if ($f->isFile()) {
-                $files[] = str_replace($storagePublic . '/', '', $f->getPathname());
-            }
-        }
-    }
-    return response()->json([
-        'storage_public_exists' => file_exists($storagePublic),
-        'storage_public_writable' => is_writable($storagePublic),
-        'storage_path' => $storagePublic,
-        'public_path' => public_path(),
-        'files_count' => count($files),
-        'sample_files' => array_slice($files, 0, 20),
-    ]);
-});
+Route::get('/storage/{path}', $storageHandler)->where('path', '.*');
+Route::get('/public/storage/{path}', $storageHandler)->where('path', '.*');

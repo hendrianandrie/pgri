@@ -14,7 +14,12 @@
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
-    # Route all requests to public/ directory
+    # Serve storage files directly from storage/app/public if file exists
+    RewriteCond %{REQUEST_URI} ^/storage/(.*)$
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^storage/(.*)$ storage/app/public/$1 [L]
+
+    # Route all other requests to public/ directory
     RewriteCond %{REQUEST_URI} !^/public/
     RewriteRule ^(.*)$ public/$1 [L]
 </IfModule>
