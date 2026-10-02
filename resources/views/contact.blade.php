@@ -106,7 +106,7 @@
                 <div class="d-flex flex-column gap-3.5 small">
                     <!-- Alamat -->
                     <div class="d-flex align-items-start gap-3">
-                        <div class="rounded-circle bg-danger bg-opacity-10 text-danger p-2 fs-5 flex-shrink-0 d-flex align-items-center justify-center" style="width: 42px; height: 42px;">
+                        <div class="rounded-circle bg-danger bg-opacity-10 text-danger p-2 fs-5 flex-shrink-0 d-flex align-items-center justify-content-center" style="width: 42px; height: 42px;">
                             <i class="fa-solid fa-location-dot"></i>
                         </div>
                         <div>
@@ -116,8 +116,8 @@
                     </div>
 
                     <!-- Telepon -->
-                    <div class="d-flex align-items-start gap-3">
-                        <div class="rounded-circle bg-warning bg-opacity-10 text-warning p-2 fs-5 flex-shrink-0 d-flex align-items-center justify-center" style="width: 42px; height: 42px;">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="rounded-circle bg-warning bg-opacity-10 text-warning p-2 fs-5 flex-shrink-0 d-flex align-items-center justify-content-center" style="width: 42px; height: 42px;">
                             <i class="fa-solid fa-phone"></i>
                         </div>
                         <div>
@@ -127,8 +127,8 @@
                     </div>
 
                     <!-- Email -->
-                    <div class="d-flex align-items-start gap-3">
-                        <div class="rounded-circle bg-info bg-opacity-10 text-info p-2 fs-5 flex-shrink-0 d-flex align-items-center justify-center" style="width: 42px; height: 42px;">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="rounded-circle bg-info bg-opacity-10 text-info p-2 fs-5 flex-shrink-0 d-flex align-items-center justify-content-center" style="width: 42px; height: 42px;">
                             <i class="fa-solid fa-envelope"></i>
                         </div>
                         <div>
@@ -138,8 +138,8 @@
                     </div>
 
                     <!-- WhatsApp -->
-                    <div class="d-flex align-items-start gap-3">
-                        <div class="rounded-circle bg-success bg-opacity-10 text-success p-2 fs-5 flex-shrink-0 d-flex align-items-center justify-center" style="width: 42px; height: 42px;">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="rounded-circle bg-success bg-opacity-10 text-success p-2 fs-5 flex-shrink-0 d-flex align-items-center justify-content-center" style="width: 42px; height: 42px;">
                             <i class="fa-brands fa-whatsapp"></i>
                         </div>
                         <div>
@@ -151,22 +151,21 @@
                     </div>
 
                     <!-- Instagram -->
-                    <div class="d-flex align-items-start gap-3">
-                        <div class="rounded-circle p-2 fs-5 text-white flex-shrink-0 d-flex align-items-center justify-center shadow-sm" style="width: 42px; height: 42px; background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="rounded-circle p-2 fs-5 flex-shrink-0 d-flex align-items-center justify-content-center" style="width: 42px; height: 42px; background-color: rgba(225, 48, 108, 0.1); color: #e1306c;">
                             <i class="fa-brands fa-instagram"></i>
                         </div>
                         <div>
                             <div class="fw-bold text-dark">Instagram Resmi</div>
-                            <a href="{{ $igUrl }}" target="_blank" class="text-decoration-none fw-bold" style="color: #bc1888;">
+                            <a href="{{ $igUrl }}" target="_blank" class="text-decoration-none fw-bold" style="color: #e1306c;">
                                 {{ $igHandle }} <i class="fa-solid fa-arrow-up-right-from-square small ms-1" style="font-size: 0.7rem;"></i>
                             </a>
-                            <div class="text-muted extra-small" style="font-size: 0.72rem;">Dokumentasi &amp; informasi harian kegiatan</div>
                         </div>
                     </div>
 
                     <!-- TikTok -->
-                    <div class="d-flex align-items-start gap-3">
-                        <div class="rounded-circle p-2 fs-5 text-white bg-dark flex-shrink-0 d-flex align-items-center justify-center shadow-sm" style="width: 42px; height: 42px;">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="rounded-circle bg-dark bg-opacity-10 text-dark p-2 fs-5 flex-shrink-0 d-flex align-items-center justify-content-center" style="width: 42px; height: 42px;">
                             <i class="fa-brands fa-tiktok"></i>
                         </div>
                         <div>
@@ -174,13 +173,12 @@
                             <a href="{{ $ttUrl }}" target="_blank" class="text-decoration-none text-dark fw-bold">
                                 {{ $ttHandle }} <i class="fa-solid fa-arrow-up-right-from-square small ms-1" style="font-size: 0.7rem;"></i>
                             </a>
-                            <div class="text-muted extra-small" style="font-size: 0.72rem;">Video edukasi, serba-serbi guru &amp; tren</div>
                         </div>
                     </div>
 
                     <!-- Jam Operasional -->
-                    <div class="d-flex align-items-start gap-3 pt-2 border-top">
-                        <div class="rounded-circle bg-primary bg-opacity-10 text-primary p-2 fs-5 flex-shrink-0 d-flex align-items-center justify-center" style="width: 42px; height: 42px;">
+                    <div class="d-flex align-items-center gap-3 pt-2 border-top">
+                        <div class="rounded-circle bg-primary bg-opacity-10 text-primary p-2 fs-5 flex-shrink-0 d-flex align-items-center justify-content-center" style="width: 42px; height: 42px;">
                             <i class="fa-solid fa-clock"></i>
                         </div>
                         <div>
