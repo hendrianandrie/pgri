@@ -17,6 +17,8 @@ class ContactController extends Controller
             'email' => Setting::get('office_email', 'sekretariat@pgri.or.id'),
             'whatsapp' => Setting::get('office_whatsapp', '0812-3456-7890'),
             'hours' => Setting::get('office_hours', 'Senin - Jumat: 08:00 - 16:00 WIB'),
+            'instagram' => Setting::get('office_instagram', '@pbpgri_official'),
+            'tiktok' => Setting::get('office_tiktok', '@pbpgri_official'),
         ];
 
         return view('contact', compact('office'));

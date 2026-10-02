@@ -85,6 +85,8 @@ class AdminSettingController extends Controller
             'email' => Setting::get('office_email', 'sekretariat@pgri.or.id'),
             'whatsapp' => Setting::get('office_whatsapp', '0812-3456-7890'),
             'hours' => Setting::get('office_hours', 'Senin - Jumat: 08:00 - 16:00 WIB'),
+            'instagram' => Setting::get('office_instagram', '@pbpgri_official'),
+            'tiktok' => Setting::get('office_tiktok', '@pbpgri_official'),
         ];
 
         return view('admin.settings.contact', compact('office'));
@@ -98,6 +100,8 @@ class AdminSettingController extends Controller
             'email' => 'required|email|max:255',
             'whatsapp' => 'required|string|max:100',
             'hours' => 'required|string|max:255',
+            'instagram' => 'nullable|string|max:255',
+            'tiktok' => 'nullable|string|max:255',
         ]);
 
         Setting::set('office_address', $validated['address']);
@@ -105,6 +109,8 @@ class AdminSettingController extends Controller
         Setting::set('office_email', $validated['email']);
         Setting::set('office_whatsapp', $validated['whatsapp']);
         Setting::set('office_hours', $validated['hours']);
+        Setting::set('office_instagram', $validated['instagram'] ?? '@pbpgri_official');
+        Setting::set('office_tiktok', $validated['tiktok'] ?? '@pbpgri_official');
 
         return redirect()->route('admin.contact-settings')->with('success', 'Informasi Kontak & Sekretariat berhasil diperbarui!');
     }

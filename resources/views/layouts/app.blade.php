@@ -402,6 +402,18 @@
     </main>
 
     <!-- FOOTER -->
+    @php
+        $footerIg = \App\Models\Setting::get('office_instagram', '@pbpgri_official');
+        $footerIgUrl = str_starts_with($footerIg, 'http') ? $footerIg : 'https://www.instagram.com/' . ltrim($footerIg, '@');
+        $footerTt = \App\Models\Setting::get('office_tiktok', '@pbpgri_official');
+        $footerTtUrl = str_starts_with($footerTt, 'http') ? $footerTt : 'https://www.tiktok.com/@' . ltrim($footerTt, '@');
+        $footerWa = \App\Models\Setting::get('office_whatsapp', '0812-3456-7890');
+        $footerWaNum = preg_replace('/[^0-9]/', '', $footerWa);
+        if (str_starts_with($footerWaNum, '0')) {
+            $footerWaNum = '62' . substr($footerWaNum, 1);
+        }
+        $footerWaUrl = 'https://wa.me/' . $footerWaNum;
+    @endphp
     <footer class="footer-pgri">
         <div class="container">
             <div class="row g-4 mb-5">
@@ -413,7 +425,18 @@
                             <div class="small text-emerald-400 font-semibold" style="line-height: 1; margin-top: 2px;">Persatuan Guru Republik Indonesia</div>
                         </div>
                     </div>
-                    <p class="small text-white-50 leading-relaxed">Organisasi profesi guru pertama dan terbesar di Indonesia sejak 1945, bertransformasi mewujudkan guru profesional, sejahtera, bermartabat, serta melek koding & kecerdasan buatan melalui platform SAKTI PGRI.</p>
+                    <p class="small text-white-50 leading-relaxed mb-3">Organisasi profesi guru pertama dan terbesar di Indonesia sejak 1945, bertransformasi mewujudkan guru profesional, sejahtera, bermartabat, serta melek koding & kecerdasan buatan melalui platform SAKTI PGRI.</p>
+                    <div class="d-flex align-items-center gap-2">
+                        <a href="{{ $footerIgUrl }}" target="_blank" rel="noopener" class="text-white d-inline-flex align-items-center justify-content-center rounded-circle text-decoration-none shadow-sm" style="width: 36px; height: 36px; background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);" title="Instagram Resmi {{ $footerIg }}">
+                            <i class="fa-brands fa-instagram"></i>
+                        </a>
+                        <a href="{{ $footerTtUrl }}" target="_blank" rel="noopener" class="text-white d-inline-flex align-items-center justify-content-center rounded-circle text-decoration-none bg-dark border border-secondary shadow-sm" style="width: 36px; height: 36px;" title="TikTok Resmi {{ $footerTt }}">
+                            <i class="fa-brands fa-tiktok"></i>
+                        </a>
+                        <a href="{{ $footerWaUrl }}" target="_blank" rel="noopener" class="text-white d-inline-flex align-items-center justify-content-center rounded-circle text-decoration-none bg-success shadow-sm" style="width: 36px; height: 36px;" title="WhatsApp Center">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+                    </div>
                 </div>
 
                 <div class="col-lg-3">
@@ -443,7 +466,9 @@
                     <div class="small text-white-50">
                         <p class="mb-2"><i class="fa-solid fa-location-dot text-danger me-2"></i> {{ \App\Models\Setting::get('office_address', 'Jl. Tanah Abang III No. 24, Jakarta Pusat') }}</p>
                         <p class="mb-2"><i class="fa-solid fa-phone text-warning me-2"></i> {{ \App\Models\Setting::get('office_phone', '(021) 3844932') }}</p>
-                        <p class="mb-0"><i class="fa-solid fa-envelope text-emerald-400 me-2"></i> {{ \App\Models\Setting::get('office_email', 'sekretariat@pgri.or.id') }}</p>
+                        <p class="mb-2"><i class="fa-solid fa-envelope text-emerald-400 me-2"></i> {{ \App\Models\Setting::get('office_email', 'sekretariat@pgri.or.id') }}</p>
+                        <p class="mb-1"><i class="fa-brands fa-instagram text-danger me-2"></i> <a href="{{ $footerIgUrl }}" target="_blank" class="text-white-50 text-decoration-none">{{ $footerIg }}</a></p>
+                        <p class="mb-0"><i class="fa-brands fa-tiktok text-white me-2"></i> <a href="{{ $footerTtUrl }}" target="_blank" class="text-white-50 text-decoration-none">{{ $footerTt }}</a></p>
                     </div>
                 </div>
             </div>
