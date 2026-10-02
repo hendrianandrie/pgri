@@ -4,32 +4,88 @@
 
 @section('content')
 
-<!-- HERO SECTION (ScrewFast Style) -->
-<section class="screw-hero py-5 py-lg-6 border-bottom">
-    <div class="container py-4">
+<!-- FULL-WIDTH HERO SLIDER BACKGROUND (OPSI B) -->
+@php
+    $rawSlides = \App\Models\Setting::get('hero_slides');
+    if (!empty($rawSlides)) {
+        $heroSlides = json_decode($rawSlides, true) ?: [];
+    } else {
+        $singleHero = \App\Models\Setting::get('hero_image', '/storage/hero/hero_1790667887_WBKNbozY.jpeg');
+        $heroSlides = [
+            $singleHero,
+            'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=1600&q=80',
+            'https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1600&q=80',
+        ];
+    }
+@endphp
+
+<section class="position-relative overflow-hidden text-white hero-slider-section d-flex align-items-center" style="min-height: 600px; background-color: #0f172a;">
+    <!-- Background Carousel Slider -->
+    <div id="heroBgCarousel" class="carousel slide carousel-fade position-absolute top-0 start-0 w-100 h-100 z-0" data-bs-ride="carousel" data-bs-interval="4500" data-bs-pause="false">
+        @if(count($heroSlides) > 1)
+        <!-- Indicators / Dots -->
+        <div class="carousel-indicators z-3 mb-4">
+            @foreach($heroSlides as $idx => $slide)
+            <button type="button" data-bs-target="#heroBgCarousel" data-bs-slide-to="{{ $idx }}" class="{{ $idx === 0 ? 'active' : '' }}" aria-current="{{ $idx === 0 ? 'true' : 'false' }}" aria-label="Slide {{ $idx + 1 }}" style="width: 32px; height: 4px; border-radius: 2px;"></button>
+            @endforeach
+        </div>
+        @endif
+
+        <div class="carousel-inner w-100 h-100">
+            @foreach($heroSlides as $idx => $slideImg)
+            <div class="carousel-item w-100 h-100 {{ $idx === 0 ? 'active' : '' }}" style="transition: transform 1.2s ease-in-out, opacity 1.2s ease-in-out;">
+                <img src="{{ $slideImg }}" class="d-block w-100 h-100 object-fit-cover" alt="PGRI Banner Slide {{ $idx + 1 }}" style="min-height: 600px; filter: brightness(0.92);">
+            </div>
+            @endforeach
+        </div>
+
+        @if(count($heroSlides) > 1)
+        <!-- Prev / Next Controls (Glassmorphic) -->
+        <button class="carousel-control-prev z-3 d-none d-md-flex align-items-center justify-content-center" type="button" data-bs-target="#heroBgCarousel" data-bs-slide="prev" style="width: 48px; height: 48px; top: 50%; transform: translateY(-50%); left: 24px; border-radius: 50%; background: rgba(15, 23, 42, 0.5); backdrop-filter: blur(8px); border: 1px solid rgba(255, 255, 255, 0.2);">
+            <i class="fa-solid fa-chevron-left text-white fs-5"></i>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next z-3 d-none d-md-flex align-items-center justify-content-center" type="button" data-bs-target="#heroBgCarousel" data-bs-slide="next" style="width: 48px; height: 48px; top: 50%; transform: translateY(-50%); right: 24px; border-radius: 50%; background: rgba(15, 23, 42, 0.5); backdrop-filter: blur(8px); border: 1px solid rgba(255, 255, 255, 0.2);">
+            <i class="fa-solid fa-chevron-right text-white fs-5"></i>
+            <span class="visually-hidden">Next</span>
+        </button>
+        @endif
+    </div>
+
+    <!-- Gradient Vignette & Dark Overlay for Optimal Readability -->
+    <div class="position-absolute top-0 start-0 w-100 h-100 z-1" style="background: linear-gradient(90deg, rgba(15, 23, 42, 0.94) 0%, rgba(15, 23, 42, 0.85) 45%, rgba(153, 27, 27, 0.50) 80%, rgba(15, 23, 42, 0.78) 100%), radial-gradient(circle at 80% 20%, rgba(220, 38, 38, 0.25) 0%, transparent 60%); pointer-events: none;"></div>
+
+    <!-- Tri-color PGRI accent bar on bottom -->
+    <div class="position-absolute bottom-0 start-0 w-100 z-2 pgri-accent-stripe" style="height: 4px;"></div>
+
+    <!-- Foreground Content -->
+    <div class="container position-relative z-2 py-5 my-lg-2">
         <div class="row align-items-center g-5">
-            <div class="col-lg-6">
+            <!-- Left Column: Typography & Action -->
+            <div class="col-lg-7">
                 <!-- Badge Pill -->
-                <div class="badge-screw bg-danger bg-opacity-10 text-danger border border-danger border-opacity-20 mb-3">
-                    <i class="fa-solid fa-fire text-danger"></i>
-                    <span>{{ \App\Models\Setting::get('hero_badge', 'Platform Transformasi Edukasi & Profesi Guru') }}</span>
+                <div class="d-inline-flex align-items-center gap-2 px-3 py-1.5 rounded-pill mb-3 shadow-sm border border-warning border-opacity-40" style="background: rgba(245, 158, 11, 0.15); backdrop-filter: blur(8px);">
+                    <i class="fa-solid fa-fire text-warning"></i>
+                    <span class="small fw-bold text-warning">{{ \App\Models\Setting::get('hero_badge', 'Platform Transformasi Edukasi & Profesi Guru') }}</span>
                 </div>
 
-                <h1 class="display-4 fw-black text-dark tracking-tight mb-3 leading-tight" style="font-weight: 800; letter-spacing: -1px;">
-                    {!! \App\Models\Setting::get('hero_title', 'Mewujudkan Guru <span class="text-danger">Profesional</span>, <span class="text-success" style="color: #15803d !important;">Sejahtera</span> & <span class="text-warning" style="color: #d97706 !important;">Melek AI</span>') !!}
+                <h1 class="display-4 fw-black text-white tracking-tight mb-3 leading-tight" style="font-weight: 800; letter-spacing: -1px; text-shadow: 0 3px 14px rgba(0,0,0,0.6);">
+                    {!! \App\Models\Setting::get('hero_title', 'Mewujudkan Guru <span class="text-danger">Profesional</span>, <span class="text-success" style="color: #4ade80 !important;">Sejahtera</span> & <span class="text-warning" style="color: #facc15 !important;">Melek AI</span>') !!}
                 </h1>
 
-                <p class="lead text-secondary mb-4 fs-6 leading-relaxed">
+                <p class="lead text-white text-opacity-90 mb-4 fs-6 leading-relaxed" style="max-width: 620px; text-shadow: 0 2px 8px rgba(0,0,0,0.5);">
                     {{ \App\Models\Setting::get('hero_description', 'Persatuan Guru Republik Indonesia (PGRI) mengabdi sejak 1945. Bersama ekosistem SAKTI PGRI, kami mendorong pembelajaran mendalam, repositori perangkat ajar, serta kemampuan Koding, KKA & AI bagi seluruh pendidik Indonesia.') }}
                 </p>
 
-                <!-- Action Buttons: Red & Green PGRI Palette -->
+                <!-- Action Buttons -->
                 <div class="d-flex flex-wrap align-items-center gap-3 mb-4">
-                    <a href="{{ \App\Models\Setting::get('hero_btn1_url', route('sakti.index')) }}" class="btn-screw-primary text-decoration-none">
-                        <i class="fa-solid fa-wand-magic-sparkles me-2"></i> {{ \App\Models\Setting::get('hero_btn1_text', 'Jelajahi SAKTI PGRI') }}
+                    <a href="{{ \App\Models\Setting::get('hero_btn1_url', route('sakti.index')) }}" class="btn text-white fw-bold px-4 py-2.5 rounded-pill shadow-lg d-inline-flex align-items-center gap-2 text-decoration-none" style="background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); border: 1px solid rgba(255,255,255,0.25);">
+                        <i class="fa-solid fa-wand-magic-sparkles text-warning"></i> 
+                        <span>{{ \App\Models\Setting::get('hero_btn1_text', 'Jelajahi SAKTI PGRI') }}</span>
                     </a>
-                    <a href="{{ \App\Models\Setting::get('hero_btn2_url', route('profile')) }}" class="btn-screw-green text-decoration-none">
-                        <i class="fa-solid fa-landmark me-2"></i> {{ \App\Models\Setting::get('hero_btn2_text', 'Profil & Sejarah') }}
+                    <a href="{{ \App\Models\Setting::get('hero_btn2_url', route('profile')) }}" class="btn text-white fw-bold px-4 py-2.5 rounded-pill shadow-sm d-inline-flex align-items-center gap-2 text-decoration-none" style="background: rgba(255, 255, 255, 0.14); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.25);">
+                        <i class="fa-solid fa-landmark text-emerald-400"></i> 
+                        <span>{{ \App\Models\Setting::get('hero_btn2_text', 'Profil & Sejarah') }}</span>
                     </a>
                 </div>
 
@@ -51,37 +107,56 @@
                             <i class="fa-solid fa-star"></i>
                             <i class="fa-solid fa-star"></i>
                         </div>
-                        <div class="small fw-semibold text-muted" style="font-size: 0.8rem;">{{ \App\Models\Setting::get('hero_stat_label', 'Guru & Tenaga Kependidikan Terhubung') }}</div>
+                        <div class="small fw-semibold text-white text-opacity-80" style="font-size: 0.8rem;">{{ \App\Models\Setting::get('hero_stat_label', 'Guru & Tenaga Kependidikan Terhubung') }}</div>
                     </div>
                 </div>
-
             </div>
 
-            <div class="col-lg-6 position-relative">
-                <div class="position-relative">
-                    <img src="{{ \App\Models\Setting::get('hero_image', 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=800&q=80') }}" alt="PGRI SAKTI Teachers" class="img-fluid rounded-4 shadow-2xl border border-secondary border-opacity-10 w-100 object-fit-cover" style="min-height: 380px; max-height: 480px;">
+            <!-- Right Column: Glassmorphic Feature Showcase Card -->
+            <div class="col-lg-5">
+                <div class="p-4 p-md-4 rounded-4 shadow-2xl border" style="background: rgba(15, 23, 42, 0.45); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-color: rgba(255, 255, 255, 0.20); box-shadow: 0 20px 50px rgba(0,0,0,0.5);">
+                    <div class="d-flex align-items-center justify-content-between mb-3 pb-2 border-bottom border-white border-opacity-15">
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="badge bg-danger rounded-pill px-2.5 py-1 text-white fw-bold small"><i class="fa-solid fa-bolt text-warning me-1"></i> SAKTI PGRI</span>
+                            <span class="small text-white text-opacity-85 fw-semibold">Ekosistem Edukasi</span>
+                        </div>
+                        <span class="badge bg-warning text-dark rounded-pill fw-bold small px-2.5 py-1">4 Pilar Utama</span>
+                    </div>
 
-                    <!-- Floating Glassmorphic Stat 1 (Top Right) -->
-                    <div class="glass-floating p-3 position-absolute top-0 end-0 translate-middle-y me-2 mt-4 d-none d-sm-flex align-items-center gap-3">
-                        <div class="rounded-circle bg-success bg-opacity-10 text-success p-2.5 d-flex align-items-center justify-content-center" style="width: 44px; height: 44px;">
+                    <p class="small text-white text-opacity-85 mb-4 leading-relaxed">Platform terpadu mempersiapkan pendidik Indonesia unggul dalam kecerdasan buatan, repositori ajar digital, dan advokasi profesi.</p>
+
+                    <!-- Stat 1 -->
+                    <div class="d-flex align-items-center gap-3 p-3 rounded-3 mb-3" style="background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15);">
+                        <div class="rounded-circle p-2.5 d-flex align-items-center justify-content-center text-emerald-400 flex-shrink-0" style="width: 46px; height: 46px; background: rgba(16, 185, 129, 0.25);">
                             <i class="fa-solid fa-circle-check fs-5"></i>
                         </div>
                         <div>
-                            <div class="fw-extrabold text-dark fs-6">{{ \App\Models\Setting::get('hero_card1_title', '500+ Modul SAKTI') }}</div>
-                            <div class="text-muted extra-small" style="font-size: 0.75rem;">{{ \App\Models\Setting::get('hero_card1_subtitle', 'Deep Learning, Koding & AI') }}</div>
+                            <div class="fw-bold text-white fs-6">{{ \App\Models\Setting::get('hero_card1_title', '500+ Modul SAKTI') }}</div>
+                            <div class="text-white text-opacity-70 small">{{ \App\Models\Setting::get('hero_card1_subtitle', 'Deep Learning, Koding & AI') }}</div>
                         </div>
                     </div>
 
-                    <!-- Floating Glassmorphic Stat 2 (Bottom Left) -->
-                    <div class="glass-floating p-3 position-absolute bottom-0 start-0 translate-middle-y ms-2 mb-2 d-none d-sm-flex align-items-center gap-3">
-                        <div class="rounded-circle bg-purple bg-opacity-10 text-purple p-2.5 d-flex align-items-center justify-content-center" style="width: 44px; height: 44px; color:#9333ea; background-color:#f3e8ff;">
+                    <!-- Stat 2 -->
+                    <div class="d-flex align-items-center gap-3 p-3 rounded-3" style="background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15);">
+                        <div class="rounded-circle p-2.5 d-flex align-items-center justify-content-center flex-shrink-0" style="width: 46px; height: 46px; color: #c084fc; background: rgba(168, 85, 247, 0.25);">
                             <i class="fa-solid fa-code fs-5"></i>
                         </div>
                         <div>
-                            <div class="fw-extrabold text-dark fs-6">{{ \App\Models\Setting::get('hero_card2_title', 'Pelatihan Koding & AI') }}</div>
-                            <div class="text-muted extra-small" style="font-size: 0.75rem;">{{ \App\Models\Setting::get('hero_card2_subtitle', 'Berpikir Komputasional Guru') }}</div>
+                            <div class="fw-bold text-white fs-6">{{ \App\Models\Setting::get('hero_card2_title', 'Pelatihan Koding & AI') }}</div>
+                            <div class="text-white text-opacity-70 small">{{ \App\Models\Setting::get('hero_card2_subtitle', 'Berpikir Komputasional Guru') }}</div>
                         </div>
                     </div>
+
+                    @auth
+                        @if(Auth::user()->role === 'admin' || Auth::user()->role === 'pengurus')
+                        <div class="mt-4 pt-3 border-top border-white border-opacity-15 text-center">
+                            <a href="{{ route('admin.hero-settings') }}" class="btn btn-sm btn-warning text-dark fw-bold rounded-pill px-3 py-1.5 shadow-sm text-decoration-none d-inline-flex align-items-center gap-1.5">
+                                <i class="fa-solid fa-images"></i>
+                                <span>Kelola Foto Slider Banner</span>
+                            </a>
+                        </div>
+                        @endif
+                    @endauth
                 </div>
             </div>
         </div>

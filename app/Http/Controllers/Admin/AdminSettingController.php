@@ -11,6 +11,18 @@ class AdminSettingController extends Controller
 {
     public function heroSettings()
     {
+        $rawSlides = Setting::get('hero_slides');
+        if (!empty($rawSlides)) {
+            $slides = json_decode($rawSlides, true) ?: [];
+        } else {
+            $currentImg = Setting::get('hero_image', '/storage/hero/hero_1790667887_WBKNbozY.jpeg');
+            $slides = [
+                $currentImg,
+                'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=1600&q=80',
+                'https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1600&q=80',
+            ];
+        }
+
         $hero = [
             'badge' => Setting::get('hero_badge', 'Platform Transformasi Edukasi & Profesi Guru'),
             'title' => Setting::get('hero_title', 'Mewujudkan Guru <span class="text-danger">Profesional</span>, <span class="text-success" style="color: #15803d !important;">Sejahtera</span> & <span class="text-warning" style="color: #d97706 !important;">Melek AI</span>'),
@@ -19,7 +31,8 @@ class AdminSettingController extends Controller
             'btn1_url' => Setting::get('hero_btn1_url', '/sakti'),
             'btn2_text' => Setting::get('hero_btn2_text', 'Profil & Sejarah'),
             'btn2_url' => Setting::get('hero_btn2_url', '/profile'),
-            'image' => Setting::get('hero_image', 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=800&q=80'),
+            'image' => Setting::get('hero_image', $slides[0] ?? ''),
+            'slides' => $slides,
             'card1_title' => Setting::get('hero_card1_title', '500+ Modul SAKTI'),
             'card1_subtitle' => Setting::get('hero_card1_subtitle', 'Deep Learning, Koding & AI'),
             'card2_title' => Setting::get('hero_card2_title', 'Pelatihan Koding & AI'),
@@ -41,14 +54,18 @@ class AdminSettingController extends Controller
             'btn1_url' => 'nullable|string|max:255',
             'btn2_text' => 'nullable|string|max:100',
             'btn2_url' => 'nullable|string|max:255',
-            'image_file' => 'nullable|image|mimes:jpeg,png,jpg,webp,gif|max:5120',
-            'image_url' => 'nullable|string|max:1000',
             'card1_title' => 'nullable|string|max:100',
             'card1_subtitle' => 'nullable|string|max:255',
             'card2_title' => 'nullable|string|max:100',
             'card2_subtitle' => 'nullable|string|max:255',
             'stat_number' => 'nullable|string|max:50',
             'stat_label' => 'nullable|string|max:255',
+            'existing_slides' => 'nullable|array',
+            'existing_slides.*' => 'nullable|string',
+            'new_slide_files.*' => 'nullable|image|mimes:jpeg,png,jpg,webp,gif|max:6144',
+            'new_slide_url' => 'nullable|string|max:1000',
+            'image_file' => 'nullable|image|mimes:jpeg,png,jpg,webp,gif|max:5120',
+            'image_url' => 'nullable|string|max:1000',
         ]);
 
         Setting::set('hero_badge', $validated['badge'] ?? 'Platform Transformasi Edukasi & Profesi Guru');
@@ -65,16 +82,59 @@ class AdminSettingController extends Controller
         Setting::set('hero_stat_number', $validated['stat_number'] ?? '3.4M+');
         Setting::set('hero_stat_label', $validated['stat_label'] ?? 'Guru & Tenaga Kependidikan Terhubung');
 
+        // Manage slides array
+        $slides = $request->input('existing_slides', []);
+        if (!is_array($slides)) {
+            $slides = [];
+        }
+
+        // Handle multiple new uploaded files
+        if ($request->hasFile('new_slide_files')) {
+            foreach ($request->file('new_slide_files') as $file) {
+                if ($file->isValid()) {
+                    $filename = 'hero_' . time() . '_' . Str::random(8) . '.' . $file->getClientOriginalExtension();
+                    $path = $file->storeAs('hero', $filename, 'public');
+                    $slides[] = '/storage/' . $path;
+                }
+            }
+        }
+
+        // Handle single legacy file if any
         if ($request->hasFile('image_file')) {
             $file = $request->file('image_file');
             $filename = 'hero_' . time() . '_' . Str::random(8) . '.' . $file->getClientOriginalExtension();
             $path = $file->storeAs('hero', $filename, 'public');
-            Setting::set('hero_image', '/storage/' . $path);
-        } elseif (!empty($validated['image_url'])) {
-            Setting::set('hero_image', $validated['image_url']);
+            $slides[] = '/storage/' . $path;
         }
 
-        return redirect()->route('admin.hero-settings')->with('success', 'Pengaturan Hero Banner Beranda berhasil diperbarui!');
+        // Handle new slide URL(s)
+        if (!empty($request->input('new_slide_url'))) {
+            $newUrls = preg_split('/\r\n|\r|\n/', $request->input('new_slide_url'));
+            foreach ($newUrls as $url) {
+                $trimmedUrl = trim($url);
+                if (!empty($trimmedUrl)) {
+                    $slides[] = $trimmedUrl;
+                }
+            }
+        }
+
+        if (!empty($validated['image_url'])) {
+            $slides[] = trim($validated['image_url']);
+        }
+
+        // Fallback default if empty
+        if (empty($slides)) {
+            $slides = [
+                '/storage/hero/hero_1790667887_WBKNbozY.jpeg',
+                'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=1600&q=80',
+            ];
+        }
+
+        $cleanSlides = array_values(array_unique(array_filter($slides)));
+        Setting::set('hero_slides', json_encode($cleanSlides, JSON_UNESCAPED_SLASHES));
+        Setting::set('hero_image', $cleanSlides[0] ?? '');
+
+        return redirect()->route('admin.hero-settings')->with('success', 'Pengaturan Hero Banner Slider berhasil diperbarui!');
     }
 
     public function contactSettings()

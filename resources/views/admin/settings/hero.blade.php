@@ -125,46 +125,72 @@
                 </div>
             </div>
 
-            <!-- 3. FOTO BANNER & FLOATING BADGES -->
+            <!-- 3. FOTO SLIDER BANNER (FULL-WIDTH HERO BACKGROUND) & KARTU MELAYANG -->
             <div class="space-y-4">
                 <div class="flex items-center gap-2 pb-2 border-b border-slate-100">
                     <span class="w-6 h-6 rounded-full bg-red-100 text-red-700 font-bold text-xs flex items-center justify-center">3</span>
-                    <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wide">Foto Banner & Kartu Melayang</h3>
+                    <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wide flex items-center gap-1.5">
+                        <i class="fa-solid fa-images text-red-600"></i>
+                        <span>Koleksi Foto Slider Banner (Full-Width Hero Background)</span>
+                    </h3>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <!-- Preview Foto Saat Ini -->
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Foto Saat Ini</label>
-                        <div class="rounded-xl overflow-hidden border border-slate-200 bg-slate-100 shadow-sm relative group">
-                            <img src="{{ $hero['image'] }}" alt="Hero Banner" class="w-full h-44 object-cover">
-                            <div class="p-2 bg-slate-900/80 text-white text-[10px] text-center truncate">
-                                Terpasang saat ini
+                <!-- Daftar Slide Banner Saat Ini -->
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2 flex items-center justify-between">
+                        <span>Foto Slide Banner yang Sedang Aktif ({{ count($hero['slides'] ?? []) }} Slide)</span>
+                        <span class="text-[11px] text-slate-400 font-normal">Otomatis berganti slide tiap 4.5 detik di beranda</span>
+                    </label>
+
+                    <div id="slides-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
+                        @foreach($hero['slides'] ?? [$hero['image']] as $idx => $slideImg)
+                        <div class="slide-card bg-slate-50 border border-slate-200 rounded-xl overflow-hidden shadow-sm relative group p-2.5">
+                            <div class="relative rounded-lg overflow-hidden h-36 bg-slate-900">
+                                <img src="{{ $slideImg }}" alt="Slide {{ $idx + 1 }}" class="w-full h-full object-cover">
+                                <span class="absolute top-2 left-2 bg-slate-900/80 backdrop-blur-sm text-white text-[10px] font-bold px-2 py-0.5 rounded-full border border-white/20">
+                                    Slide {{ $idx + 1 }} {{ $idx === 0 ? ' (Utama)' : '' }}
+                                </span>
+                            </div>
+                            <input type="hidden" name="existing_slides[]" value="{{ $slideImg }}">
+                            <div class="mt-2 flex items-center justify-between">
+                                <span class="text-[10px] text-slate-400 truncate max-w-[170px]" title="{{ $slideImg }}">{{ basename($slideImg) }}</span>
+                                <button type="button" onclick="this.closest('.slide-card').remove()" class="text-xs font-bold text-red-600 hover:text-red-800 bg-red-50 hover:bg-red-100 px-2.5 py-1 rounded-lg border border-red-200 transition flex items-center gap-1">
+                                    <i class="fa-solid fa-trash-can text-[10px]"></i>
+                                    <span>Hapus</span>
+                                </button>
                             </div>
                         </div>
+                        @endforeach
                     </div>
+                </div>
 
-                    <!-- Upload Foto Baru -->
-                    <div class="md:col-span-2 space-y-3">
+                <!-- Tambah Foto Slide Baru -->
+                <div class="p-4 rounded-2xl bg-red-50/40 border border-red-100 space-y-4">
+                    <h4 class="text-xs font-bold text-red-800 uppercase tracking-wider flex items-center gap-1.5">
+                        <i class="fa-solid fa-plus-circle text-red-600"></i>
+                        <span>Tambah Foto ke Slider Banner</span>
+                    </h4>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1 flex items-center gap-1.5">
                                 <i class="fa-solid fa-cloud-arrow-up text-red-600"></i>
-                                <span>Upload Foto Banner Baru</span>
+                                <span>Upload Foto Baru (Bisa Banyak File)</span>
                             </label>
-                            <input type="file" name="image_file" accept="image/*" 
-                                   class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-red-500 transition file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-red-700 file:text-white hover:file:bg-red-800 cursor-pointer">
-                            <p class="text-[11px] text-slate-400 mt-1">Format: JPG, PNG, WebP (Maksimal 5MB). Rekomendasi resolusi: 1200 x 800 piksel horizontal.</p>
+                            <input type="file" name="new_slide_files[]" multiple accept="image/*" 
+                                   class="w-full bg-white border border-slate-300 rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-red-500 transition file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-red-700 file:text-white hover:file:bg-red-800 cursor-pointer">
+                            <p class="text-[11px] text-slate-400 mt-1">Pilih satu atau beberapa foto sekaligus (JPG, PNG, WebP). Rekomendasi: format landscape horizontal 1920x1080 atau 16:9.</p>
                         </div>
 
                         <div>
                             <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1 flex items-center gap-1.5">
                                 <i class="fa-solid fa-link text-slate-400"></i>
-                                <span>Atau Masukkan URL Gambar (Opsional)</span>
+                                <span>Atau Masukkan URL Gambar</span>
                             </label>
-                            <input type="text" name="image_url" value="{{ old('image_url') }}" 
-                                   placeholder="Contoh: https://images.unsplash.com/..." 
-                                   class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-red-500 transition">
-                            <p class="text-[11px] text-slate-400 mt-1">Kosongkan jika ingin mengunggah file langsung di atas.</p>
+                            <textarea name="new_slide_url" rows="2" 
+                                      placeholder="https://images.unsplash.com/... (1 URL per baris jika lebih dari satu)" 
+                                      class="w-full bg-white border border-slate-300 rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-red-500 transition"></textarea>
+                            <p class="text-[11px] text-slate-400 mt-0.5">Tautan gambar online beresolusi tinggi.</p>
                         </div>
                     </div>
                 </div>
