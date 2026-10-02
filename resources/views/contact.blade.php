@@ -212,12 +212,6 @@
                 </div>
             </div>
 
-            <!-- MAP / CALLOUT LKBH -->
-            <div class="card card-custom p-4 text-white rounded-4 shadow-sm" style="background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);">
-                <h5 class="fw-bold mb-2"><i class="fa-solid fa-shield-cat text-warning me-2"></i> LKBH PGRI</h5>
-                <p class="small opacity-80 mb-3 leading-relaxed">Lembaga Konsultasi &amp; Bantuan Hukum (LKBH) PGRI memberikan pendampingan dan perlindungan hukum penuh bagi guru anggota PGRI.</p>
-                <span class="badge bg-warning text-dark rounded-pill px-3 py-2 fw-bold me-auto">Layanan Bebas Biaya Anggota</span>
-            </div>
         </div>
     </div>
 </div>
