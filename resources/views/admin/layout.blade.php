@@ -67,6 +67,11 @@
                     <span>Koding & AI (KKA)</span>
                 </a>
 
+                <a href="{{ route('admin.profile-settings') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg transition {{ request()->routeIs('admin.profile-settings*') ? 'bg-red-700 text-white font-semibold shadow-md' : 'text-slate-400 hover:text-white hover:bg-slate-800' }}">
+                    <i class="fa-solid fa-address-card w-5 text-center text-sky-400"></i>
+                    <span>Profil & Visi Misi</span>
+                </a>
+
                 <a href="{{ route('admin.executives.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg transition {{ request()->routeIs('admin.executives.*') ? 'bg-red-700 text-white font-semibold shadow-md' : 'text-slate-400 hover:text-white hover:bg-slate-800' }}">
                     <i class="fa-solid fa-users-gear w-5 text-center text-emerald-400"></i>
                     <span>Pengurus & Organisasi</span>

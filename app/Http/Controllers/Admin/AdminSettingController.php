@@ -114,4 +114,80 @@ class AdminSettingController extends Controller
 
         return redirect()->route('admin.contact-settings')->with('success', 'Informasi Kontak & Sekretariat berhasil diperbarui!');
     }
+
+    public function profileSettings()
+    {
+        $rawMisi = Setting::get('profile_misi');
+        if (!empty($rawMisi)) {
+            $decoded = json_decode($rawMisi, true);
+            $misiText = is_array($decoded) ? implode("\n", $decoded) : $rawMisi;
+        } else {
+            $misiText = "Mewujudkan iklim profesionalisme guru dan tenaga kependidikan yang kompeten dan adaptif.\nMemperjuangkan perlindungan hukum, kesejahteraan, dan kepastian karir guru Indonesia.\nMengembangkan transformasi digital pembelajaran berbasis teknologi, koding, dan AI (SAKTI).\nMemperkuat solidaritas, kepedulian sosial, dan kemitraan strategis dengan pemerintah.";
+        }
+
+        $profile = [
+            'badge' => Setting::get('profile_badge', 'TENTANG ORGANISASI'),
+            'title' => Setting::get('profile_title', 'Profil Persatuan Guru Republik Indonesia'),
+            'subtitle' => Setting::get('profile_subtitle', 'Mengenal Visi, Misi, dan Jajaran Pengurus PGRI Cabang Ciamis.'),
+            'visi_title' => Setting::get('profile_visi_title', 'Visi PGRI'),
+            'visi_subtitle' => Setting::get('profile_visi_subtitle', 'Arah & Cita-cita Organisasi'),
+            'visi' => Setting::get('profile_visi', 'Mewujudkan PGRI sebagai Organisasi Profesi yang Terpercaya, Dinamika, Bermartabat, dan Dicintai Anggotanya dalam Memajukan Pendidikan Nasional.'),
+            'misi_title' => Setting::get('profile_misi_title', 'Misi PGRI'),
+            'misi_subtitle' => Setting::get('profile_misi_subtitle', 'Empat Pilar Pelaksanaan Kerja'),
+            'misi' => $misiText,
+            'executives_badge' => Setting::get('profile_executives_badge', 'JABATAN ORGANISASI'),
+            'executives_title' => Setting::get('profile_executives_title', 'Struktur Pengurus PGRI Cabang Ciamis'),
+            'executives_subtitle' => Setting::get('profile_executives_subtitle', 'Jajaran kepemimpinan yang mengabdi pada Pengurus PGRI Cabang Ciamis.'),
+        ];
+
+        return view('admin.settings.profile', compact('profile'));
+    }
+
+    public function updateProfileSettings(Request $request)
+    {
+        $validated = $request->validate([
+            'badge' => 'nullable|string|max:100',
+            'title' => 'required|string|max:255',
+            'subtitle' => 'required|string|max:500',
+            'visi_title' => 'nullable|string|max:150',
+            'visi_subtitle' => 'nullable|string|max:255',
+            'visi' => 'required|string|max:2000',
+            'misi_title' => 'nullable|string|max:150',
+            'misi_subtitle' => 'nullable|string|max:255',
+            'misi' => 'required|string',
+            'executives_badge' => 'nullable|string|max:100',
+            'executives_title' => 'nullable|string|max:255',
+            'executives_subtitle' => 'nullable|string|max:500',
+        ]);
+
+        Setting::set('profile_badge', $validated['badge'] ?? 'TENTANG ORGANISASI');
+        Setting::set('profile_title', $validated['title']);
+        Setting::set('profile_subtitle', $validated['subtitle']);
+        Setting::set('profile_visi_title', $validated['visi_title'] ?? 'Visi PGRI');
+        Setting::set('profile_visi_subtitle', $validated['visi_subtitle'] ?? 'Arah & Cita-cita Organisasi');
+        Setting::set('profile_visi', $validated['visi']);
+        Setting::set('profile_misi_title', $validated['misi_title'] ?? 'Misi PGRI');
+        Setting::set('profile_misi_subtitle', $validated['misi_subtitle'] ?? 'Empat Pilar Pelaksanaan Kerja');
+
+        // Split misi lines and save as JSON array
+        $lines = preg_split('/\r\n|\r|\n/', $validated['misi']);
+        $cleanLines = [];
+        foreach ($lines as $line) {
+            $trimmed = trim($line);
+            if ($trimmed !== '') {
+                // remove leading numbers/bullets if user typed them like "1. " or "- "
+                $trimmed = preg_replace('/^[0-9]+[\.\)]\s*|^[-*•]\s*/', '', $trimmed);
+                if ($trimmed !== '') {
+                    $cleanLines[] = $trimmed;
+                }
+            }
+        }
+        Setting::set('profile_misi', json_encode(array_values($cleanLines), JSON_UNESCAPED_UNICODE));
+
+        Setting::set('profile_executives_badge', $validated['executives_badge'] ?? 'JABATAN ORGANISASI');
+        Setting::set('profile_executives_title', $validated['executives_title'] ?? 'Struktur Pengurus PGRI Cabang Ciamis');
+        Setting::set('profile_executives_subtitle', $validated['executives_subtitle'] ?? 'Jajaran kepemimpinan yang mengabdi pada Pengurus PGRI Cabang Ciamis.');
+
+        return redirect()->route('admin.profile-settings')->with('success', 'Profil, Visi, dan Misi PGRI berhasil diperbarui!');
+    }
 }

@@ -108,6 +108,10 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::get('/hero-settings', [AdminSettingController::class, 'heroSettings'])->name('hero-settings');
     Route::post('/hero-settings', [AdminSettingController::class, 'updateHeroSettings'])->name('hero-settings.update');
 
+    // Profile, Visi & Misi Settings
+    Route::get('/profile-settings', [AdminSettingController::class, 'profileSettings'])->name('profile-settings');
+    Route::post('/profile-settings', [AdminSettingController::class, 'updateProfileSettings'])->name('profile-settings.update');
+
     // Contact & Office Settings
     Route::get('/contact-settings', [AdminSettingController::class, 'contactSettings'])->name('contact-settings');
     Route::post('/contact-settings', [AdminSettingController::class, 'updateContactSettings'])->name('contact-settings.update');
