@@ -52,17 +52,17 @@
         @endif
     </div>
 
-    <!-- Gradient Vignette & Dark Overlay for Optimal Readability -->
-    <div class="position-absolute top-0 start-0 w-100 h-100 z-1" style="background: linear-gradient(90deg, rgba(15, 23, 42, 0.94) 0%, rgba(15, 23, 42, 0.85) 45%, rgba(153, 27, 27, 0.50) 80%, rgba(15, 23, 42, 0.78) 100%), radial-gradient(circle at 80% 20%, rgba(220, 38, 38, 0.25) 0%, transparent 60%); pointer-events: none;"></div>
+    <!-- Gradient Vignette & Dark Overlay for Optimal Readability (Open on the right) -->
+    <div class="position-absolute top-0 start-0 w-100 h-100 z-1" style="background: linear-gradient(90deg, rgba(15, 23, 42, 0.94) 0%, rgba(15, 23, 42, 0.85) 45%, rgba(15, 23, 42, 0.40) 75%, rgba(15, 23, 42, 0.30) 100%), radial-gradient(circle at 85% 25%, rgba(220, 38, 38, 0.20) 0%, transparent 60%); pointer-events: none;"></div>
 
     <!-- Tri-color PGRI accent bar on bottom -->
     <div class="position-absolute bottom-0 start-0 w-100 z-2 pgri-accent-stripe" style="height: 4px;"></div>
 
     <!-- Foreground Content -->
-    <div class="container position-relative z-2 py-5 my-lg-2">
-        <div class="row align-items-center g-5">
-            <!-- Left Column: Typography & Action -->
-            <div class="col-lg-7">
+    <div class="container position-relative z-2 py-5 my-lg-4">
+        <div class="row align-items-center">
+            <!-- Left Column: Full-Featured Typography & Action -->
+            <div class="col-lg-9 col-xl-8">
                 <!-- Badge Pill -->
                 <div class="d-inline-flex align-items-center gap-2 px-3 py-1.5 rounded-pill mb-3 shadow-sm border border-warning border-opacity-40" style="background: rgba(245, 158, 11, 0.15); backdrop-filter: blur(8px);">
                     <i class="fa-solid fa-fire text-warning"></i>
@@ -73,7 +73,7 @@
                     {!! \App\Models\Setting::get('hero_title', 'Mewujudkan Guru <span class="text-danger">Profesional</span>, <span class="text-success" style="color: #4ade80 !important;">Sejahtera</span> & <span class="text-warning" style="color: #facc15 !important;">Melek AI</span>') !!}
                 </h1>
 
-                <p class="lead text-white text-opacity-90 mb-4 fs-6 leading-relaxed" style="max-width: 620px; text-shadow: 0 2px 8px rgba(0,0,0,0.5);">
+                <p class="lead text-white text-opacity-90 mb-4 fs-6 leading-relaxed" style="max-width: 680px; text-shadow: 0 2px 8px rgba(0,0,0,0.5);">
                     {{ \App\Models\Setting::get('hero_description', 'Persatuan Guru Republik Indonesia (PGRI) mengabdi sejak 1945. Bersama ekosistem SAKTI PGRI, kami mendorong pembelajaran mendalam, repositori perangkat ajar, serta kemampuan Koding, KKA & AI bagi seluruh pendidik Indonesia.') }}
                 </p>
 
@@ -89,72 +89,35 @@
                     </a>
                 </div>
 
-                <!-- Social Proof / Avatar Trust -->
-                <div class="d-flex align-items-center gap-3 pt-2">
-                    <div class="d-flex align-items-center">
-                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=100&q=80" alt="Guru 1" class="rounded-circle border border-2 border-white shadow-sm" style="width: 40px; height: 40px; margin-right: -10px; object-fit: cover;">
-                        <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=100&q=80" alt="Guru 2" class="rounded-circle border border-2 border-white shadow-sm" style="width: 40px; height: 40px; margin-right: -10px; object-fit: cover;">
-                        <img src="https://images.unsplash.com/photo-1580894732413-847fecb439c2?auto=format&fit=crop&w=100&q=80" alt="Guru 3" class="rounded-circle border border-2 border-white shadow-sm" style="width: 40px; height: 40px; margin-right: -10px; object-fit: cover;">
-                        <div class="rounded-circle bg-danger text-white border border-2 border-white shadow-sm d-flex align-items-center justify-content-center fw-bold extra-small" style="width: 40px; height: 40px; font-size: 0.7rem;">
-                            {{ \App\Models\Setting::get('hero_stat_number', '3.4M+') }}
-                        </div>
-                    </div>
-                    <div>
-                        <div class="d-flex text-warning fs-6">
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                        </div>
-                        <div class="small fw-semibold text-white text-opacity-80" style="font-size: 0.8rem;">{{ \App\Models\Setting::get('hero_stat_label', 'Guru & Tenaga Kependidikan Terhubung') }}</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Right Column: Glassmorphic Feature Showcase Card -->
-            <div class="col-lg-5">
-                <div class="p-4 p-md-4 rounded-4 shadow-2xl border" style="background: rgba(15, 23, 42, 0.45); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-color: rgba(255, 255, 255, 0.20); box-shadow: 0 20px 50px rgba(0,0,0,0.5);">
-                    <div class="d-flex align-items-center justify-content-between mb-3 pb-2 border-bottom border-white border-opacity-15">
-                        <div class="d-flex align-items-center gap-2">
-                            <span class="badge bg-danger rounded-pill px-2.5 py-1 text-white fw-bold small"><i class="fa-solid fa-bolt text-warning me-1"></i> SAKTI PGRI</span>
-                            <span class="small text-white text-opacity-85 fw-semibold">Ekosistem Edukasi</span>
-                        </div>
-                        <span class="badge bg-warning text-dark rounded-pill fw-bold small px-2.5 py-1">4 Pilar Utama</span>
-                    </div>
-
-                    <p class="small text-white text-opacity-85 mb-4 leading-relaxed">Platform terpadu mempersiapkan pendidik Indonesia unggul dalam kecerdasan buatan, repositori ajar digital, dan advokasi profesi.</p>
-
-                    <!-- Stat 1 -->
-                    <div class="d-flex align-items-center gap-3 p-3 rounded-3 mb-3" style="background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15);">
-                        <div class="rounded-circle p-2.5 d-flex align-items-center justify-content-center text-emerald-400 flex-shrink-0" style="width: 46px; height: 46px; background: rgba(16, 185, 129, 0.25);">
-                            <i class="fa-solid fa-circle-check fs-5"></i>
+                <!-- Social Proof / Avatar Trust & Admin Quick Access -->
+                <div class="d-flex flex-wrap align-items-center gap-4 pt-2">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="d-flex align-items-center">
+                            <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=100&q=80" alt="Guru 1" class="rounded-circle border border-2 border-white shadow-sm" style="width: 40px; height: 40px; margin-right: -10px; object-fit: cover;">
+                            <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=100&q=80" alt="Guru 2" class="rounded-circle border border-2 border-white shadow-sm" style="width: 40px; height: 40px; margin-right: -10px; object-fit: cover;">
+                            <img src="https://images.unsplash.com/photo-1580894732413-847fecb439c2?auto=format&fit=crop&w=100&q=80" alt="Guru 3" class="rounded-circle border border-2 border-white shadow-sm" style="width: 40px; height: 40px; margin-right: -10px; object-fit: cover;">
+                            <div class="rounded-circle bg-danger text-white border border-2 border-white shadow-sm d-flex align-items-center justify-content-center fw-bold extra-small" style="width: 40px; height: 40px; font-size: 0.7rem;">
+                                {{ \App\Models\Setting::get('hero_stat_number', '3.4M+') }}
+                            </div>
                         </div>
                         <div>
-                            <div class="fw-bold text-white fs-6">{{ \App\Models\Setting::get('hero_card1_title', '500+ Modul SAKTI') }}</div>
-                            <div class="text-white text-opacity-70 small">{{ \App\Models\Setting::get('hero_card1_subtitle', 'Deep Learning, Koding & AI') }}</div>
-                        </div>
-                    </div>
-
-                    <!-- Stat 2 -->
-                    <div class="d-flex align-items-center gap-3 p-3 rounded-3" style="background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15);">
-                        <div class="rounded-circle p-2.5 d-flex align-items-center justify-content-center flex-shrink-0" style="width: 46px; height: 46px; color: #c084fc; background: rgba(168, 85, 247, 0.25);">
-                            <i class="fa-solid fa-code fs-5"></i>
-                        </div>
-                        <div>
-                            <div class="fw-bold text-white fs-6">{{ \App\Models\Setting::get('hero_card2_title', 'Pelatihan Koding & AI') }}</div>
-                            <div class="text-white text-opacity-70 small">{{ \App\Models\Setting::get('hero_card2_subtitle', 'Berpikir Komputasional Guru') }}</div>
+                            <div class="d-flex text-warning fs-6">
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                            </div>
+                            <div class="small fw-semibold text-white text-opacity-80" style="font-size: 0.8rem;">{{ \App\Models\Setting::get('hero_stat_label', 'Guru & Tenaga Kependidikan Terhubung') }}</div>
                         </div>
                     </div>
 
                     @auth
                         @if(Auth::user()->role === 'admin' || Auth::user()->role === 'pengurus')
-                        <div class="mt-4 pt-3 border-top border-white border-opacity-15 text-center">
-                            <a href="{{ route('admin.hero-settings') }}" class="btn btn-sm btn-warning text-dark fw-bold rounded-pill px-3 py-1.5 shadow-sm text-decoration-none d-inline-flex align-items-center gap-1.5">
-                                <i class="fa-solid fa-images"></i>
-                                <span>Kelola Foto Slider Banner</span>
-                            </a>
-                        </div>
+                        <a href="{{ route('admin.hero-settings') }}" class="btn btn-sm btn-warning text-dark fw-bold rounded-pill px-3 py-1.5 shadow-sm text-decoration-none d-inline-flex align-items-center gap-1.5">
+                            <i class="fa-solid fa-images"></i>
+                            <span>Kelola Foto Slider Banner</span>
+                        </a>
                         @endif
                     @endauth
                 </div>
