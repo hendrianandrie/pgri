@@ -163,16 +163,32 @@
                 <div class="row g-4">
                     @forelse($deepLearning as $item)
                         <div class="col-md-4">
-                            <div class="screw-card h-100 p-4 d-flex flex-column justify-content-between">
+                            <div class="screw-card h-100 overflow-hidden d-flex flex-column justify-content-between">
                                 <div>
-                                    <div class="d-flex align-items-center justify-content-between mb-3">
-                                        <span class="badge-screw badge-sakti-deep">Deep Learning</span>
-                                        <span class="small text-muted"><i class="fa-solid fa-eye"></i> {{ $item->views }}</span>
+                                    <!-- Foto Sampul Modul -->
+                                    <a href="{{ route('sakti.show', $item->slug) }}" class="d-block overflow-hidden position-relative" style="height: 180px;">
+                                        @if($item->image)
+                                            <img src="{{ $item->image }}" alt="{{ $item->title }}" class="w-100 h-100 object-fit-cover hover-scale" style="transition: transform 0.4s ease;">
+                                        @else
+                                            <div class="w-100 h-100 d-flex align-items-center justify-content-center text-white" style="background: linear-gradient(135deg, #0284c7, #0369a1);">
+                                                <i class="fa-solid fa-brain display-5 opacity-75"></i>
+                                            </div>
+                                        @endif
+                                    </a>
+                                    <div class="p-4 pb-0">
+                                        <div class="d-flex align-items-center justify-content-between mb-3">
+                                            <span class="badge-screw badge-sakti-deep">Deep Learning</span>
+                                            <span class="small text-muted"><i class="fa-solid fa-eye"></i> {{ $item->views }}</span>
+                                        </div>
+                                        <h5 class="fw-bold text-dark mb-2 line-clamp-2" title="{{ $item->title }}">
+                                            <a href="{{ route('sakti.show', $item->slug) }}" class="text-dark text-decoration-none hover-danger">
+                                                {{ $item->title }}
+                                            </a>
+                                        </h5>
+                                        <p class="small text-secondary line-clamp-2 mb-3">{{ $item->summary }}</p>
                                     </div>
-                                    <h5 class="fw-bold text-dark mb-2">{{ $item->title }}</h5>
-                                    <p class="small text-secondary line-clamp-2 mb-3">{{ $item->summary }}</p>
                                 </div>
-                                <div class="pt-3 border-top border-slate-100 d-flex align-items-center justify-content-between">
+                                <div class="p-4 pt-3 border-top border-slate-100 d-flex align-items-center justify-content-between">
                                     <span class="small text-muted"><i class="fa-regular fa-calendar"></i> {{ $item->created_at ? $item->created_at->format('d M Y') : 'Terbaru' }}</span>
                                     <a href="{{ route('sakti.show', $item->slug) }}" class="btn btn-outline-info btn-sm rounded-pill font-bold">Detail &rarr;</a>
                                 </div>
@@ -189,16 +205,32 @@
                 <div class="row g-4">
                     @forelse($rumahPendidikan as $item)
                         <div class="col-md-4">
-                            <div class="screw-card h-100 p-4 d-flex flex-column justify-content-between">
+                            <div class="screw-card h-100 overflow-hidden d-flex flex-column justify-content-between">
                                 <div>
-                                    <div class="d-flex align-items-center justify-content-between mb-3">
-                                        <span class="badge-screw badge-sakti-rumah">Rumah Pendidikan</span>
-                                        <span class="small text-muted"><i class="fa-solid fa-eye"></i> {{ $item->views }}</span>
+                                    <!-- Foto Sampul Modul -->
+                                    <a href="{{ route('sakti.show', $item->slug) }}" class="d-block overflow-hidden position-relative" style="height: 180px;">
+                                        @if($item->image)
+                                            <img src="{{ $item->image }}" alt="{{ $item->title }}" class="w-100 h-100 object-fit-cover hover-scale" style="transition: transform 0.4s ease;">
+                                        @else
+                                            <div class="w-100 h-100 d-flex align-items-center justify-content-center text-white" style="background: linear-gradient(135deg, #065f46, #047857);">
+                                                <i class="fa-solid fa-folder-open display-5 opacity-75"></i>
+                                            </div>
+                                        @endif
+                                    </a>
+                                    <div class="p-4 pb-0">
+                                        <div class="d-flex align-items-center justify-content-between mb-3">
+                                            <span class="badge-screw badge-sakti-rumah">Rumah Pendidikan</span>
+                                            <span class="small text-muted"><i class="fa-solid fa-eye"></i> {{ $item->views }}</span>
+                                        </div>
+                                        <h5 class="fw-bold text-dark mb-2 line-clamp-2" title="{{ $item->title }}">
+                                            <a href="{{ route('sakti.show', $item->slug) }}" class="text-dark text-decoration-none hover-danger">
+                                                {{ $item->title }}
+                                            </a>
+                                        </h5>
+                                        <p class="small text-secondary line-clamp-2 mb-3">{{ $item->summary }}</p>
                                     </div>
-                                    <h5 class="fw-bold text-dark mb-2">{{ $item->title }}</h5>
-                                    <p class="small text-secondary line-clamp-2 mb-3">{{ $item->summary }}</p>
                                 </div>
-                                <div class="pt-3 border-top border-slate-100 d-flex align-items-center justify-content-between">
+                                <div class="p-4 pt-3 border-top border-slate-100 d-flex align-items-center justify-content-between">
                                     <span class="small text-muted"><i class="fa-regular fa-calendar"></i> {{ $item->created_at ? $item->created_at->format('d M Y') : 'Terbaru' }}</span>
                                     <a href="{{ route('sakti.show', $item->slug) }}" class="btn btn-outline-success btn-sm rounded-pill font-bold">Detail &rarr;</a>
                                 </div>
@@ -215,16 +247,32 @@
                 <div class="row g-4">
                     @forelse($latestPid as $item)
                         <div class="col-md-4">
-                            <div class="screw-card h-100 p-4 d-flex flex-column justify-content-between">
+                            <div class="screw-card h-100 overflow-hidden d-flex flex-column justify-content-between">
                                 <div>
-                                    <div class="d-flex align-items-center justify-content-between mb-3">
-                                        <span class="badge-screw badge-sakti-pid">PID Informatif</span>
-                                        <span class="small text-muted"><i class="fa-solid fa-eye"></i> {{ $item->views }}</span>
+                                    <!-- Foto Sampul Modul -->
+                                    <a href="{{ route('sakti.show', $item->slug) }}" class="d-block overflow-hidden position-relative" style="height: 180px;">
+                                        @if($item->image)
+                                            <img src="{{ $item->image }}" alt="{{ $item->title }}" class="w-100 h-100 object-fit-cover hover-scale" style="transition: transform 0.4s ease;">
+                                        @else
+                                            <div class="w-100 h-100 d-flex align-items-center justify-content-center text-white" style="background: linear-gradient(135deg, #d97706, #b45309);">
+                                                <i class="fa-solid fa-bullhorn display-5 opacity-75"></i>
+                                            </div>
+                                        @endif
+                                    </a>
+                                    <div class="p-4 pb-0">
+                                        <div class="d-flex align-items-center justify-content-between mb-3">
+                                            <span class="badge-screw badge-sakti-pid">PID Informatif</span>
+                                            <span class="small text-muted"><i class="fa-solid fa-eye"></i> {{ $item->views }}</span>
+                                        </div>
+                                        <h5 class="fw-bold text-dark mb-2 line-clamp-2" title="{{ $item->title }}">
+                                            <a href="{{ route('sakti.show', $item->slug) }}" class="text-dark text-decoration-none hover-danger">
+                                                {{ $item->title }}
+                                            </a>
+                                        </h5>
+                                        <p class="small text-secondary line-clamp-2 mb-3">{{ $item->summary }}</p>
                                     </div>
-                                    <h5 class="fw-bold text-dark mb-2">{{ $item->title }}</h5>
-                                    <p class="small text-secondary line-clamp-2 mb-3">{{ $item->summary }}</p>
                                 </div>
-                                <div class="pt-3 border-top border-slate-100 d-flex align-items-center justify-content-between">
+                                <div class="p-4 pt-3 border-top border-slate-100 d-flex align-items-center justify-content-between">
                                     <span class="small text-muted"><i class="fa-regular fa-calendar"></i> {{ $item->created_at ? $item->created_at->format('d M Y') : 'Terbaru' }}</span>
                                     <a href="{{ route('sakti.show', $item->slug) }}" class="btn btn-outline-warning text-dark btn-sm rounded-pill font-bold">Detail &rarr;</a>
                                 </div>
@@ -241,16 +289,32 @@
                 <div class="row g-4">
                     @forelse($latestKoding as $item)
                         <div class="col-md-4">
-                            <div class="screw-card h-100 p-4 d-flex flex-column justify-content-between">
+                            <div class="screw-card h-100 overflow-hidden d-flex flex-column justify-content-between">
                                 <div>
-                                    <div class="d-flex align-items-center justify-content-between mb-3">
-                                        <span class="badge-screw badge-sakti-koding">Koding / KKA & AI</span>
-                                        <span class="small text-muted"><i class="fa-solid fa-eye"></i> {{ $item->views }}</span>
+                                    <!-- Foto Sampul Modul -->
+                                    <a href="{{ route('sakti.show', $item->slug) }}" class="d-block overflow-hidden position-relative" style="height: 180px;">
+                                        @if($item->image)
+                                            <img src="{{ $item->image }}" alt="{{ $item->title }}" class="w-100 h-100 object-fit-cover hover-scale" style="transition: transform 0.4s ease;">
+                                        @else
+                                            <div class="w-100 h-100 d-flex align-items-center justify-content-center text-white" style="background: linear-gradient(135deg, #7e22ce, #6b21a8);">
+                                                <i class="fa-solid fa-code display-5 opacity-75"></i>
+                                            </div>
+                                        @endif
+                                    </a>
+                                    <div class="p-4 pb-0">
+                                        <div class="d-flex align-items-center justify-content-between mb-3">
+                                            <span class="badge-screw badge-sakti-koding">Koding / KKA & AI</span>
+                                            <span class="small text-muted"><i class="fa-solid fa-eye"></i> {{ $item->views }}</span>
+                                        </div>
+                                        <h5 class="fw-bold text-dark mb-2 line-clamp-2" title="{{ $item->title }}">
+                                            <a href="{{ route('sakti.show', $item->slug) }}" class="text-dark text-decoration-none hover-danger">
+                                                {{ $item->title }}
+                                            </a>
+                                        </h5>
+                                        <p class="small text-secondary line-clamp-2 mb-3">{{ $item->summary }}</p>
                                     </div>
-                                    <h5 class="fw-bold text-dark mb-2">{{ $item->title }}</h5>
-                                    <p class="small text-secondary line-clamp-2 mb-3">{{ $item->summary }}</p>
                                 </div>
-                                <div class="pt-3 border-top border-slate-100 d-flex align-items-center justify-content-between">
+                                <div class="p-4 pt-3 border-top border-slate-100 d-flex align-items-center justify-content-between">
                                     <span class="small text-muted"><i class="fa-regular fa-calendar"></i> {{ $item->created_at ? $item->created_at->format('d M Y') : 'Terbaru' }}</span>
                                     @if($item->file_url)
                                         <a href="{{ $item->file_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-sm rounded-pill font-bold text-white px-3" style="background-color:#9333ea;">

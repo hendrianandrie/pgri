@@ -178,6 +178,17 @@
                        class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-red-500 focus:bg-white transition">
             </div>
 
+            <!-- 8. Isi Materi / Paragraf Modul -->
+            <div class="md:col-span-2">
+                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                    Isi Materi / Paragraf Pembelajaran (Opsional)
+                </label>
+                <textarea name="content" rows="4" 
+                          placeholder="Tuliskan isi atau uraian materi pembelajaran dalam bentuk paragraf di sini..." 
+                          class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-red-500 focus:bg-white transition">{{ old('content') }}</textarea>
+                <p class="text-[11px] text-slate-400 mt-1">Dapat diisi materi berupa paragraf lengkap yang akan dibaca oleh pengunjung pada halaman detail modul.</p>
+            </div>
+
             <div class="md:col-span-2 flex items-center justify-between pt-2">
                 <label class="flex items-center gap-2 cursor-pointer text-sm font-semibold text-slate-700">
                     <input type="checkbox" name="is_featured" value="1" class="rounded border-slate-300 text-red-600 focus:ring-red-500">

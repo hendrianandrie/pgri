@@ -130,6 +130,18 @@
             border-color: #cbd5e1;
         }
 
+        .screw-card:hover .hover-scale {
+            transform: scale(1.05);
+        }
+
+        .hover-danger {
+            transition: color 0.2s ease;
+        }
+
+        .hover-danger:hover {
+            color: #dc2626 !important;
+        }
+
         .screw-card-dark {
             background: var(--pgri-navy);
             color: #ffffff;
