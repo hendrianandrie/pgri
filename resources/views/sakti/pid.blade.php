@@ -65,20 +65,14 @@
         <div class="col-md-6 col-lg-4">
             <div class="card card-custom h-100 bg-white border-0 shadow-sm overflow-hidden d-flex flex-column hover-shadow transition">
                 <!-- Cover Image (Clickable directly to module link) -->
-                <a href="{{ $item->file_url ?: route('sakti.show', $item->slug) }}" 
-                   {!! $item->file_url ? 'target="_blank" rel="noopener noreferrer"' : '' !!} 
-                   class="d-block text-decoration-none overflow-hidden position-relative group">
+                <!-- Cover Image (Clickable to detail page) -->
+                <a href="{{ route('sakti.show', $item->slug) }}" class="d-block text-decoration-none overflow-hidden position-relative group">
                     @if($item->image)
                         <img src="{{ $item->image }}" class="card-img-top object-fit-cover w-100" alt="{{ $item->title }}" style="height: 190px;">
                     @else
                         <div class="w-100 d-flex align-items-center justify-content-center text-white" style="height: 190px; background: linear-gradient(135deg, #b45309, #d97706);">
                             <i class="fa-solid fa-bullhorn display-4 opacity-75"></i>
                         </div>
-                    @endif
-                    @if($item->file_url)
-                        <span class="position-absolute top-0 end-0 m-3 badge bg-dark bg-opacity-75 text-white rounded-pill px-2.5 py-1 extra-small">
-                            <i class="fa-solid fa-external-link-alt me-1"></i> Buka Dokumen
-                        </span>
                     @endif
                 </a>
 
@@ -101,11 +95,9 @@
                         <span class="small text-muted"><i class="fa-solid fa-eye me-1"></i> {{ $item->views }} views</span>
                     </div>
 
-                    <!-- Title (Clickable directly to module link) -->
+                    <!-- Title (Clickable to detail page) -->
                     <h5 class="fw-bold mb-2">
-                        <a href="{{ $item->file_url ?: route('sakti.show', $item->slug) }}" 
-                           {!! $item->file_url ? 'target="_blank" rel="noopener noreferrer"' : '' !!} 
-                           class="text-dark text-decoration-none hover-warning">
+                        <a href="{{ route('sakti.show', $item->slug) }}" class="text-dark text-decoration-none hover-warning">
                             {{ $item->title }}
                         </a>
                     </h5>
@@ -113,7 +105,7 @@
                     <p class="text-muted small mb-3 flex-grow-1">{{ Str::limit($item->summary, 120) }}</p>
 
                     <!-- Author & School/Instansi Info -->
-                    <div class="small text-muted mb-3">
+                    <div class="small text-muted mt-auto pt-3 border-top">
                         <div class="d-flex align-items-center gap-1">
                             <i class="fa-solid fa-user-pen text-secondary me-1"></i>
                             <span>Penerbit: <strong>{{ $item->author ?? 'Pengurus PGRI' }}</strong></span>
@@ -123,24 +115,6 @@
                                 <i class="fa-solid fa-building-columns text-muted me-1"></i>
                                 <span>{{ $item->school_origin }}</span>
                             </div>
-                        @endif
-                    </div>
-
-                    <!-- Buttons: Buka Link Modul Direct Button -->
-                    <div class="mt-auto d-flex align-items-center justify-content-between pt-3 border-top gap-2">
-                        @if($item->file_url)
-                            <a href="{{ $item->file_url }}" target="_blank" rel="noopener noreferrer" 
-                               class="btn btn-sm rounded-pill fw-bold text-white px-3 flex-grow-1 text-center shadow-sm" 
-                               style="background-color: #d97706;">
-                                <i class="fa-solid fa-arrow-up-right-from-square me-1"></i> Buka Tautan
-                            </a>
-                            <a href="{{ route('sakti.show', $item->slug) }}" class="btn btn-sm btn-outline-secondary rounded-pill" title="Detail Informasi Lengkap">
-                                <i class="fa-solid fa-circle-info"></i>
-                            </a>
-                        @else
-                            <a href="{{ route('sakti.show', $item->slug) }}" class="btn btn-sm rounded-pill fw-bold text-white px-3 w-100 text-center" style="background-color: #d97706;">
-                                Baca Selengkapnya <i class="fa-solid fa-arrow-right ms-1"></i>
-                            </a>
                         @endif
                     </div>
                 </div>
