@@ -42,11 +42,20 @@
 
                 <div class="p-3 bg-light rounded-3 border-start border-4 border-danger mb-4">
                     <h6 class="fw-bold text-dark mb-1"><i class="fa-solid fa-quote-left text-danger me-2"></i> Ringkasan Materi:</h6>
-                    <p class="text-muted small mb-0">{{ $content->summary }}</p>
+                    <p class="text-muted small mb-0 text-justify" style="text-align: justify; text-justify: inter-word;">{{ $content->summary }}</p>
                 </div>
 
-                <div class="lh-lg text-secondary fs-6 mb-4" style="text-align: justify;">
-                    {!! nl2br(e($content->content)) !!}
+                <div class="lh-lg text-secondary fs-6 mb-4 content-justified" style="text-align: justify; text-justify: inter-word;">
+                    @php
+                        $paragraphs = preg_split('/(\r\n\r\n|\n\n|\r\r)/', trim($content->content ?? ''));
+                    @endphp
+                    @foreach($paragraphs as $para)
+                        @if(trim($para))
+                            <p class="mb-3 text-justify" style="text-align: justify; text-justify: inter-word; line-height: 1.85;">
+                                {!! nl2br(e(trim($para))) !!}
+                            </p>
+                        @endif
+                    @endforeach
                 </div>
 
                 @if($content->file_url)

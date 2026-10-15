@@ -147,9 +147,10 @@
                     Isi Materi / Paragraf Pembelajaran (Opsional)
                 </label>
                 <textarea name="content" rows="5" 
-                          placeholder="Tuliskan isi atau uraian materi pembelajaran dalam bentuk paragraf di sini..." 
+                          placeholder="Tuliskan isi atau uraian materi pembelajaran dalam bentuk paragraf di sini (gunakan Enter untuk pemisah paragraf)..." 
+                          style="text-align: justify; text-justify: inter-word;"
                           class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-red-500 focus:bg-white transition">{{ old('content', $content->content) }}</textarea>
-                <p class="text-[11px] text-slate-400 mt-1">Dapat diisi materi berupa paragraf lengkap yang akan dibaca oleh pengunjung pada halaman detail modul.</p>
+                <p class="text-[11px] text-slate-400 mt-1"><i class="fa-solid fa-align-justify text-slate-400 me-1"></i>Dapat diisi beberapa paragraf (gunakan Enter ganda antar paragraf). Teks akan otomatis tampil rapi rata kiri-kanan di website.</p>
             </div>
 
             <!-- 8. Unggulan Checkbox -->

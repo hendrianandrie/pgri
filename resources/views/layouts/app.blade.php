@@ -288,6 +288,16 @@
         .pill-tab-btn.active {
             color: var(--pgri-red);
         }
+
+        /* Auto Justify Text / Paragraphs */
+        .text-justify, 
+        .article-content, 
+        .article-content p,
+        .content-justified,
+        .content-justified p {
+            text-align: justify;
+            text-justify: inter-word;
+        }
     </style>
 </head>
 <body>

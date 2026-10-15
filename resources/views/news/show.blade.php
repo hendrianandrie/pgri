@@ -78,15 +78,24 @@
                     <!-- Article Excerpt / Highlight -->
                     @if(!empty($news->excerpt))
                         <div class="p-3.5 rounded-3 bg-red-50 border-start border-4 border-danger mb-4">
-                            <p class="mb-0 text-dark fw-medium fs-6 leading-relaxed italic">
+                            <p class="mb-0 text-dark fw-medium fs-6 leading-relaxed italic text-justify" style="text-align: justify; text-justify: inter-word;">
                                 "{{ $news->excerpt }}"
                             </p>
                         </div>
                     @endif
 
                     <!-- Article Content Body -->
-                    <div class="article-content text-slate-800 leading-relaxed fs-6 mb-5" style="line-height: 1.85;">
-                        {!! nl2br(e($news->content)) !!}
+                    <div class="article-content text-slate-800 leading-relaxed fs-6 mb-5" style="text-align: justify; text-justify: inter-word;">
+                        @php
+                            $newsParagraphs = preg_split('/(\r\n\r\n|\n\n|\r\r)/', trim($news->content ?? ''));
+                        @endphp
+                        @foreach($newsParagraphs as $nPara)
+                            @if(trim($nPara))
+                                <p class="mb-3 text-justify" style="text-align: justify; text-justify: inter-word; line-height: 1.85;">
+                                    {!! nl2br(e(trim($nPara))) !!}
+                                </p>
+                            @endif
+                        @endforeach
                     </div>
 
                     <!-- Author Footer Box -->
