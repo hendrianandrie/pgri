@@ -24,7 +24,7 @@
             <a href="{{ route('admin.sakti.pid') }}" 
                class="flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl transition {{ $meta['category'] === 'pid' ? 'bg-amber-600 text-white shadow-md' : 'bg-slate-50 text-slate-600 hover:bg-slate-100' }}">
                 <i class="fa-solid fa-bullhorn {{ $meta['category'] === 'pid' ? 'text-white' : 'text-amber-500' }}"></i>
-                <span>Pusat Informasi & Data</span>
+                <span>Papan Interaktif Digital</span>
             </a>
 
             <a href="{{ route('admin.sakti.koding-kka') }}" 

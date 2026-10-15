@@ -59,7 +59,7 @@
 
                 <a href="{{ route('admin.sakti.pid') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg transition text-xs font-semibold {{ request()->routeIs('admin.sakti.pid') ? 'bg-red-700 text-white shadow-md' : 'text-slate-300 hover:text-white hover:bg-slate-800' }}">
                     <i class="fa-solid fa-bullhorn w-4 text-center text-amber-400"></i>
-                    <span>Pusat Informasi & Data</span>
+                    <span>Papan Interaktif Digital</span>
                 </a>
 
                 <a href="{{ route('admin.sakti.koding-kka') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg transition text-xs font-semibold {{ request()->routeIs('admin.sakti.koding-kka') ? 'bg-red-700 text-white shadow-md' : 'text-slate-300 hover:text-white hover:bg-slate-800' }}">

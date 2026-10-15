@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Pusat Informasi & Data (PID) — SAKTI PGRI')
+@section('title', 'Papan Interaktif Digital (PID) — SAKTI PGRI')
 
 @section('content')
 <div class="py-5 text-white" style="background: linear-gradient(135deg, #b45309 0%, #d97706 100%);">
@@ -8,10 +8,10 @@
         <div class="d-flex align-items-center gap-2 mb-2 text-white">
             <a href="{{ route('sakti.index') }}" class="text-white text-decoration-none small"><i class="fa-solid fa-arrow-left me-1"></i> Portofolio SAKTI</a>
             <span class="text-white-50">/</span>
-            <span class="small text-white">PID</span>
+            <span class="small text-white">PID (Papan Interaktif Digital)</span>
         </div>
-        <h1 class="display-5 fw-extrabold text-white mb-2">PID (Pusat Informasi &amp; Data) PGRI</h1>
-        <p class="lead opacity-90 text-white mb-0">Warta Resmi, Edaran Digital, Kebijakan Organisasi, dan Publikasi Edukasi Terpercaya.</p>
+        <h1 class="display-5 fw-extrabold text-white mb-2">PID (Papan Interaktif Digital) PGRI</h1>
+        <p class="lead opacity-90 text-white mb-0">Media Pembelajaran Interaktif, Konten Layar Digital, dan Modul Visual untuk Ruang Kelas Interaktif.</p>
     </div>
 </div>
 
@@ -22,7 +22,7 @@
             <div class="col-lg-6 col-md-5">
                 <div class="input-group">
                     <span class="input-group-text bg-light border-0"><i class="fa-solid fa-magnifying-glass text-muted"></i></span>
-                    <input type="text" name="search" class="form-control bg-light border-0" placeholder="Cari Dokumen, Edaran, Penulis..." value="{{ request('search') }}">
+                    <input type="text" name="search" class="form-control bg-light border-0" placeholder="Cari Modul PID, Media Interaktif, Penulis..." value="{{ request('search') }}">
                 </div>
             </div>
             <div class="col-lg-4 col-md-4">
@@ -90,7 +90,7 @@
                             };
                         @endphp
                         <span class="badge rounded-pill px-3 py-1 fw-bold" style="{{ $badgeStyle }}">
-                            {{ $item->badge ?? 'Informasi PID' }}
+                            {{ $item->badge ?? 'Modul PID' }}
                         </span>
                         <span class="small text-muted"><i class="fa-solid fa-eye me-1"></i> {{ $item->views }} views</span>
                     </div>
@@ -123,8 +123,8 @@
         @empty
         <div class="col-12 text-center py-5">
             <div class="text-muted fs-4 mb-2"><i class="fa-solid fa-circle-exclamation text-warning"></i></div>
-            <h5 class="fw-bold text-dark">Informasi Tidak Ditemukan</h5>
-            <p class="text-muted small">Coba ubah kata kunci pencarian atau pilihan sasaran Anda.</p>
+            <h5 class="fw-bold text-dark">Modul PID Tidak Ditemukan</h5>
+            <p class="text-muted small">Coba ubah kata kunci pencarian atau pilihan sasaran jenjang Anda.</p>
         </div>
         @endforelse
     </div>

@@ -9,7 +9,7 @@
         <span class="badge bg-warning text-dark rounded-pill px-3 py-2 fw-bold mb-3">SISTEM AKSES KOMUNITAS &amp; TRANSFORMASI INOVASI</span>
         <h1 class="display-5 fw-extrabold text-white tracking-tight">Ekosistem SAKTI PGRI</h1>
         <p class="lead opacity-90 max-w-2xl mx-auto mb-0" style="max-width: 750px;">
-            Portal terpadu untuk pembelajaran mendalam, repositori perangkat ajar, pusat informasi digital, serta pengembangan koding &amp; AI bagi seluruh guru di Indonesia.
+            Portal terpadu untuk pembelajaran mendalam, repositori perangkat ajar, papan interaktif digital, serta pengembangan koding &amp; AI bagi seluruh guru di Indonesia.
         </p>
     </div>
 </div>
@@ -69,13 +69,13 @@
                         <i class="fa-solid fa-bullhorn"></i>
                     </div>
                     <div>
-                        <h4 class="fw-extrabold text-dark mb-0">PID (Pusat Informasi Digital)</h4>
-                        <span class="badge badge-sakti badge-sakti-pid">Portal Berita &amp; Edaran</span>
+                        <h4 class="fw-extrabold text-dark mb-0">PID (Papan Interaktif Digital)</h4>
+                        <span class="badge badge-sakti badge-sakti-pid">Media &amp; Layar Interaktif</span>
                     </div>
                 </div>
-                <p class="text-secondary mb-4">Pusat siaran berita resmi Pengurus Besar PGRI, rilis edaran organisasi, artikel isu pendidikan nasional, dan advokasi hukum guru.</p>
+                <p class="text-secondary mb-4">Pemanfaatan media pembelajaran interaktif berbasis layar digital, materi presentasi visual dinamis, serta konten edukatif untuk mendukung ruang kelas interaktif.</p>
                 <div class="mt-auto pt-2 border-top d-flex justify-content-between align-items-center">
-                    <span class="small text-muted">{{ $pid->count() }} Berita &amp; Rilis</span>
+                    <span class="small text-muted">{{ $pid->count() }} Media &amp; Modul</span>
                     <a href="{{ route('sakti.pid') }}" class="btn btn-warning text-dark btn-sm rounded-pill px-4 fw-bold">
                         Masuk Modul <i class="fa-solid fa-arrow-right ms-1"></i>
                     </a>

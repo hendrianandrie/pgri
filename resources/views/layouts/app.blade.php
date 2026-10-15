@@ -357,8 +357,8 @@
                                         <i class="fa-solid fa-bullhorn fs-6"></i>
                                     </div>
                                     <div>
-                                        <div class="fw-bold text-dark small">PID (Pusat Informasi Digital)</div>
-                                        <div class="text-muted extra-small" style="font-size: 0.72rem;">Portal Berita & Edaran Resmi</div>
+                                        <div class="fw-bold text-dark small">PID (Papan Interaktif Digital)</div>
+                                        <div class="text-muted extra-small" style="font-size: 0.72rem;">Media Pembelajaran & Layar Interaktif</div>
                                     </div>
                                 </a>
                             </li>
@@ -468,7 +468,7 @@
                     <ul class="list-unstyled small d-flex flex-column gap-2.5">
                         <li><a href="{{ route('sakti.pembelajaran-mendalam') }}" class="text-white-50 text-decoration-none"><i class="fa-solid fa-brain text-info me-2"></i> Pembelajaran Mendalam</a></li>
                         <li><a href="{{ route('sakti.rumah-pendidikan') }}" class="text-white-50 text-decoration-none"><i class="fa-solid fa-folder-open text-success me-2"></i> Rumah Pendidikan</a></li>
-                        <li><a href="{{ route('sakti.pid') }}" class="text-white-50 text-decoration-none"><i class="fa-solid fa-bullhorn text-warning me-2"></i> PID (Pusat Informasi Digital)</a></li>
+                        <li><a href="{{ route('sakti.pid') }}" class="text-white-50 text-decoration-none"><i class="fa-solid fa-bullhorn text-warning me-2"></i> PID (Papan Interaktif Digital)</a></li>
                         <li><a href="{{ route('sakti.koding-kka') }}" class="text-white-50 text-decoration-none"><i class="fa-solid fa-code me-2" style="color:#c084fc;"></i> Koding / KKA & AI</a></li>
                     </ul>
                 </div>

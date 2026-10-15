@@ -148,7 +148,7 @@
                     <i class="fa-solid fa-folder-open me-1 text-success"></i> Rumah Pendidikan
                 </button>
                 <button class="pill-tab-btn" id="tab-pid-btn" data-bs-toggle="pill" data-bs-target="#tab-pid" type="button">
-                    <i class="fa-solid fa-bullhorn me-1 text-warning"></i> PID (Pusat Informasi)
+                    <i class="fa-solid fa-bullhorn me-1 text-warning"></i> PID (Papan Interaktif Digital)
                 </button>
                 <button class="pill-tab-btn" id="tab-koding-btn" data-bs-toggle="pill" data-bs-target="#tab-koding" type="button">
                     <i class="fa-solid fa-code me-1" style="color:#c084fc;"></i> Koding & AI (KKA)
@@ -261,7 +261,7 @@
                                     </a>
                                     <div class="p-4 pb-0">
                                         <div class="d-flex align-items-center justify-content-between mb-3">
-                                            <span class="badge-screw badge-sakti-pid">PID Informatif</span>
+                                            <span class="badge-screw badge-sakti-pid">Papan Interaktif</span>
                                             <span class="small text-muted"><i class="fa-solid fa-eye"></i> {{ $item->views }}</span>
                                         </div>
                                         <h5 class="fw-bold text-dark mb-2 line-clamp-2" title="{{ $item->title }}">
@@ -279,7 +279,7 @@
                             </div>
                         </div>
                     @empty
-                        <div class="col-12 text-center py-5 text-muted">Belum ada informasi PID.</div>
+                        <div class="col-12 text-center py-5 text-muted">Belum ada modul Papan Interaktif Digital.</div>
                     @endforelse
                 </div>
             </div>
@@ -509,7 +509,7 @@
                         </h2>
                         <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
                             <div class="accordion-body text-secondary small leading-relaxed">
-                                Ya! Seluruh modul Pembelajaran Mendalam, Rumah Pendidikan, Berita PID, serta pelatihan awal Koding/KKA & AI dapat diakses secara gratis oleh seluruh guru dan pendidik di Indonesia.
+                                Ya! Seluruh modul Pembelajaran Mendalam, Rumah Pendidikan, Papan Interaktif Digital (PID), serta pelatihan awal Koding/KKA & AI dapat diakses secara gratis oleh seluruh guru dan pendidik di Indonesia.
                             </div>
                         </div>
                     </div>

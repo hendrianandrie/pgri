@@ -127,7 +127,7 @@ class DatabaseSeeder extends Seeder
                 'published_at' => now()->subDays(4),
             ],
 
-            // PID (Pusat Informasi Digital)
+            // PID (Papan Interaktif Digital)
             [
                 'category' => 'pid',
                 'title' => 'Siaran Resmi PGRI: Dorong Peningkatan Kesejahteraan & Kepastian Status Guru',

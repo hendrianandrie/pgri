@@ -8,7 +8,13 @@
         <div class="d-flex align-items-center gap-2 mb-3">
             <a href="{{ route('sakti.index') }}" class="text-white-50 text-decoration-none small"><i class="fa-solid fa-arrow-left me-1"></i> SAKTI PGRI</a>
             <span class="text-white-50">/</span>
-            <span class="small text-warning text-capitalize">{{ str_replace('_', ' ', $content->category) }}</span>
+            <span class="small text-warning">
+                @if($content->category === 'pid')
+                    PID (Papan Interaktif Digital)
+                @else
+                    {{ ucwords(str_replace('_', ' ', $content->category)) }}
+                @endif
+            </span>
         </div>
         <h1 class="display-6 fw-extrabold text-white mb-3" style="max-width: 900px;">{{ $content->title }}</h1>
         

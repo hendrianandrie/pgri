@@ -26,7 +26,7 @@ class AdminSaktiController extends Controller
 
     public function pid(Request $request)
     {
-        return $this->renderPillarView($request, 'pid', 'PID (Pusat Informasi & Data)', 'Warta Resmi, Berita & Edaran Digital', 'bullhorn', 'amber');
+        return $this->renderPillarView($request, 'pid', 'PID (Papan Interaktif Digital)', 'Media & Konten Papan Interaktif Digital', 'bullhorn', 'amber');
     }
 
     public function kodingKka(Request $request)
@@ -41,10 +41,10 @@ class AdminSaktiController extends Controller
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function ($q) use ($search) {
-                $q->where('title', 'like', '%' . $search . '%')
-                  ->orWhere('author', 'like', '%' . $search . '%')
-                  ->orWhere('school_origin', 'like', '%' . $search . '%')
-                  ->orWhere('badge', 'like', '%' . $search . '%');
+                $q->where('title', 'like', '%'.$search.'%')
+                    ->orWhere('author', 'like', '%'.$search.'%')
+                    ->orWhere('school_origin', 'like', '%'.$search.'%')
+                    ->orWhere('badge', 'like', '%'.$search.'%');
             });
         }
 
@@ -91,20 +91,20 @@ class AdminSaktiController extends Controller
         // Handle Image Upload
         if ($request->hasFile('image_file')) {
             $file = $request->file('image_file');
-            $filename = 'sakti_' . time() . '_' . Str::random(8) . '.' . $file->getClientOriginalExtension();
+            $filename = 'sakti_'.time().'_'.Str::random(8).'.'.$file->getClientOriginalExtension();
             $path = $file->storeAs('sakti', $filename, 'public');
-            $validated['image'] = '/storage/' . $path;
+            $validated['image'] = '/storage/'.$path;
         }
 
         // Author and school origin text
-        $authorText = !empty($validated['author']) ? $validated['author'] : 'Pengurus PGRI';
-        $badgeText = !empty($validated['badge']) ? $validated['badge'] : 'Umum';
-        $schoolText = !empty($validated['school_origin']) ? " ({$validated['school_origin']})" : "";
+        $authorText = ! empty($validated['author']) ? $validated['author'] : 'Pengurus PGRI';
+        $badgeText = ! empty($validated['badge']) ? $validated['badge'] : 'Umum';
+        $schoolText = ! empty($validated['school_origin']) ? " ({$validated['school_origin']})" : '';
 
-        $categoryName = match($validated['category']) {
+        $categoryName = match ($validated['category']) {
             'pembelajaran_mendalam' => 'Pembelajaran Mendalam',
             'rumah_pendidikan' => 'Rumah Pendidikan',
-            'pid' => 'Pusat Informasi & Data',
+            'pid' => 'Papan Interaktif Digital',
             'koding_kka' => 'Koding & KKA',
             default => 'SAKTI',
         };
@@ -118,7 +118,7 @@ class AdminSaktiController extends Controller
         }
 
         $validated['author'] = $authorText;
-        $validated['slug'] = Str::slug($validated['title']) . '-' . rand(100, 999);
+        $validated['slug'] = Str::slug($validated['title']).'-'.rand(100, 999);
         $validated['is_featured'] = $request->has('is_featured');
         $validated['published_at'] = now();
 
@@ -132,7 +132,7 @@ class AdminSaktiController extends Controller
             default => 'admin.sakti.index',
         };
 
-        return redirect()->route($redirectRoute)->with('success', 'Modul ' . $categoryName . ' berhasil ditambahkan!');
+        return redirect()->route($redirectRoute)->with('success', 'Modul '.$categoryName.' berhasil ditambahkan!');
     }
 
     public function edit($id)
@@ -158,8 +158,8 @@ class AdminSaktiController extends Controller
             ],
             'pid' => [
                 'category' => 'pid',
-                'title' => 'PID (Pusat Informasi & Data)',
-                'subtitle' => 'Warta Resmi, Berita & Edaran Digital',
+                'title' => 'PID (Papan Interaktif Digital)',
+                'subtitle' => 'Media & Konten Papan Interaktif Digital',
                 'icon' => 'bullhorn',
                 'color' => 'amber',
                 'back_route' => 'admin.sakti.pid',
@@ -210,26 +210,26 @@ class AdminSaktiController extends Controller
 
         if ($request->hasFile('image_file')) {
             $file = $request->file('image_file');
-            $filename = 'sakti_' . time() . '_' . Str::random(8) . '.' . $file->getClientOriginalExtension();
+            $filename = 'sakti_'.time().'_'.Str::random(8).'.'.$file->getClientOriginalExtension();
             $path = $file->storeAs('sakti', $filename, 'public');
-            $validated['image'] = '/storage/' . $path;
+            $validated['image'] = '/storage/'.$path;
         }
 
-        $authorText = !empty($validated['author']) ? $validated['author'] : ($content->author ?: 'Pengurus PGRI');
+        $authorText = ! empty($validated['author']) ? $validated['author'] : ($content->author ?: 'Pengurus PGRI');
         $validated['author'] = $authorText;
         $validated['school_origin'] = $validated['school_origin'] ?? $content->school_origin;
         $validated['is_featured'] = $request->has('is_featured');
 
         if (empty($validated['summary'])) {
-            $schoolText = !empty($validated['school_origin']) ? " ({$validated['school_origin']})" : "";
-            $validated['summary'] = $content->summary ?: "Modul {$validated['title']} untuk jenjang " . ($validated['badge'] ?? 'Umum') . ", disusun oleh {$validated['author']}{$schoolText}";
+            $schoolText = ! empty($validated['school_origin']) ? " ({$validated['school_origin']})" : '';
+            $validated['summary'] = $content->summary ?: "Modul {$validated['title']} untuk jenjang ".($validated['badge'] ?? 'Umum').", disusun oleh {$validated['author']}{$schoolText}";
         }
         if (empty($validated['content'])) {
-            $validated['content'] = $content->content ?: "Modul pembelajaran SAKTI PGRI.";
+            $validated['content'] = $content->content ?: 'Modul pembelajaran SAKTI PGRI.';
         }
 
         if ($validated['title'] !== $content->title) {
-            $validated['slug'] = Str::slug($validated['title']) . '-' . rand(100, 999);
+            $validated['slug'] = Str::slug($validated['title']).'-'.rand(100, 999);
         }
 
         $content->update($validated);
