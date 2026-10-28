@@ -16,15 +16,15 @@ class AdminGalleryController extends Controller
 
         $query = Gallery::latest('event_date')->latest('id');
 
-        if (!empty($search)) {
+        if (! empty($search)) {
             $query->where(function ($q) use ($search) {
                 $q->where('title', 'like', "%{$search}%")
-                  ->orWhere('location', 'like', "%{$search}%")
-                  ->orWhere('description', 'like', "%{$search}%");
+                    ->orWhere('location', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%");
             });
         }
 
-        if (!empty($category) && $category !== 'all') {
+        if (! empty($category) && $category !== 'all') {
             $query->where('category', $category);
         }
 
@@ -36,7 +36,7 @@ class AdminGalleryController extends Controller
             'Workshop & Diklat' => 'Workshop & Diklat',
             'HUT PGRI & HGN' => 'HUT PGRI & HGN',
             'Kemanusiaan & Sosial' => 'Kemanusiaan & Sosial',
-            'Lainnya' => 'Lainnya'
+            'Lainnya' => 'Lainnya',
         ];
 
         return view('admin.galleries.index', compact('galleries', 'categories', 'search', 'category'));
@@ -61,10 +61,10 @@ class AdminGalleryController extends Controller
         $cover = null;
         if ($request->hasFile('cover_file')) {
             $file = $request->file('cover_file');
-            $filename = 'cover_' . time() . '_' . Str::random(8) . '.' . $file->getClientOriginalExtension();
+            $filename = 'cover_'.time().'_'.Str::random(8).'.'.$file->getClientOriginalExtension();
             $path = $file->storeAs('galleries/covers', $filename, 'public');
-            $cover = '/storage/' . $path;
-        } elseif (!empty($validated['cover_url'])) {
+            $cover = '/storage/'.$path;
+        } elseif (! empty($validated['cover_url'])) {
             $cover = $validated['cover_url'];
         }
 
@@ -73,31 +73,31 @@ class AdminGalleryController extends Controller
         if ($request->hasFile('photo_files')) {
             foreach ($request->file('photo_files') as $file) {
                 if ($file->isValid()) {
-                    $filename = 'doc_' . time() . '_' . Str::random(8) . '.' . $file->getClientOriginalExtension();
+                    $filename = 'doc_'.time().'_'.Str::random(8).'.'.$file->getClientOriginalExtension();
                     $path = $file->storeAs('galleries/photos', $filename, 'public');
-                    $photos[] = '/storage/' . $path;
+                    $photos[] = '/storage/'.$path;
                 }
             }
         }
 
         // Process additional photo URLs (separated by newlines or commas)
-        if (!empty($validated['photo_urls'])) {
+        if (! empty($validated['photo_urls'])) {
             $urls = preg_split('/[\r\n,]+/', $validated['photo_urls']);
             foreach ($urls as $url) {
                 $trimmed = trim($url);
-                if (!empty($trimmed) && filter_var($trimmed, FILTER_VALIDATE_URL)) {
+                if (! empty($trimmed) && filter_var($trimmed, FILTER_VALIDATE_URL)) {
                     $photos[] = $trimmed;
                 }
             }
         }
 
         // If no cover is uploaded but photos are uploaded, use first photo as cover
-        if (empty($cover) && !empty($photos)) {
+        if (empty($cover) && ! empty($photos)) {
             $cover = $photos[0];
         }
 
         // If cover is present but no extra photos, put cover into photos array
-        if (!empty($cover) && empty($photos)) {
+        if (! empty($cover) && empty($photos)) {
             $photos[] = $cover;
         }
 
@@ -148,11 +148,11 @@ class AdminGalleryController extends Controller
         // Update cover if new one provided
         if ($request->hasFile('cover_file')) {
             $file = $request->file('cover_file');
-            $filename = 'cover_' . time() . '_' . Str::random(8) . '.' . $file->getClientOriginalExtension();
+            $filename = 'cover_'.time().'_'.Str::random(8).'.'.$file->getClientOriginalExtension();
             $path = $file->storeAs('galleries/covers', $filename, 'public');
-            $gallery->cover_image = '/storage/' . $path;
+            $gallery->cover_image = '/storage/'.$path;
             $gallery->image = $gallery->cover_image;
-        } elseif (!empty($validated['cover_url'])) {
+        } elseif (! empty($validated['cover_url'])) {
             $gallery->cover_image = $validated['cover_url'];
             $gallery->image = $gallery->cover_image;
         }
@@ -161,9 +161,9 @@ class AdminGalleryController extends Controller
         $currentPhotos = $gallery->photos_list;
 
         // Remove photos marked for deletion
-        if (!empty($validated['remove_photos']) && is_array($validated['remove_photos'])) {
-            $currentPhotos = array_values(array_filter($currentPhotos, function($p) use ($validated) {
-                return !in_array($p, $validated['remove_photos']);
+        if (! empty($validated['remove_photos']) && is_array($validated['remove_photos'])) {
+            $currentPhotos = array_values(array_filter($currentPhotos, function ($p) use ($validated) {
+                return ! in_array($p, $validated['remove_photos']);
             }));
         }
 
@@ -171,25 +171,25 @@ class AdminGalleryController extends Controller
         if ($request->hasFile('photo_files')) {
             foreach ($request->file('photo_files') as $file) {
                 if ($file->isValid()) {
-                    $filename = 'doc_' . time() . '_' . Str::random(8) . '.' . $file->getClientOriginalExtension();
+                    $filename = 'doc_'.time().'_'.Str::random(8).'.'.$file->getClientOriginalExtension();
                     $path = $file->storeAs('galleries/photos', $filename, 'public');
-                    $currentPhotos[] = '/storage/' . $path;
+                    $currentPhotos[] = '/storage/'.$path;
                 }
             }
         }
 
         // Append newly provided photo URLs
-        if (!empty($validated['photo_urls'])) {
+        if (! empty($validated['photo_urls'])) {
             $urls = preg_split('/[\r\n,]+/', $validated['photo_urls']);
             foreach ($urls as $url) {
                 $trimmed = trim($url);
-                if (!empty($trimmed) && filter_var($trimmed, FILTER_VALIDATE_URL)) {
+                if (! empty($trimmed) && filter_var($trimmed, FILTER_VALIDATE_URL)) {
                     $currentPhotos[] = $trimmed;
                 }
             }
         }
 
-        if (empty($currentPhotos) && !empty($gallery->cover_image)) {
+        if (empty($currentPhotos) && ! empty($gallery->cover_image)) {
             $currentPhotos[] = $gallery->cover_image;
         }
 

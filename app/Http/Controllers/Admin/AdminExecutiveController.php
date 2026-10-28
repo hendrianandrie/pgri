@@ -12,6 +12,7 @@ class AdminExecutiveController extends Controller
     public function index()
     {
         $executives = Executive::orderBy('order', 'asc')->get();
+
         return view('admin.executives.index', compact('executives'));
     }
 
@@ -30,7 +31,7 @@ class AdminExecutiveController extends Controller
         ]);
 
         // Normalize unit / department
-        $unit = !empty($validated['unit']) ? $validated['unit'] : (!empty($validated['department']) ? $validated['department'] : 'Pengurus Besar');
+        $unit = ! empty($validated['unit']) ? $validated['unit'] : (! empty($validated['department']) ? $validated['department'] : 'Pengurus Besar');
         $validated['unit'] = $unit;
 
         // Normalize order
@@ -40,9 +41,9 @@ class AdminExecutiveController extends Controller
         // Handle Photo Upload
         if ($request->hasFile('photo_file')) {
             $file = $request->file('photo_file');
-            $filename = 'executive_' . time() . '_' . Str::random(8) . '.' . $file->getClientOriginalExtension();
+            $filename = 'executive_'.time().'_'.Str::random(8).'.'.$file->getClientOriginalExtension();
             $path = $file->storeAs('executives', $filename, 'public');
-            $validated['photo'] = '/storage/' . $path;
+            $validated['photo'] = '/storage/'.$path;
         } elseif (empty($validated['photo'])) {
             $validated['photo'] = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=400';
         }
@@ -69,9 +70,9 @@ class AdminExecutiveController extends Controller
         ]);
 
         // Normalize unit / department
-        if (!empty($validated['unit'])) {
+        if (! empty($validated['unit'])) {
             $validated['unit'] = $validated['unit'];
-        } elseif (!empty($validated['department'])) {
+        } elseif (! empty($validated['department'])) {
             $validated['unit'] = $validated['department'];
         }
 
@@ -85,9 +86,9 @@ class AdminExecutiveController extends Controller
         // Handle Photo Upload
         if ($request->hasFile('photo_file')) {
             $file = $request->file('photo_file');
-            $filename = 'executive_' . time() . '_' . Str::random(8) . '.' . $file->getClientOriginalExtension();
+            $filename = 'executive_'.time().'_'.Str::random(8).'.'.$file->getClientOriginalExtension();
             $path = $file->storeAs('executives', $filename, 'public');
-            $validated['photo'] = '/storage/' . $path;
+            $validated['photo'] = '/storage/'.$path;
         }
 
         $executive->update($validated);

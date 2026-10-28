@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Executive;
 use App\Models\Setting;
-use Illuminate\Http\Request;
 
 class ProfileController extends Controller
 {
@@ -20,7 +19,7 @@ class ProfileController extends Controller
         ];
 
         $rawMisi = Setting::get('profile_misi');
-        if (!empty($rawMisi)) {
+        if (! empty($rawMisi)) {
             $decoded = json_decode($rawMisi, true);
             $misiList = is_array($decoded) ? $decoded : array_values(array_filter(array_map('trim', explode("\n", $rawMisi))));
         } else {

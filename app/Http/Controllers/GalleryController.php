@@ -13,8 +13,8 @@ class GalleryController extends Controller
 
         $category = $request->input('category', 'all');
 
-        if ($category !== 'all' && !empty($category)) {
-            $query->where('category', 'like', '%' . $category . '%');
+        if ($category !== 'all' && ! empty($category)) {
+            $query->where('category', 'like', '%'.$category.'%');
         }
 
         $galleries = $query->latest('event_date')->latest('id')->paginate(12)->withQueryString();

@@ -30,16 +30,16 @@ class Gallery extends Model
      */
     public function getCoverPhotoAttribute(): string
     {
-        if (!empty($this->cover_image)) {
+        if (! empty($this->cover_image)) {
             return $this->cover_image;
         }
 
-        if (!empty($this->image)) {
+        if (! empty($this->image)) {
             return $this->image;
         }
 
         $photos = $this->photos_list;
-        if (!empty($photos)) {
+        if (! empty($photos)) {
             return $photos[0];
         }
 
@@ -55,7 +55,7 @@ class Gallery extends Model
 
         if (is_array($this->photos)) {
             $list = array_values(array_filter($this->photos));
-        } elseif (is_string($this->photos) && !empty($this->photos)) {
+        } elseif (is_string($this->photos) && ! empty($this->photos)) {
             $decoded = json_decode($this->photos, true);
             if (is_array($decoded)) {
                 $list = array_values(array_filter($decoded));
@@ -64,9 +64,9 @@ class Gallery extends Model
 
         // If list is empty, fallback to cover or image
         if (empty($list)) {
-            if (!empty($this->cover_image)) {
+            if (! empty($this->cover_image)) {
                 $list[] = $this->cover_image;
-            } elseif (!empty($this->image)) {
+            } elseif (! empty($this->image)) {
                 $list[] = $this->image;
             }
         }

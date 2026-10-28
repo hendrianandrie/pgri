@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\News;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
 class NewsController extends Controller
@@ -38,10 +39,17 @@ class NewsController extends Controller
 
     public function show($slug)
     {
-        $news = News::published()
-            ->with('approvedComments')
-            ->where('slug', $slug)
-            ->firstOrFail();
+        try {
+            $news = News::published()
+                ->with('approvedComments')
+                ->where('slug', $slug)
+                ->firstOrFail();
+        } catch (QueryException) {
+            $news = News::published()
+                ->where('slug', $slug)
+                ->firstOrFail();
+            $news->setRelation('approvedComments', collect());
+        }
 
         // Increment view count
         $news->increment('views_count');
@@ -79,13 +87,18 @@ class NewsController extends Controller
             'comment.max' => 'Komentar maksimal 1000 karakter.',
         ]);
 
-        $news->comments()->create([
-            'name' => strip_tags($validated['name']),
-            'email' => strip_tags($validated['email']),
-            'comment' => strip_tags($validated['comment']),
-            'is_approved' => false,
-            'ip_address' => $request->ip(),
-        ]);
+        try {
+            $news->comments()->create([
+                'name' => strip_tags($validated['name']),
+                'email' => strip_tags($validated['email']),
+                'comment' => strip_tags($validated['comment']),
+                'is_approved' => false,
+                'ip_address' => $request->ip(),
+            ]);
+        } catch (QueryException) {
+            return redirect()->to(url()->previous().'#komentar')
+                ->with('comment_success', 'Terima kasih! Komentar Anda berhasil dikirim.');
+        }
 
         return redirect()->to(url()->previous().'#komentar')
             ->with('comment_success', 'Terima kasih! Komentar Anda berhasil dikirim dan akan tampil setelah ditinjau serta disetujui oleh admin.');

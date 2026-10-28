@@ -12,7 +12,7 @@ class AdminSettingController extends Controller
     public function heroSettings()
     {
         $rawSlides = Setting::get('hero_slides');
-        if (!empty($rawSlides)) {
+        if (! empty($rawSlides)) {
             $slides = json_decode($rawSlides, true) ?: [];
         } else {
             $currentImg = Setting::get('hero_image', '/storage/hero/hero_1790667887_WBKNbozY.jpeg');
@@ -84,7 +84,7 @@ class AdminSettingController extends Controller
 
         // Manage slides array
         $slides = $request->input('existing_slides', []);
-        if (!is_array($slides)) {
+        if (! is_array($slides)) {
             $slides = [];
         }
 
@@ -92,9 +92,9 @@ class AdminSettingController extends Controller
         if ($request->hasFile('new_slide_files')) {
             foreach ($request->file('new_slide_files') as $file) {
                 if ($file->isValid()) {
-                    $filename = 'hero_' . time() . '_' . Str::random(8) . '.' . $file->getClientOriginalExtension();
+                    $filename = 'hero_'.time().'_'.Str::random(8).'.'.$file->getClientOriginalExtension();
                     $path = $file->storeAs('hero', $filename, 'public');
-                    $slides[] = '/storage/' . $path;
+                    $slides[] = '/storage/'.$path;
                 }
             }
         }
@@ -102,23 +102,23 @@ class AdminSettingController extends Controller
         // Handle single legacy file if any
         if ($request->hasFile('image_file')) {
             $file = $request->file('image_file');
-            $filename = 'hero_' . time() . '_' . Str::random(8) . '.' . $file->getClientOriginalExtension();
+            $filename = 'hero_'.time().'_'.Str::random(8).'.'.$file->getClientOriginalExtension();
             $path = $file->storeAs('hero', $filename, 'public');
-            $slides[] = '/storage/' . $path;
+            $slides[] = '/storage/'.$path;
         }
 
         // Handle new slide URL(s)
-        if (!empty($request->input('new_slide_url'))) {
+        if (! empty($request->input('new_slide_url'))) {
             $newUrls = preg_split('/\r\n|\r|\n/', $request->input('new_slide_url'));
             foreach ($newUrls as $url) {
                 $trimmedUrl = trim($url);
-                if (!empty($trimmedUrl)) {
+                if (! empty($trimmedUrl)) {
                     $slides[] = $trimmedUrl;
                 }
             }
         }
 
-        if (!empty($validated['image_url'])) {
+        if (! empty($validated['image_url'])) {
             $slides[] = trim($validated['image_url']);
         }
 
@@ -178,7 +178,7 @@ class AdminSettingController extends Controller
     public function profileSettings()
     {
         $rawMisi = Setting::get('profile_misi');
-        if (!empty($rawMisi)) {
+        if (! empty($rawMisi)) {
             $decoded = json_decode($rawMisi, true);
             $misiText = is_array($decoded) ? implode("\n", $decoded) : $rawMisi;
         } else {

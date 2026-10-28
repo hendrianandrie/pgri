@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('comments', function (Blueprint $table) {
-            $table->foreignId('news_id')->nullable()->change();
-            $table->foreignId('sakti_content_id')->nullable()->after('news_id')->constrained('sakti_contents')->cascadeOnDelete();
-        });
+        if (Schema::hasTable('comments') && ! Schema::hasColumn('comments', 'sakti_content_id')) {
+            Schema::table('comments', function (Blueprint $table) {
+                $table->foreignId('sakti_content_id')->nullable()->after('news_id')->constrained('sakti_contents')->cascadeOnDelete();
+            });
+        }
     }
 
     /**
@@ -22,9 +23,11 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('comments', function (Blueprint $table) {
-            $table->dropForeign(['sakti_content_id']);
-            $table->dropColumn('sakti_content_id');
-        });
+        if (Schema::hasTable('comments') && Schema::hasColumn('comments', 'sakti_content_id')) {
+            Schema::table('comments', function (Blueprint $table) {
+                $table->dropForeign(['sakti_content_id']);
+                $table->dropColumn('sakti_content_id');
+            });
+        }
     }
 };

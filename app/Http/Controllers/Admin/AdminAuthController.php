@@ -13,6 +13,7 @@ class AdminAuthController extends Controller
         if (Auth::check()) {
             return redirect()->route('admin.dashboard');
         }
+
         return view('admin.login');
     }
 
@@ -25,6 +26,7 @@ class AdminAuthController extends Controller
 
         if (Auth::attempt($credentials, $request->has('remember'))) {
             $request->session()->regenerate();
+
             return redirect()->intended(route('admin.dashboard'))->with('success', 'Selamat datang kembali, Admin PGRI!');
         }
 

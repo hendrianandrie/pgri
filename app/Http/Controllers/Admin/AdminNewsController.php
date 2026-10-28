@@ -15,10 +15,10 @@ class AdminNewsController extends Controller
 
         $query = News::orderBy('published_at', 'desc')->orderBy('id', 'desc');
 
-        if (!empty($search)) {
+        if (! empty($search)) {
             $query->where(function ($q) use ($search) {
                 $q->where('title', 'like', "%{$search}%")
-                  ->orWhere('author', 'like', "%{$search}%");
+                    ->orWhere('author', 'like', "%{$search}%");
             });
         }
 
@@ -49,15 +49,15 @@ class AdminNewsController extends Controller
 
         if ($request->hasFile('image_file')) {
             $file = $request->file('image_file');
-            $filename = 'news_' . time() . '_' . Str::random(8) . '.' . $file->getClientOriginalExtension();
+            $filename = 'news_'.time().'_'.Str::random(8).'.'.$file->getClientOriginalExtension();
             $path = $file->storeAs('news', $filename, 'public');
-            $image = '/storage/' . $path;
-        } elseif (!empty($validated['image_url'])) {
+            $image = '/storage/'.$path;
+        } elseif (! empty($validated['image_url'])) {
             $image = $validated['image_url'];
         }
 
         $slug = News::generateUniqueSlug($validated['title']);
-        $excerpt = !empty($validated['excerpt']) ? $validated['excerpt'] : Str::limit(strip_tags($validated['content']), 160);
+        $excerpt = ! empty($validated['excerpt']) ? $validated['excerpt'] : Str::limit(strip_tags($validated['content']), 160);
 
         News::create([
             'title' => $validated['title'],
@@ -77,6 +77,7 @@ class AdminNewsController extends Controller
     public function edit($id)
     {
         $news = News::findOrFail($id);
+
         return view('admin.news.edit', compact('news'));
     }
 
@@ -103,15 +104,15 @@ class AdminNewsController extends Controller
         $news->author = $validated['author'];
         $news->published_at = $validated['published_at'];
         $news->content = $validated['content'];
-        $news->excerpt = !empty($validated['excerpt']) ? $validated['excerpt'] : Str::limit(strip_tags($validated['content']), 160);
+        $news->excerpt = ! empty($validated['excerpt']) ? $validated['excerpt'] : Str::limit(strip_tags($validated['content']), 160);
         $news->is_published = $request->has('is_published');
 
         if ($request->hasFile('image_file')) {
             $file = $request->file('image_file');
-            $filename = 'news_' . time() . '_' . Str::random(8) . '.' . $file->getClientOriginalExtension();
+            $filename = 'news_'.time().'_'.Str::random(8).'.'.$file->getClientOriginalExtension();
             $path = $file->storeAs('news', $filename, 'public');
-            $news->image = '/storage/' . $path;
-        } elseif (!empty($validated['image_url'])) {
+            $news->image = '/storage/'.$path;
+        } elseif (! empty($validated['image_url'])) {
             $news->image = $validated['image_url'];
         }
 

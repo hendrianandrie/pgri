@@ -12,10 +12,11 @@ class AdminUserController extends Controller
 {
     private function ensureAdmin()
     {
-        if (!Auth::check() || Auth::user()->role !== 'admin') {
+        if (! Auth::check() || Auth::user()->role !== 'admin') {
             abort(403, 'Akses Ditolak: Menu Kelola Akun hanya dapat diakses oleh Administrator.');
         }
     }
+
     public function index(Request $request)
     {
         $this->ensureAdmin();
@@ -24,16 +25,16 @@ class AdminUserController extends Controller
 
         $query = User::orderBy('id', 'desc');
 
-        if (!empty($role) && in_array($role, ['admin', 'pengurus', 'guru'])) {
+        if (! empty($role) && in_array($role, ['admin', 'pengurus', 'guru'])) {
             $query->where('role', $role);
         }
 
-        if (!empty($search)) {
+        if (! empty($search)) {
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('email', 'like', "%{$search}%")
-                  ->orWhere('school_origin', 'like', "%{$search}%")
-                  ->orWhere('phone', 'like', "%{$search}%");
+                    ->orWhere('email', 'like', "%{$search}%")
+                    ->orWhere('school_origin', 'like', "%{$search}%")
+                    ->orWhere('phone', 'like', "%{$search}%");
             });
         }
 
@@ -58,6 +59,7 @@ class AdminUserController extends Controller
     public function create()
     {
         $this->ensureAdmin();
+
         return view('admin.users.create');
     }
 
@@ -84,13 +86,14 @@ class AdminUserController extends Controller
             'is_active' => $request->has('is_active'),
         ]);
 
-        return redirect()->route('admin.users.index')->with('success', 'Akun pengguna (' . ucfirst($validated['role']) . ') berhasil ditambahkan!');
+        return redirect()->route('admin.users.index')->with('success', 'Akun pengguna ('.ucfirst($validated['role']).') berhasil ditambahkan!');
     }
 
     public function edit($id)
     {
         $this->ensureAdmin();
         $user = User::findOrFail($id);
+
         return view('admin.users.edit', compact('user'));
     }
 
@@ -101,7 +104,7 @@ class AdminUserController extends Controller
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:users,email,' . $id,
+            'email' => 'required|email|max:255|unique:users,email,'.$id,
             'password' => 'nullable|string|min:6',
             'role' => 'required|in:admin,pengurus,guru',
             'phone' => 'nullable|string|max:50',
@@ -111,7 +114,7 @@ class AdminUserController extends Controller
 
         // Security check: cannot deactivate or remove admin from own account
         if (Auth::id() == $id) {
-            if (!$request->has('is_active')) {
+            if (! $request->has('is_active')) {
                 return back()->with('error', 'Anda tidak dapat menonaktifkan akun Anda sendiri!');
             }
             if ($validated['role'] !== 'admin' && Auth::user()->role === 'admin') {
@@ -126,7 +129,7 @@ class AdminUserController extends Controller
         $user->school_origin = $validated['school_origin'] ?? null;
         $user->is_active = $request->has('is_active');
 
-        if (!empty($validated['password'])) {
+        if (! empty($validated['password'])) {
             $user->password = Hash::make($validated['password']);
         }
 
@@ -156,10 +159,11 @@ class AdminUserController extends Controller
         }
 
         $user = User::findOrFail($id);
-        $user->is_active = !$user->is_active;
+        $user->is_active = ! $user->is_active;
         $user->save();
 
         $statusText = $user->is_active ? 'diaktifkan' : 'dinonaktifkan';
+
         return redirect()->route('admin.users.index')->with('success', "Akun {$user->name} berhasil {$statusText}!");
     }
 }

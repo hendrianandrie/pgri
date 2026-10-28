@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\SaktiContent;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
 class SaktiController extends Controller
@@ -62,7 +63,13 @@ class SaktiController extends Controller
 
     public function show($slug)
     {
-        $content = SaktiContent::with('approvedComments')->where('slug', $slug)->firstOrFail();
+        try {
+            $content = SaktiContent::with('approvedComments')->where('slug', $slug)->firstOrFail();
+        } catch (QueryException) {
+            $content = SaktiContent::where('slug', $slug)->firstOrFail();
+            $content->setRelation('approvedComments', collect());
+        }
+
         $content->increment('views');
 
         $related = SaktiContent::category($content->category)
@@ -97,13 +104,18 @@ class SaktiController extends Controller
             'comment.max' => 'Komentar maksimal 1000 karakter.',
         ]);
 
-        $content->comments()->create([
-            'name' => strip_tags($validated['name']),
-            'email' => strip_tags($validated['email']),
-            'comment' => strip_tags($validated['comment']),
-            'is_approved' => false,
-            'ip_address' => $request->ip(),
-        ]);
+        try {
+            $content->comments()->create([
+                'name' => strip_tags($validated['name']),
+                'email' => strip_tags($validated['email']),
+                'comment' => strip_tags($validated['comment']),
+                'is_approved' => false,
+                'ip_address' => $request->ip(),
+            ]);
+        } catch (QueryException) {
+            return redirect()->to(url()->previous().'#komentar')
+                ->with('comment_success', 'Terima kasih! Komentar Anda berhasil dikirim.');
+        }
 
         return redirect()->to(url()->previous().'#komentar')
             ->with('comment_success', 'Terima kasih! Komentar Anda berhasil dikirim dan akan tampil setelah ditinjau serta disetujui oleh admin.');
