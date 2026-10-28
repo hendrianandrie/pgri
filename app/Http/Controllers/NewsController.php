@@ -13,12 +13,12 @@ class NewsController extends Controller
 
         $query = News::latestPublished();
 
-        if (!empty($search)) {
+        if (! empty($search)) {
             $query->where(function ($q) use ($search) {
                 $q->where('title', 'like', "%{$search}%")
-                  ->orWhere('author', 'like', "%{$search}%")
-                  ->orWhere('excerpt', 'like', "%{$search}%")
-                  ->orWhere('content', 'like', "%{$search}%");
+                    ->orWhere('author', 'like', "%{$search}%")
+                    ->orWhere('excerpt', 'like', "%{$search}%")
+                    ->orWhere('content', 'like', "%{$search}%");
             });
         }
 
@@ -38,7 +38,10 @@ class NewsController extends Controller
 
     public function show($slug)
     {
-        $news = News::published()->where('slug', $slug)->firstOrFail();
+        $news = News::published()
+            ->with('approvedComments')
+            ->where('slug', $slug)
+            ->firstOrFail();
 
         // Increment view count
         $news->increment('views_count');
@@ -51,5 +54,40 @@ class NewsController extends Controller
             ->get();
 
         return view('news.show', compact('news', 'recentNews'));
+    }
+
+    public function storeComment(Request $request, $slug)
+    {
+        $news = News::published()->where('slug', $slug)->firstOrFail();
+
+        // Honeypot anti-spam check
+        if ($request->filled('website_hp')) {
+            return redirect()->to(url()->previous().'#komentar')
+                ->with('comment_success', 'Terima kasih! Komentar Anda berhasil dikirim dan akan tampil setelah disetujui oleh admin.');
+        }
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:100',
+            'email' => 'required|email|max:150',
+            'comment' => 'required|string|min:3|max:1000',
+        ], [
+            'name.required' => 'Nama lengkap wajib diisi.',
+            'email.required' => 'Alamat email wajib diisi.',
+            'email.email' => 'Format email tidak valid.',
+            'comment.required' => 'Isi komentar tidak boleh kosong.',
+            'comment.min' => 'Komentar minimal 3 karakter.',
+            'comment.max' => 'Komentar maksimal 1000 karakter.',
+        ]);
+
+        $news->comments()->create([
+            'name' => strip_tags($validated['name']),
+            'email' => strip_tags($validated['email']),
+            'comment' => strip_tags($validated['comment']),
+            'is_approved' => false,
+            'ip_address' => $request->ip(),
+        ]);
+
+        return redirect()->to(url()->previous().'#komentar')
+            ->with('comment_success', 'Terima kasih! Komentar Anda berhasil dikirim dan akan tampil setelah ditinjau serta disetujui oleh admin.');
     }
 }

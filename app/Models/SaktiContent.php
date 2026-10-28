@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class SaktiContent extends Model
 {
@@ -32,16 +33,17 @@ class SaktiContent extends Model
 
     public function getFileUrlAttribute($value)
     {
-        if ($value && !preg_match("~^(?:f|ht)tps?://~i", $value)) {
-            return "https://" . $value;
+        if ($value && ! preg_match('~^(?:f|ht)tps?://~i', $value)) {
+            return 'https://'.$value;
         }
+
         return $value;
     }
 
     public function setFileUrlAttribute($value)
     {
-        if ($value && !preg_match("~^(?:f|ht)tps?://~i", $value)) {
-            $value = "https://" . $value;
+        if ($value && ! preg_match('~^(?:f|ht)tps?://~i', $value)) {
+            $value = 'https://'.$value;
         }
         $this->attributes['file_url'] = $value;
     }
@@ -54,5 +56,15 @@ class SaktiContent extends Model
     public function scopeFeatured($query)
     {
         return $query->where('is_featured', true);
+    }
+
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    public function approvedComments(): HasMany
+    {
+        return $this->hasMany(Comment::class)->where('is_approved', true)->latest();
     }
 }

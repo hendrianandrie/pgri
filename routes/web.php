@@ -1,22 +1,25 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\SaktiController;
-use App\Http\Controllers\GalleryController;
-use App\Http\Controllers\ContactController;
 use App\Http\Controllers\Admin\AdminAuthController;
+use App\Http\Controllers\Admin\AdminCommentController;
 use App\Http\Controllers\Admin\AdminDashboardController;
-use App\Http\Controllers\Admin\AdminSaktiController;
 use App\Http\Controllers\Admin\AdminExecutiveController;
 use App\Http\Controllers\Admin\AdminGalleryController;
 use App\Http\Controllers\Admin\AdminMessageController;
-use App\Http\Controllers\Admin\AdminSettingController;
-use App\Http\Controllers\Admin\AdminTestimonialController;
-use App\Http\Controllers\NewsController;
 use App\Http\Controllers\Admin\AdminNewsController;
+use App\Http\Controllers\Admin\AdminSaktiController;
+use App\Http\Controllers\Admin\AdminSettingController;
+use App\Http\Controllers\Admin\AdminSubmissionController;
+use App\Http\Controllers\Admin\AdminTestimonialController;
 use App\Http\Controllers\Admin\AdminUserController;
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\ContributionController;
+use App\Http\Controllers\GalleryController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\NewsController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SaktiController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,13 +38,19 @@ Route::prefix('sakti')->name('sakti.')->group(function () {
     Route::get('/pid', [SaktiController::class, 'pid'])->name('pid');
     Route::get('/koding-kka', [SaktiController::class, 'kodingKka'])->name('koding-kka');
     Route::get('/modul/{slug}', [SaktiController::class, 'show'])->name('show');
+    Route::post('/modul/{slug}/komentar', [SaktiController::class, 'storeComment'])->name('comment.store')->middleware('throttle:5,1');
 });
 
 Route::get('/berita', [NewsController::class, 'index'])->name('news.index');
 Route::get('/berita/{slug}', [NewsController::class, 'show'])->name('news.show');
+Route::post('/berita/{slug}/komentar', [NewsController::class, 'storeComment'])->name('news.comment.store')->middleware('throttle:5,1');
 Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery.index');
 Route::get('/contact', [ContactController::class, 'index'])->name('contact.index');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+
+// Public Content Contribution
+Route::get('/kirim-konten', [ContributionController::class, 'create'])->name('contributions.create');
+Route::post('/kirim-konten', [ContributionController::class, 'store'])->name('contributions.store')->middleware('throttle:5,1');
 
 /*
 |--------------------------------------------------------------------------
@@ -104,6 +113,18 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::post('/messages/{id}/toggle-read', [AdminMessageController::class, 'toggleRead'])->name('messages.toggleRead');
     Route::delete('/messages/{id}', [AdminMessageController::class, 'destroy'])->name('messages.destroy');
 
+    // News Comments Moderation
+    Route::get('/comments', [AdminCommentController::class, 'index'])->name('comments.index');
+    Route::post('/comments/{id}/toggle-approve', [AdminCommentController::class, 'toggleApprove'])->name('comments.toggleApprove');
+    Route::delete('/comments/{id}', [AdminCommentController::class, 'destroy'])->name('comments.destroy');
+
+    // Public Content Submissions Management
+    Route::get('/submissions', [AdminSubmissionController::class, 'index'])->name('submissions.index');
+    Route::get('/submissions/{id}', [AdminSubmissionController::class, 'show'])->name('submissions.show');
+    Route::post('/submissions/{id}/approve', [AdminSubmissionController::class, 'approve'])->name('submissions.approve');
+    Route::post('/submissions/{id}/reject', [AdminSubmissionController::class, 'reject'])->name('submissions.reject');
+    Route::delete('/submissions/{id}', [AdminSubmissionController::class, 'destroy'])->name('submissions.destroy');
+
     // Hero Banner Settings
     Route::get('/hero-settings', [AdminSettingController::class, 'heroSettings'])->name('hero-settings');
     Route::post('/hero-settings', [AdminSettingController::class, 'updateHeroSettings'])->name('hero-settings.update');
@@ -126,14 +147,13 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::post('/users/{id}/toggle-status', [AdminUserController::class, 'toggleStatus'])->name('users.toggleStatus');
 });
 
-
-
 // Direct Storage File Fallback for Hosting
 $storageHandler = function ($path) {
-    $fullPath = storage_path('app/public/' . $path);
-    if (!file_exists($fullPath)) {
+    $fullPath = storage_path('app/public/'.$path);
+    if (! file_exists($fullPath)) {
         abort(404, 'File not found');
     }
+
     return response()->file($fullPath);
 };
 

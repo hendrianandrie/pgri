@@ -408,6 +408,11 @@
                             <i class="fa-solid fa-paper-plane me-1 text-info"></i> Kontak
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-pgri {{ request()->routeIs('contributions.*') ? 'active' : '' }}" href="{{ route('contributions.create') }}">
+                            <i class="fa-solid fa-feather-pointed me-1 text-warning"></i> Kirim Berita / Modul
+                        </a>
+                    </li>
                     <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
                         <a class="btn btn-warning text-dark font-bold rounded-3 px-3.5 py-2 shadow-sm d-inline-flex align-items-center gap-1.5 fw-bold text-decoration-none" style="font-size: 0.88rem; background: linear-gradient(135deg, #facc15 0%, #f59e0b 100%); border: none;" href="{{ route('admin.login') }}">
                             <i class="fa-solid fa-user-shield text-danger"></i> Login Admin

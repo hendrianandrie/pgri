@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 
 class News extends Model
@@ -40,13 +41,23 @@ class News extends Model
         return $query->where('is_published', true)->orderBy('published_at', 'desc')->orderBy('id', 'desc');
     }
 
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    public function approvedComments(): HasMany
+    {
+        return $this->hasMany(Comment::class)->where('is_approved', true)->latest();
+    }
+
     public static function generateUniqueSlug($title, $ignoreId = null)
     {
         $slug = Str::slug($title);
         $originalSlug = $slug;
         $count = 1;
 
-        while (static::where('slug', $slug)->when($ignoreId, fn($q) => $q->where('id', '!=', $ignoreId))->exists()) {
+        while (static::where('slug', $slug)->when($ignoreId, fn ($q) => $q->where('id', '!=', $ignoreId))->exists()) {
             $slug = "{$originalSlug}-{$count}";
             $count++;
         }

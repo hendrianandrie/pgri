@@ -7,12 +7,12 @@
 <div class="space-y-8">
     
     <!-- Top Stats Cards -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
         <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
             <div>
                 <p class="text-xs font-bold uppercase tracking-wider text-slate-400">Total Modul SAKTI</p>
                 <h3 class="text-2xl font-black text-slate-800 mt-1">{{ $stats['sakti_count'] }}</h3>
-                <p class="text-xs text-slate-500 mt-0.5">Konten 4 Pilar Utama</p>
+                <p class="text-xs text-slate-500 mt-0.5">Konten 4 Pilar</p>
             </div>
             <div class="w-12 h-12 rounded-xl bg-red-50 text-red-600 flex items-center justify-center text-xl font-bold">
                 <i class="fa-solid fa-book-bookmark"></i>
@@ -21,7 +21,7 @@
 
         <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
             <div>
-                <p class="text-xs font-bold uppercase tracking-wider text-slate-400">Pengurus Terdaftar</p>
+                <p class="text-xs font-bold uppercase tracking-wider text-slate-400">Pengurus</p>
                 <h3 class="text-2xl font-black text-slate-800 mt-1">{{ $stats['executives_count'] }}</h3>
                 <p class="text-xs text-slate-500 mt-0.5">Struktur Organisasi</p>
             </div>
@@ -57,6 +57,23 @@
                 <i class="fa-solid fa-envelope-open-text"></i>
             </div>
         </div>
+
+        <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
+            <div>
+                <p class="text-xs font-bold uppercase tracking-wider text-slate-400">Komentar Berita</p>
+                <h3 class="text-2xl font-black text-slate-800 mt-1">{{ $stats['comments_count'] }}</h3>
+                <p class="text-xs text-slate-500 mt-0.5">
+                    @if($stats['pending_comments'] > 0)
+                        <span class="text-amber-600 font-bold">{{ $stats['pending_comments'] }} perlu moderasi</span>
+                    @else
+                        Semua ditinjau
+                    @endif
+                </p>
+            </div>
+            <a href="{{ route('admin.comments.index') }}" class="w-12 h-12 rounded-xl bg-cyan-50 text-cyan-600 hover:bg-cyan-100 transition flex items-center justify-center text-xl font-bold" title="Lihat Komentar">
+                <i class="fa-solid fa-comment-dots"></i>
+            </a>
+        </div>
     </div>
 
     <!-- Quick Actions Banner -->
@@ -66,6 +83,18 @@
             <p class="text-xs text-slate-300">Pilih tindakan cepat di bawah ini untuk memperbarui informasi website PGRI.</p>
         </div>
         <div class="flex flex-wrap gap-2">
+            <a href="{{ route('admin.submissions.index') }}" class="bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow transition flex items-center gap-1.5">
+                <i class="fa-solid fa-feather-pointed"></i> Kiriman Guru
+                @if($stats['pending_submissions'] > 0)
+                    <span class="bg-white text-slate-900 rounded-full px-1.5 py-0.5 text-[10px] font-black">{{ $stats['pending_submissions'] }}</span>
+                @endif
+            </a>
+            <a href="{{ route('admin.comments.index') }}" class="bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow transition flex items-center gap-1.5">
+                <i class="fa-solid fa-comment-dots"></i> Moderasi Komentar
+                @if($stats['pending_comments'] > 0)
+                    <span class="bg-amber-400 text-slate-900 rounded-full px-1.5 py-0.5 text-[10px] font-black">{{ $stats['pending_comments'] }}</span>
+                @endif
+            </a>
             <a href="{{ route('admin.sakti.index') }}" class="bg-red-600 hover:bg-red-500 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow transition flex items-center gap-1.5">
                 <i class="fa-solid fa-plus"></i> SAKTI Konten
             </a>

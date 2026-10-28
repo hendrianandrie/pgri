@@ -44,10 +44,10 @@ class SaktiController extends Controller
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function ($q) use ($search) {
-                $q->where('title', 'like', '%' . $search . '%')
-                  ->orWhere('author', 'like', '%' . $search . '%')
-                  ->orWhere('school_origin', 'like', '%' . $search . '%')
-                  ->orWhere('summary', 'like', '%' . $search . '%');
+                $q->where('title', 'like', '%'.$search.'%')
+                    ->orWhere('author', 'like', '%'.$search.'%')
+                    ->orWhere('school_origin', 'like', '%'.$search.'%')
+                    ->orWhere('summary', 'like', '%'.$search.'%');
             });
         }
 
@@ -62,7 +62,7 @@ class SaktiController extends Controller
 
     public function show($slug)
     {
-        $content = SaktiContent::where('slug', $slug)->firstOrFail();
+        $content = SaktiContent::with('approvedComments')->where('slug', $slug)->firstOrFail();
         $content->increment('views');
 
         $related = SaktiContent::category($content->category)
@@ -72,5 +72,40 @@ class SaktiController extends Controller
             ->get();
 
         return view('sakti.show', compact('content', 'related'));
+    }
+
+    public function storeComment(Request $request, $slug)
+    {
+        $content = SaktiContent::where('slug', $slug)->firstOrFail();
+
+        // Honeypot anti-spam check
+        if ($request->filled('website_hp')) {
+            return redirect()->to(url()->previous().'#komentar')
+                ->with('comment_success', 'Terima kasih! Komentar Anda berhasil dikirim dan akan tampil setelah disetujui oleh admin.');
+        }
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:100',
+            'email' => 'required|email|max:150',
+            'comment' => 'required|string|min:3|max:1000',
+        ], [
+            'name.required' => 'Nama lengkap wajib diisi.',
+            'email.required' => 'Alamat email wajib diisi.',
+            'email.email' => 'Format email tidak valid.',
+            'comment.required' => 'Isi komentar tidak boleh kosong.',
+            'comment.min' => 'Komentar minimal 3 karakter.',
+            'comment.max' => 'Komentar maksimal 1000 karakter.',
+        ]);
+
+        $content->comments()->create([
+            'name' => strip_tags($validated['name']),
+            'email' => strip_tags($validated['email']),
+            'comment' => strip_tags($validated['comment']),
+            'is_approved' => false,
+            'ip_address' => $request->ip(),
+        ]);
+
+        return redirect()->to(url()->previous().'#komentar')
+            ->with('comment_success', 'Terima kasih! Komentar Anda berhasil dikirim dan akan tampil setelah ditinjau serta disetujui oleh admin.');
     }
 }

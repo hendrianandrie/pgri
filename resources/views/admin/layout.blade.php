@@ -82,6 +82,32 @@
                     <span>Berita & Reportase</span>
                 </a>
 
+                <a href="{{ route('admin.comments.index') }}" class="flex items-center justify-between px-3 py-2.5 rounded-lg transition {{ request()->routeIs('admin.comments.*') ? 'bg-red-700 text-white font-semibold shadow-md' : 'text-slate-400 hover:text-white hover:bg-slate-800' }}">
+                    <div class="flex items-center gap-3">
+                        <i class="fa-solid fa-comment-dots w-5 text-center text-cyan-400"></i>
+                        <span>Komentar & Diskusi</span>
+                    </div>
+                    @php
+                        $pendingCommentsCount = \App\Models\Comment::pending()->count();
+                    @endphp
+                    @if($pendingCommentsCount > 0)
+                        <span class="px-2 py-0.5 text-[10px] font-extrabold bg-amber-500 text-white rounded-full shadow-sm">{{ $pendingCommentsCount }}</span>
+                    @endif
+                </a>
+
+                <a href="{{ route('admin.submissions.index') }}" class="flex items-center justify-between px-3 py-2.5 rounded-lg transition {{ request()->routeIs('admin.submissions.*') ? 'bg-red-700 text-white font-semibold shadow-md' : 'text-slate-400 hover:text-white hover:bg-slate-800' }}">
+                    <div class="flex items-center gap-3">
+                        <i class="fa-solid fa-feather-pointed w-5 text-center text-amber-400"></i>
+                        <span>Kiriman Masuk</span>
+                    </div>
+                    @php
+                        $pendingSubmissionsCount = \App\Models\ContentSubmission::pending()->count();
+                    @endphp
+                    @if($pendingSubmissionsCount > 0)
+                        <span class="px-2 py-0.5 text-[10px] font-extrabold bg-amber-500 text-white rounded-full shadow-sm">{{ $pendingSubmissionsCount }}</span>
+                    @endif
+                </a>
+
                 <a href="{{ route('admin.galleries.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg transition {{ request()->routeIs('admin.galleries.*') ? 'bg-red-700 text-white font-semibold shadow-md' : 'text-slate-400 hover:text-white hover:bg-slate-800' }}">
                     <i class="fa-solid fa-images w-5 text-center text-amber-400"></i>
                     <span>Galeri & Dokumentasi</span>

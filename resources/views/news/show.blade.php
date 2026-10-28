@@ -110,6 +110,156 @@
                     </div>
 
                 </article>
+
+                <!-- COMMENTS SECTION -->
+                <section id="komentar" class="bg-white rounded-4 p-4 p-md-5 shadow-sm border-0 mb-5">
+                    
+                    <!-- Section Header -->
+                    <div class="d-flex align-items-center justify-content-between pb-3 mb-4 border-bottom">
+                        <h3 class="fs-5 fw-bold text-dark mb-0 d-flex align-items-center gap-2">
+                            <i class="fa-solid fa-comments text-danger"></i>
+                            <span>Komentar & Tanggapan</span>
+                            <span class="badge bg-danger-subtle text-danger rounded-pill px-2.5 py-1 extra-small fw-bold">
+                                {{ $news->approvedComments->count() }}
+                            </span>
+                        </h3>
+                        <a href="#form-komentar" class="btn btn-sm btn-outline-danger rounded-pill px-3 fw-bold extra-small">
+                            <i class="fa-solid fa-pen-nib me-1"></i> Tulis Komentar
+                        </a>
+                    </div>
+
+                    <!-- Flash Message for Comment Submission -->
+                    @if(session('comment_success'))
+                        <div class="alert alert-success alert-dismissible fade show rounded-3 p-3 mb-4 d-flex align-items-start gap-2 border-0 shadow-sm" role="alert">
+                            <i class="fa-solid fa-circle-check fs-5 text-success flex-shrink-0 mt-0.5"></i>
+                            <div class="small leading-snug">
+                                <strong class="d-block mb-1">Berhasil Terkirim!</strong>
+                                {{ session('comment_success') }}
+                            </div>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    @endif
+
+                    @if ($errors->any())
+                        <div class="alert alert-danger alert-dismissible fade show rounded-3 p-3 mb-4 border-0 shadow-sm" role="alert">
+                            <div class="d-flex align-items-start gap-2">
+                                <i class="fa-solid fa-circle-exclamation fs-5 text-danger flex-shrink-0 mt-0.5"></i>
+                                <div class="small">
+                                    <strong class="d-block mb-1">Gagal mengirim komentar:</strong>
+                                    <ul class="mb-0 ps-3">
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            </div>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    @endif
+
+                    <!-- Comments List -->
+                    <div class="d-flex flex-column gap-3 mb-5">
+                        @forelse($news->approvedComments as $comment)
+                            <div class="p-3.5 rounded-3 bg-slate-50 border border-slate-100">
+                                <div class="d-flex align-items-center justify-content-between gap-2 mb-2">
+                                    <div class="d-flex align-items-center gap-2.5">
+                                        <div class="rounded-circle bg-danger-subtle text-danger fw-bold d-flex align-items-center justify-content-center flex-shrink-0" style="width: 38px; height: 38px; font-size: 0.85rem;">
+                                            {{ strtoupper(substr($comment->name, 0, 1)) }}
+                                        </div>
+                                        <div>
+                                            <div class="fw-bold text-dark small leading-tight">{{ $comment->name }}</div>
+                                            <div class="text-muted extra-small" style="font-size: 0.72rem;">
+                                                <i class="fa-regular fa-clock me-1"></i>
+                                                {{ $comment->created_at ? $comment->created_at->diffForHumans() : '-' }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-secondary small leading-relaxed ps-md-5 ms-md-2" style="font-size: 0.88rem; white-space: pre-line;">
+                                    {{ $comment->comment }}
+                                </div>
+                            </div>
+                        @empty
+                            <div class="text-center py-4 px-3 bg-slate-50 rounded-3 border border-dashed border-slate-200">
+                                <i class="fa-regular fa-comment-dots text-muted fs-3 mb-2 d-block"></i>
+                                <p class="text-muted small mb-1 fw-semibold">Belum ada komentar untuk berita ini.</p>
+                                <span class="text-muted extra-small">Jadilah yang pertama memberikan tanggapan atau apresiasi Anda.</span>
+                            </div>
+                        @endforelse
+                    </div>
+
+                    <!-- Leave Comment Form -->
+                    <div id="form-komentar" class="p-4 rounded-4 bg-slate-50 border border-slate-200">
+                        <div class="mb-3">
+                            <h4 class="fs-6 fw-bold text-dark mb-1 d-flex align-items-center gap-2">
+                                <i class="fa-solid fa-pen-to-square text-danger"></i>
+                                <span>Tinggalkan Komentar</span>
+                            </h4>
+                            <p class="text-muted extra-small mb-0">
+                                <i class="fa-solid fa-shield-halved text-emerald-600 me-1"></i>
+                                Komentar akan ditinjau oleh redaksi sebelum ditampilkan ke publik. Alamat email Anda tidak akan dipublikasikan.
+                            </p>
+                        </div>
+
+                        <form action="{{ route('news.comment.store', $news->slug) }}" method="POST">
+                            @csrf
+
+                            <!-- Honeypot field (hidden from real users) -->
+                            <div style="display: none !important;" aria-hidden="true">
+                                <label for="website_hp">Website</label>
+                                <input type="text" name="website_hp" id="website_hp" tabindex="-1" autocomplete="off">
+                            </div>
+
+                            <div class="row g-3 mb-3">
+                                <div class="col-md-6">
+                                    <label for="name" class="form-label extra-small fw-bold text-dark mb-1">
+                                        Nama Lengkap <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="text" name="name" id="name" value="{{ old('name') }}" required
+                                           class="form-control form-control-sm rounded-3 @error('name') is-invalid @enderror"
+                                           placeholder="Contoh: Budi Santoso, S.Pd.">
+                                    @error('name')
+                                        <div class="invalid-feedback extra-small">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="email" class="form-label extra-small fw-bold text-dark mb-1">
+                                        Alamat Email <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="email" name="email" id="email" value="{{ old('email') }}" required
+                                           class="form-control form-control-sm rounded-3 @error('email') is-invalid @enderror"
+                                           placeholder="nama@email.com">
+                                    @error('email')
+                                        <div class="invalid-feedback extra-small">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="comment" class="form-label extra-small fw-bold text-dark mb-1">
+                                    Isi Komentar / Tanggapan <span class="text-danger">*</span>
+                                </label>
+                                <textarea name="comment" id="comment" rows="4" required
+                                          class="form-control form-control-sm rounded-3 @error('comment') is-invalid @enderror"
+                                          placeholder="Tuliskan apresiasi, masukan, atau tanggapan Anda dengan bahasa yang santun...">{{ old('comment') }}</textarea>
+                                @error('comment')
+                                    <div class="invalid-feedback extra-small">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 pt-1">
+                                <span class="extra-small text-muted">
+                                    <i class="fa-solid fa-circle-info me-1"></i> Maksimal 1.000 karakter.
+                                </span>
+                                <button type="submit" class="btn btn-danger btn-sm rounded-pill px-4 fw-bold shadow-sm d-flex align-items-center gap-1.5">
+                                    <i class="fa-solid fa-paper-plane"></i>
+                                    <span>Kirim Komentar</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                </section>
             </div>
 
             <!-- SIDEBAR (Right Col) -->
