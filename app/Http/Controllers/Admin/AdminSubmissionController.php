@@ -7,6 +7,7 @@ use App\Models\ContentSubmission;
 use App\Models\News;
 use App\Models\SaktiContent;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -44,16 +45,28 @@ class AdminSubmissionController extends Controller
             });
         }
 
-        $submissions = $query->paginate(12)->withQueryString();
+        try {
+            $submissions = $query->paginate(12)->withQueryString();
 
-        $counts = [
-            'all' => ContentSubmission::count(),
-            'pending' => ContentSubmission::pending()->count(),
-            'approved' => ContentSubmission::approved()->count(),
-            'rejected' => ContentSubmission::rejected()->count(),
-            'news' => ContentSubmission::where('type', 'news')->count(),
-            'sakti' => ContentSubmission::where('type', 'sakti')->count(),
-        ];
+            $counts = [
+                'all' => ContentSubmission::count(),
+                'pending' => ContentSubmission::pending()->count(),
+                'approved' => ContentSubmission::approved()->count(),
+                'rejected' => ContentSubmission::rejected()->count(),
+                'news' => ContentSubmission::where('type', 'news')->count(),
+                'sakti' => ContentSubmission::where('type', 'sakti')->count(),
+            ];
+        } catch (\Throwable) {
+            $submissions = new LengthAwarePaginator([], 0, 12);
+            $counts = [
+                'all' => 0,
+                'pending' => 0,
+                'approved' => 0,
+                'rejected' => 0,
+                'news' => 0,
+                'sakti' => 0,
+            ];
+        }
 
         return view('admin.submissions.index', compact('submissions', 'status', 'type', 'search', 'counts'));
     }

@@ -58,6 +58,7 @@ Route::post('/kirim-konten', [ContributionController::class, 'store'])->name('co
 |--------------------------------------------------------------------------
 */
 
+Route::get('/login', fn () => redirect()->route('admin.login'))->name('login');
 Route::get('/admin/login', [AdminAuthController::class, 'showLoginForm'])->name('admin.login');
 Route::post('/admin/login', [AdminAuthController::class, 'login'])->name('admin.login.submit');
 Route::post('/admin/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');

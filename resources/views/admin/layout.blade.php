@@ -136,7 +136,11 @@
                         <span>Komentar & Diskusi</span>
                     </div>
                     @php
-                        $pendingCommentsCount = \App\Models\Comment::pending()->count();
+                        try {
+                            $pendingCommentsCount = \App\Models\Comment::pending()->count();
+                        } catch (\Throwable) {
+                            $pendingCommentsCount = 0;
+                        }
                     @endphp
                     @if($pendingCommentsCount > 0)
                         <span class="px-2 py-0.5 text-[10px] font-extrabold bg-amber-500 text-white rounded-full shadow-sm">{{ $pendingCommentsCount }}</span>
@@ -149,7 +153,11 @@
                         <span>Kiriman Masuk</span>
                     </div>
                     @php
-                        $pendingSubmissionsCount = \App\Models\ContentSubmission::pending()->count();
+                        try {
+                            $pendingSubmissionsCount = \App\Models\ContentSubmission::pending()->count();
+                        } catch (\Throwable) {
+                            $pendingSubmissionsCount = 0;
+                        }
                     @endphp
                     @if($pendingSubmissionsCount > 0)
                         <span class="px-2 py-0.5 text-[10px] font-extrabold bg-amber-500 text-white rounded-full shadow-sm">{{ $pendingSubmissionsCount }}</span>

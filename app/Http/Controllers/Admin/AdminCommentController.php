@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Comment;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class AdminCommentController extends Controller
 {
@@ -42,15 +43,26 @@ class AdminCommentController extends Controller
             });
         }
 
-        $comments = $query->paginate(15)->withQueryString();
+        try {
+            $comments = $query->paginate(15)->withQueryString();
 
-        $counts = [
-            'all' => Comment::count(),
-            'pending' => Comment::pending()->count(),
-            'approved' => Comment::approved()->count(),
-            'news' => Comment::whereNotNull('news_id')->count(),
-            'sakti' => Comment::whereNotNull('sakti_content_id')->count(),
-        ];
+            $counts = [
+                'all' => Comment::count(),
+                'pending' => Comment::pending()->count(),
+                'approved' => Comment::approved()->count(),
+                'news' => Comment::whereNotNull('news_id')->count(),
+                'sakti' => Comment::whereNotNull('sakti_content_id')->count(),
+            ];
+        } catch (\Throwable) {
+            $comments = new LengthAwarePaginator([], 0, 15);
+            $counts = [
+                'all' => 0,
+                'pending' => 0,
+                'approved' => 0,
+                'news' => 0,
+                'sakti' => 0,
+            ];
+        }
 
         return view('admin.comments.index', compact('comments', 'status', 'source', 'search', 'counts'));
     }
