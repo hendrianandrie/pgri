@@ -289,14 +289,64 @@
             color: var(--pgri-red);
         }
 
-        /* Auto Justify Text / Paragraphs */
-        .text-justify, 
-        .article-content, 
-        .article-content p,
-        .content-justified,
-        .content-justified p {
-            text-align: justify;
-            text-justify: inter-word;
+        /* Modern Custom Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 0;
+            padding: 0;
+            flex-wrap: wrap;
+        }
+        .pagination .page-item .page-link {
+            color: #334155;
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px !important;
+            font-weight: 600;
+            font-size: 0.9rem;
+            padding: 8px 16px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 40px;
+            height: 40px;
+        }
+        .pagination .page-item .page-link:hover {
+            background-color: #f8fafc;
+            color: var(--pgri-red);
+            border-color: #cbd5e1;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+        }
+        .pagination .page-item.active .page-link {
+            background: linear-gradient(135deg, var(--pgri-red) 0%, var(--pgri-red-dark) 100%);
+            border-color: var(--pgri-red);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.35);
+        }
+        .pagination .page-item.disabled .page-link {
+            color: #94a3b8;
+            background-color: #f1f5f9;
+            border-color: #e2e8f0;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+        /* Safety: Never let any SVG or icon in pagination scale abnormally */
+        nav svg, 
+        .pagination svg,
+        nav[role="navigation"] svg {
+            width: 1.25rem !important;
+            height: 1.25rem !important;
+            max-width: 1.25rem !important;
+            max-height: 1.25rem !important;
+            display: inline-block;
+            vertical-align: middle;
         }
     </style>
 </head>

@@ -103,9 +103,11 @@
     </div>
 
     <!-- PAGINATION -->
-    <div class="d-flex justify-content-center">
-        {{ $galleries->links() }}
+    @if($galleries->hasPages())
+    <div class="d-flex justify-content-center my-5">
+        {{ $galleries->links('pagination::bootstrap-5') }}
     </div>
+    @endif
 </div>
 
 <!-- MODAL LIGHTBOX VIEW PUBLIC GALLERY -->

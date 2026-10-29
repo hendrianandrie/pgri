@@ -129,6 +129,10 @@
         @endforelse
     </div>
 
-    {{ $contents->withQueryString()->links() }}
+    @if($contents->hasPages())
+    <div class="d-flex justify-content-center my-5">
+        {{ $contents->withQueryString()->links('pagination::bootstrap-5') }}
+    </div>
+    @endif
 </div>
 @endsection
